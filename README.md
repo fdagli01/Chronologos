@@ -1,30 +1,38 @@
 # Chronologos
 
-A living atlas of thought. This first phase is the ambient 3D painting: an engraved Earth (Chronos) suspended inside a slow-moving constellation of notes (Logos).
+Chronologos, düşüncelerin zaman ve mekân içindeki yolculuğunu resmeden canlı bir düşünce atlasıdır. Uygulama, okunan kitapları tamamlanmış işler olarak saymak yerine; notları, alıntıları, yazarları ve fikirler arasındaki bağları kişisel bir evrenin parçaları olarak ele alır.
 
-## Run locally
+## Görsel yaklaşım
+
+Ekranın merkezinde, eski harita estetiği taşıyan ve yavaşça dönen bir dünya bulunur. Chronos adı verilen bu katman; fikirlerin tarihsel ve coğrafi köklerini, yazarları ve dönemleri temsil eder.
+
+Dünyayı çevreleyen Logos katmanında notlar yıldızlar, aralarındaki anlam ilişkileri ise ışıklı çizgiler olarak görünür. Sahne, sürekli ve sakin hareket eden, tablo gibi izlenebilen bir üç boyutlu kompozisyon olarak tasarlanmıştır.
+
+## Mevcut aşama
+
+İlk aşama, arayüz öğeleri yerine görsel sahneye odaklanan Sessiz Mod deneyimidir. Dünya, yıldızlar ve örnek düşünce bağlantıları şu anda yerel ve örnek verilerle çizilir. Gösterilen rotalar süsleme amaçlıdır; tarihsel bir iddia taşımaz.
+
+## Yerel ortamda çalıştırma
 
 ```bash
 npm install
 npm run dev
 ```
 
-Open the local address printed by Vite. For a production bundle, run `npm run build`.
+Vite'ın verdiği yerel adresi tarayıcıda açın. Üretim sürümünü oluşturmak için `npm run build` komutunu çalıştırın.
 
-## Scene structure
+## Proje yapısı
 
-- `src/scene/Chronos.jsx` renders the rotating 3D Earth and armillary rings.
-- `src/scene/LivingEarth.jsx` adds slowly traveling golden route lights and coastal shimmer. These routes are decorative placeholders, not historical claims.
-- `src/scene/earthTexture.js` draws a procedural antique atlas over real land geometry from `world-atlas`.
-- `src/scene/Logos.jsx` draws all stars in one GPU point cloud and all relationships in one line geometry.
-- `src/data/universe.js` owns the sample note and relationship records. Replace these records with real note data later; rendering does not need to know where the data came from.
-- `src/scene/Planetarium.jsx` composes the scene and restrained bloom.
+- `src/scene/Chronos.jsx`, dönen dünyayı ve pirinç renkli gök halkalarını oluşturur.
+- `src/scene/LivingEarth.jsx`, dünya üzerindeki yavaş ışık hareketlerini ve kıyı parıltılarını ekler.
+- `src/scene/earthTexture.js`, gerçek kıta biçimlerini eski atlas görünümünde bir dokuya dönüştürür.
+- `src/scene/Logos.jsx`, yıldızları ve aralarındaki bağlantıları üç boyutlu sahnede çizer.
+- `src/data/universe.js`, şu an kullanılan örnek notları ve ilişkileri içerir.
+- `src/scene/Planetarium.jsx`, sahne katmanlarını ve parıltı efektini bir araya getirir.
 
-Quiet Mode has no persistent controls. The current sample data is illustrative, not a claim about historical authors or actual semantic relationships.
+## İlerideki geliştirmeler
 
-## Next milestones
-
-1. Refine the live composition and textures on the intended panel display.
-2. Add three works and approximately twenty of your real notes.
-3. Add author-to-stars and star-to-source exploration.
-4. Add durable note storage and semantic suggestions after the personal content loop is useful.
+- Sahneyi hedeflenen ekranda daha da iyileştirmek.
+- Gerçek kitapları, notları ve alıntıları evrene eklemek.
+- Bir yazardan onunla ilişkili notlara, bir nottan da tarihsel kaynaklarına geçişi sağlamak.
+- Notları kalıcı olarak saklamak ve anlam ilişkileri için yapay zekâ destekli öneriler eklemek.
