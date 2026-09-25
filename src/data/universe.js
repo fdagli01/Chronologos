@@ -3,10 +3,10 @@ import { Vector3 } from 'three'
 // This is deliberately separate from rendering. Replace these records with
 // persisted notes and relationship scores without changing the scene components.
 const themes = [
-  { id: 'will', center: [-0.74, 0.53, -0.42], color: '#e8c884', count: 38 },
-  { id: 'memory', center: [0.62, 0.65, -0.44], color: '#f5dfac', count: 36 },
-  { id: 'becoming', center: [-0.63, -0.51, -0.58], color: '#d9ac67', count: 36 },
-  { id: 'kinship', center: [0.68, -0.36, -0.64], color: '#fff0ce', count: 36 },
+  { id: 'will', center: [-0.74, 0.53, -0.42], color: '#ffc87c', count: 38 },
+  { id: 'memory', center: [0.62, 0.65, -0.44], color: '#fff1d1', count: 36 },
+  { id: 'becoming', center: [-0.63, -0.51, -0.58], color: '#f3a76c', count: 36 },
+  { id: 'kinship', center: [0.68, -0.36, -0.64], color: '#b9dfe0', count: 36 },
 ]
 
 function randomGenerator(seed) {

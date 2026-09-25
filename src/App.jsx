@@ -14,7 +14,7 @@ export default function App() {
         onCreated={({ gl }) => {
           gl.outputColorSpace = SRGBColorSpace
           gl.toneMapping = ACESFilmicToneMapping
-          gl.toneMappingExposure = 1.18
+          gl.toneMappingExposure = 1.3
         }}
       >
         <Suspense fallback={null}>

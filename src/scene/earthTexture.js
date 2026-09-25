@@ -79,9 +79,9 @@ export function createEarthTexture() {
   const random = randomGenerator(20261004)
 
   const ocean = ctx.createLinearGradient(0, 0, WIDTH, HEIGHT)
-  ocean.addColorStop(0, '#152e3b')
-  ocean.addColorStop(.48, '#0c2534')
-  ocean.addColorStop(1, '#091b29')
+  ocean.addColorStop(0, '#174454')
+  ocean.addColorStop(.48, '#103648')
+  ocean.addColorStop(1, '#0a273b')
   ctx.fillStyle = ocean
   ctx.fillRect(0, 0, WIDTH, HEIGHT)
 
@@ -91,7 +91,7 @@ export function createEarthTexture() {
     ctx.fillRect(random() * WIDTH, random() * HEIGHT, 1 + random() * 3, 1 + random() * 2)
   }
 
-  ctx.strokeStyle = 'rgba(193, 160, 107, .19)'
+  ctx.strokeStyle = 'rgba(224, 183, 111, .28)'
   ctx.lineWidth = 1
   for (let lon = -180; lon <= 180; lon += 15) {
     const x = (lon + 180) / 360 * WIDTH
@@ -117,16 +117,16 @@ export function createEarthTexture() {
 
   ctx.beginPath()
   path(land)
-  ctx.strokeStyle = 'rgba(215, 171, 104, .31)'
+  ctx.strokeStyle = 'rgba(236, 183, 102, .42)'
   ctx.lineWidth = 15
   ctx.stroke()
 
   ctx.beginPath()
   path(land)
   const parchment = ctx.createLinearGradient(0, 0, WIDTH, HEIGHT)
-  parchment.addColorStop(0, '#c2aa7a')
-  parchment.addColorStop(.5, '#ac9063')
-  parchment.addColorStop(1, '#8e7654')
+  parchment.addColorStop(0, '#dec693')
+  parchment.addColorStop(.5, '#c7a770')
+  parchment.addColorStop(1, '#a88b5d')
   ctx.fillStyle = parchment
   ctx.fill()
 

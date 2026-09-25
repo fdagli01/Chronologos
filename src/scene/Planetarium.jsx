@@ -8,16 +8,16 @@ import { CelestialHaze } from './CelestialHaze.jsx'
 export function Planetarium() {
   return (
     <>
-      <color attach="background" args={['#070c16']} />
-      <ambientLight intensity={0.95} color="#afc5d0" />
-      <directionalLight position={[-4, 5, 7]} intensity={2.8} color="#ffdb9b" />
-      <pointLight position={[5, -3, 4]} intensity={22} distance={14} color="#557fbd" />
+      <color attach="background" args={['#071020']} />
+      <ambientLight intensity={1.08} color="#c0d8dc" />
+      <directionalLight position={[-4, 5, 7]} intensity={3.1} color="#ffe0a5" />
+      <pointLight position={[5, -3, 4]} intensity={27} distance={14} color="#619ac1" />
       <CelestialHaze />
       <DeepField />
       <Logos />
       <Chronos />
       <EffectComposer multisampling={0}>
-        <Bloom mipmapBlur intensity={0.95} luminanceThreshold={0.65} luminanceSmoothing={0.24} radius={0.6} />
+        <Bloom mipmapBlur intensity={1.15} luminanceThreshold={0.7} luminanceSmoothing={0.22} radius={0.62} />
       </EffectComposer>
       <Preload all />
     </>

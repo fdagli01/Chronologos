@@ -3,8 +3,8 @@ import { useFrame } from '@react-three/fiber'
 import { AdditiveBlending, BufferAttribute, BufferGeometry, DoubleSide, ShaderMaterial } from 'three'
 import { createEarthTexture } from './earthTexture.js'
 
-const BRASS = '#9e7744'
-const PALE_BRASS = '#c9a66d'
+const BRASS = '#bb874e'
+const PALE_BRASS = '#e1b575'
 
 function TickRing({ radius = 2.41, count = 96 }) {
   const geometry = useMemo(() => {
@@ -21,7 +21,7 @@ function TickRing({ radius = 2.41, count = 96 }) {
   }, [radius, count])
 
   return <lineSegments geometry={geometry}>
-    <lineBasicMaterial color={PALE_BRASS} transparent opacity={0.48} />
+    <lineBasicMaterial color={PALE_BRASS} transparent opacity={0.64} />
   </lineSegments>
 }
 
@@ -49,7 +49,7 @@ function AtmosphericRim() {
       varying vec3 vView;
       void main() {
         float edge = pow(1.0 - max(dot(vNormal, vView), 0.0), 3.0);
-        gl_FragColor = vec4(0.33, 0.39, 0.35, edge * 0.18);
+        gl_FragColor = vec4(0.25, 0.54, 0.61, edge * 0.26);
       }
     `,
     transparent: true, depthWrite: false, blending: AdditiveBlending, side: DoubleSide,

@@ -12,10 +12,10 @@ const starVertex = `
   varying float vPulse;
   void main() {
     vColor = aColor;
-    vPulse = 0.76 + 0.24 * sin(uTime * 0.66 + aPhase);
+    vPulse = 0.72 + 0.28 * sin(uTime * 0.72 + aPhase);
     vec4 viewPosition = modelViewMatrix * vec4(position, 1.0);
     gl_Position = projectionMatrix * viewPosition;
-    gl_PointSize = min(44.0, (115.0 * aMagnitude) / max(1.0, -viewPosition.z));
+    gl_PointSize = min(48.0, (138.0 * aMagnitude) / max(1.0, -viewPosition.z));
   }
 `
 
@@ -24,11 +24,11 @@ const starFragment = `
   varying float vPulse;
   void main() {
     float radius = length(gl_PointCoord - vec2(0.5));
-    float halo = exp(-radius * radius * 15.0) * 0.3;
-    float core = smoothstep(0.16, 0.006, radius);
+    float halo = exp(-radius * radius * 12.0) * 0.42;
+    float core = smoothstep(0.17, 0.008, radius);
     float alpha = (halo + core) * vPulse;
     if (alpha < 0.025) discard;
-    gl_FragColor = vec4(vColor * (1.0 + core * 2.5), alpha);
+    gl_FragColor = vec4(vColor * (1.16 + core * 3.0), alpha);
   }
 `
 
@@ -38,7 +38,7 @@ const threadVertex = `
   uniform float uTime;
   varying float vOpacity;
   void main() {
-    vOpacity = aStrength * (0.38 + 0.25 * sin(uTime * 0.43 + aPhase));
+    vOpacity = aStrength * (0.49 + 0.3 * sin(uTime * 0.43 + aPhase));
     gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
   }
 `
@@ -46,7 +46,7 @@ const threadVertex = `
 const threadFragment = `
   varying float vOpacity;
   void main() {
-    gl_FragColor = vec4(0.92, 0.64, 0.31, vOpacity);
+    gl_FragColor = vec4(1.0, 0.71, 0.38, vOpacity);
   }
 `
 

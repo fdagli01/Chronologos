@@ -1,8 +1,10 @@
 import { useMemo } from 'react'
+import { useFrame } from '@react-three/fiber'
 import { AdditiveBlending, ShaderMaterial } from 'three'
 
 export function CelestialHaze() {
   const material = useMemo(() => new ShaderMaterial({
+    uniforms: { uTime: { value: 0 } },
     vertexShader: `
       varying vec2 vUv;
       void main() {
@@ -12,6 +14,7 @@ export function CelestialHaze() {
     `,
     fragmentShader: `
       varying vec2 vUv;
+      uniform float uTime;
       float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
       float noise(vec2 p) {
         vec2 i = floor(p), f = fract(p);
@@ -21,11 +24,14 @@ export function CelestialHaze() {
       }
       void main() {
         vec2 p = vUv - vec2(.5);
-        float n = noise(vUv * 9.0) * .6 + noise(vUv * 22.0) * .25;
-        float blue = exp(-dot((p - vec2(.05,.02)) * vec2(2.1, 2.8), (p - vec2(.05,.02)) * vec2(2.1, 2.8)) * 2.7);
-        float gold = exp(-dot((p - vec2(-.28,.14)) * vec2(4.8, 2.8), (p - vec2(-.28,.14)) * vec2(4.8, 2.8)) * 4.0);
-        float veil = max(0.0, blue * (.22 + n * .16) + gold * (.08 + n * .09));
-        vec3 color = mix(vec3(.05,.16,.29), vec3(.32,.23,.13), gold * .47);
+        vec2 drift = vec2(sin(uTime * .021), cos(uTime * .017)) * .025;
+        float n = noise((vUv + drift) * 8.0) * .62 + noise((vUv - drift) * 21.0) * .28;
+        float blue = exp(-dot((p - vec2(.09,.01)) * vec2(2.0, 2.9), (p - vec2(.09,.01)) * vec2(2.0, 2.9)) * 2.5);
+        float gold = exp(-dot((p - vec2(-.29,.18)) * vec2(4.2, 2.6), (p - vec2(-.29,.18)) * vec2(4.2, 2.6)) * 3.3);
+        float turquoise = exp(-dot((p - vec2(.33,-.16)) * vec2(4.0, 3.3), (p - vec2(.33,-.16)) * vec2(4.0, 3.3)) * 3.0);
+        float veil = max(0.0, blue * (.29 + n * .22) + gold * (.16 + n * .13) + turquoise * (.1 + n * .09));
+        vec3 color = mix(vec3(.07,.22,.36), vec3(.52,.33,.13), gold * .59);
+        color = mix(color, vec3(.08,.38,.44), turquoise * .35);
         gl_FragColor = vec4(color, veil);
       }
     `,
@@ -33,6 +39,10 @@ export function CelestialHaze() {
     depthWrite: false,
     blending: AdditiveBlending,
   }), [])
+
+  useFrame(({ clock }) => {
+    material.uniforms.uTime.value = clock.getElapsedTime()
+  })
 
   return <mesh position={[0, 0, -6.2]} material={material}>
     <planeGeometry args={[16, 11]} />
