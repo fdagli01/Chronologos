@@ -1,0 +1,29 @@
+{
+  "name": "chronologos",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "vite build",
+    "preview": "vite preview --host 0.0.0.0"
+  },
+  "dependencies": {
+    "@react-three/drei": "9.122.0",
+    "@react-three/fiber": "8.18.0",
+    "@react-three/postprocessing": "2.19.1",
+    "d3-geo": "3.1.1",
+    "postprocessing": "6.37.8",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "three": "0.180.0",
+    "topojson-client": "3.1.0",
+    "world-atlas": "2.0.2"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "4.1.13",
+    "@vitejs/plugin-react": "4.7.0",
+    "tailwindcss": "4.1.13",
+    "vite": "6.4.3"
+  }
+}
