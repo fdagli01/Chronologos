@@ -6,6 +6,22 @@ import { CanvasTexture, SRGBColorSpace } from 'three'
 const WIDTH = 2048
 const HEIGHT = 1024
 
+export function createCoastTexture() {
+  const canvas = document.createElement('canvas')
+  canvas.width = WIDTH
+  canvas.height = HEIGHT
+  const ctx = canvas.getContext('2d')
+  ctx.fillStyle = '#000'
+  ctx.fillRect(0, 0, WIDTH, HEIGHT)
+  const projection = geoEquirectangular().scale(WIDTH / (2 * Math.PI)).translate([WIDTH / 2, HEIGHT / 2])
+  ctx.beginPath()
+  geoPath(projection, ctx)(feature(countries, countries.objects.land))
+  ctx.strokeStyle = '#fff'
+  ctx.lineWidth = 2.5
+  ctx.stroke()
+  return new CanvasTexture(canvas)
+}
+
 function randomGenerator(seed) {
   let x = seed
   return () => ((x = (Math.imul(1664525, x) + 1013904223) >>> 0) / 4294967296)

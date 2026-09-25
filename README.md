@@ -14,6 +14,7 @@ Open the local address printed by Vite. For a production bundle, run `npm run bu
 ## Scene structure
 
 - `src/scene/Chronos.jsx` renders the rotating 3D Earth and armillary rings.
+- `src/scene/LivingEarth.jsx` adds slowly traveling golden route lights and coastal shimmer. These routes are decorative placeholders, not historical claims.
 - `src/scene/earthTexture.js` draws a procedural antique atlas over real land geometry from `world-atlas`.
 - `src/scene/Logos.jsx` draws all stars in one GPU point cloud and all relationships in one line geometry.
 - `src/data/universe.js` owns the sample note and relationship records. Replace these records with real note data later; rendering does not need to know where the data came from.
