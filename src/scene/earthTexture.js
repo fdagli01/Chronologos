@@ -16,8 +16,10 @@ export function createCoastTexture() {
   const projection = geoEquirectangular().scale(WIDTH / (2 * Math.PI)).translate([WIDTH / 2, HEIGHT / 2])
   ctx.beginPath()
   geoPath(projection, ctx)(feature(countries, countries.objects.land))
-  ctx.strokeStyle = '#fff'
-  ctx.lineWidth = 2.5
+  ctx.fillStyle = '#fff'
+  ctx.fill()
+  ctx.strokeStyle = '#c8c8c8'
+  ctx.lineWidth = 1
   ctx.stroke()
   return new CanvasTexture(canvas)
 }

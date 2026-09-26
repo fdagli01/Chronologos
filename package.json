@@ -4,9 +4,15 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --host 0.0.0.0",
+    "dev": "node scripts/dev.js",
+    "dev:ui": "vite --host 127.0.0.1",
+    "dev:api": "node server/index.js",
+    "db:seed": "node server/seed.js",
     "build": "vite build",
-    "preview": "vite preview --host 0.0.0.0"
+    "preview": "vite preview --host 127.0.0.1"
+  },
+  "engines": {
+    "node": ">=24.14.0"
   },
   "dependencies": {
     "@react-three/drei": "9.122.0",

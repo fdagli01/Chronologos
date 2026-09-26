@@ -1,7 +1,7 @@
 import { useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { AdditiveBlending, BufferAttribute, BufferGeometry, DoubleSide, ShaderMaterial } from 'three'
-import { createEarthTexture } from './earthTexture.js'
+import { createCoastTexture, createEarthTexture } from './earthTexture.js'
 import { LivingEarth } from './LivingEarth.jsx'
 
 const BRASS = '#bb874e'
@@ -71,6 +71,7 @@ export function Chronos() {
   const accent = useRef()
   const innerRing = useRef()
   const texture = useMemo(() => createEarthTexture(), [])
+  const coastTexture = useMemo(() => createCoastTexture(), [])
 
   useFrame(({ clock }) => {
     const time = clock.getElapsedTime()
@@ -83,11 +84,11 @@ export function Chronos() {
   })
 
   return <group rotation={[.13, 0, -.12]}>
-    <pointLight ref={accent} position={[-3, 3.5, 4]} intensity={12} distance={11} color="#ffd193" />
+    <pointLight ref={accent} position={[-3, 3.5, 4]} intensity={8} distance={11} color="#ffd193" />
     <group ref={earth}>
       <mesh>
         <sphereGeometry args={[1.95, 96, 64]} />
-        <meshStandardMaterial map={texture} metalness={.05} roughness={.91} />
+        <meshStandardMaterial map={texture} bumpMap={coastTexture} bumpScale={.012} metalness={.04} roughness={.9} />
       </mesh>
       <AtmosphericRim />
       <LivingEarth />

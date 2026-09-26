@@ -3,10 +3,26 @@ import { Vector3 } from 'three'
 // This is deliberately separate from rendering. Replace these records with
 // persisted notes and relationship scores without changing the scene components.
 const themes = [
-  { id: 'will', center: [-0.74, 0.53, -0.42], color: '#ffc87c', count: 38 },
-  { id: 'memory', center: [0.62, 0.65, -0.44], color: '#fff1d1', count: 36 },
-  { id: 'becoming', center: [-0.63, -0.51, -0.58], color: '#f3a76c', count: 36 },
-  { id: 'kinship', center: [0.68, -0.36, -0.64], color: '#b9dfe0', count: 36 },
+  {
+    id: 'will', center: [-0.36, 0.28, -0.89], color: '#ffc87c', count: 38,
+    pattern: [[-.55, -.08], [-.34, .11], [-.12, .02], [.12, .2], [.4, .1], [.18, -.16], [-.12, -.2], [.02, -.42]],
+    links: [[0, 1], [1, 2], [2, 3], [3, 4], [2, 5], [5, 6], [6, 7]],
+  },
+  {
+    id: 'memory', center: [0.36, 0.29, -0.89], color: '#fff1d1', count: 36,
+    pattern: [[-.46, -.05], [-.3, .21], [-.06, .3], [.22, .22], [.43, .02], [.2, -.19], [-.08, -.27], [-.31, -.18]],
+    links: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [1, 7]],
+  },
+  {
+    id: 'becoming', center: [-0.37, -0.28, -0.89], color: '#f3a76c', count: 36,
+    pattern: [[-.03, -.02], [.04, .04], [-.13, .15], [.15, .22], [-.24, .34], [.27, .43], [-.34, .58], [.4, .72]],
+    links: [[0, 1], [1, 2], [1, 3], [2, 4], [3, 5], [4, 6], [5, 7]],
+  },
+  {
+    id: 'kinship', center: [0.37, -0.3, -0.88], color: '#b9dfe0', count: 36,
+    pattern: [[-.43, .1], [-.32, -.02], [-.4, -.15], [.43, .1], [.32, -.02], [.4, -.15], [.02, .2], [-.02, -.22]],
+    links: [[0, 1], [1, 2], [3, 4], [4, 5], [1, 6], [4, 6], [2, 7], [5, 7]],
+  },
 ]
 
 function randomGenerator(seed) {
@@ -18,7 +34,9 @@ function randomGenerator(seed) {
 }
 
 const random = randomGenerator(114781)
-export const LOGOS_RADIUS = 5.4
+// The observer sits inside this distant celestial shell, which makes Logos read
+// as a surrounding sky instead of a small web floating around the Earth.
+export const LOGOS_RADIUS = 21.5
 
 export const stars = themes.flatMap((theme) => {
   const center = new Vector3(...theme.center).normalize()
@@ -26,46 +44,35 @@ export const stars = themes.flatMap((theme) => {
   const bitangent = center.clone().cross(tangent).normalize()
 
   return Array.from({ length: theme.count }, (_, index) => {
-    const angle = random() * Math.PI * 2
-    const spread = Math.sqrt(random()) * (index === 0 ? 0.02 : 0.55)
+    const anchor = theme.pattern[index]
+    const anchorOffset = anchor ? [anchor[0] * 0.34, anchor[1] * 0.34] : null
+    const spread = Math.sqrt(random()) * 0.22
+    const offset = anchorOffset ?? [Math.cos(random() * Math.PI * 2) * spread, Math.sin(random() * Math.PI * 2) * spread]
     const position = center.clone()
-      .addScaledVector(tangent, Math.cos(angle) * spread)
-      .addScaledVector(bitangent, Math.sin(angle) * spread)
+      .addScaledVector(tangent, offset[0])
+      .addScaledVector(bitangent, offset[1])
       .normalize()
-      .multiplyScalar(LOGOS_RADIUS + (random() - 0.5) * 0.38)
+      .multiplyScalar(LOGOS_RADIUS + (random() - 0.5) * 1.1)
 
     return {
       id: `${theme.id}-${index + 1}`,
       theme: theme.id,
       color: theme.color,
       position: position.toArray(),
-      magnitude: index === 0 ? 1.65 : 0.55 + random() * 0.85,
+      magnitude: index < theme.pattern.length ? 2.0 + random() * 0.45 : 0.55 + random() * 0.7,
       phase: random() * Math.PI * 2,
     }
   })
 })
 
 export const threads = themes.flatMap((theme) => {
-  const group = stars.filter((star) => star.theme === theme.id)
-  const edges = new Set()
-
-  group.forEach((star, index) => {
-    const nearest = group
-      .filter((other) => other.id !== star.id)
-      .map((other) => ({ other, distance: new Vector3(...star.position).distanceTo(new Vector3(...other.position)) }))
-      .sort((a, b) => a.distance - b.distance)
-      .slice(0, index % 5 === 0 ? 3 : 2)
-
-    nearest.forEach(({ other }) => {
-      const ids = [star.id, other.id].sort()
-      edges.add(ids.join('|'))
-    })
-  })
-
-  return [...edges].map((edge, index) => {
-    const [source, target] = edge.split('|')
-    return { id: `${theme.id}-thread-${index}`, source, target, strength: 0.4 + random() * 0.6, phase: random() * Math.PI * 2 }
-  })
+  return theme.links.map(([sourceIndex, targetIndex], index) => ({
+    id: `${theme.id}-thread-${index}`,
+    source: `${theme.id}-${sourceIndex + 1}`,
+    target: `${theme.id}-${targetIndex + 1}`,
+    strength: 0.44 + random() * 0.34,
+    phase: random() * Math.PI * 2,
+  }))
 })
 
 export const starById = new Map(stars.map((star) => [star.id, star]))
