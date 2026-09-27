@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { AdditiveBlending, BufferAttribute, BufferGeometry, Color, ShaderMaterial, Sphere, Vector3 } from 'three'
 import { stars, threads, starById } from '../data/universe.js'
@@ -28,7 +28,7 @@ const starVertex = `
   void main() {
     vColor = aColor;
     vSelected = aSelected;
-    vPulse = 0.88 + 0.12 * sin(uTime * 0.46 + aPhase) + aSelected * (0.16 + 0.13 * uSelectionPulse);
+    vPulse = 0.88 + 0.12 * sin(uTime * 0.46 + aPhase) + aSelected * (0.07 + 0.13 * uSelectionPulse);
     float themeReveal = mix(uNeighborReveal, uAnchorReveal, aAnchor);
     vReveal = mix(themeReveal, uFreshReveal, aFresh);
     vec4 viewPosition = modelViewMatrix * vec4(position, 1.0);
@@ -40,6 +40,7 @@ const starVertex = `
 `
 
 const starFragment = `
+  uniform float uSelectionPulse;
   varying vec3 vColor;
   varying float vPulse;
   varying float vReveal;
@@ -51,8 +52,10 @@ const starFragment = `
     float core = smoothstep(0.16, 0.008, radius);
     float depthFade = 1.0 - smoothstep(44.0, 72.0, vDepth) * 0.5;
     float visibility = max(mix(0.14, 1.0, vReveal), vSelected * (0.78 + 0.22 * uSelectionPulse));
-    float selectedHalo = vSelected * exp(-radius * radius * 5.0) * 0.38;
-    float alpha = (halo + core + selectedHalo) * vPulse * depthFade * visibility;
+    float selectedHalo = vSelected * exp(-radius * radius * 5.0) * 0.48;
+    float ringRadius = 0.18 + (1.0 - uSelectionPulse) * 0.25;
+    float selectionRing = exp(-pow((radius - ringRadius) * 19.0, 2.0)) * vSelected * uSelectionPulse * 0.8;
+    float alpha = (halo + core + selectedHalo + selectionRing) * vPulse * depthFade * visibility;
     if (alpha < 0.018) discard;
     float warmth = 1.25 + core * (3.0 + 1.2 * vReveal);
     gl_FragColor = vec4(vColor * warmth, alpha);
@@ -199,7 +202,16 @@ export function Logos({ revealRequest, atlasData, selectedNoteId, onSelectNote }
   const pending = useRef([])
   const schedule = useRef({ active: null, activeNoteId: null, startAt: 0, nextAt: 8, recentlyShown: new Map() })
   const lastRequest = useRef(null)
+  const selectionFocus = useRef({ id: null, startAt: 0 })
+  const [reducedMotion, setReducedMotion] = useState(() => typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)
   const themeIds = useMemo(() => [...new Set([...ambientThemeIds, ...(atlasData?.themes || []).map((theme) => theme.id), ...(atlasData?.nodes || []).filter((note) => !note.themeId).map(() => 'unplaced')])], [atlasData])
+
+  useEffect(() => {
+    const media = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const update = () => setReducedMotion(media.matches)
+    media.addEventListener?.('change', update)
+    return () => media.removeEventListener?.('change', update)
+  }, [])
 
   const registerMaterials = useCallback((themeId, materials) => {
     layers.current.set(themeId, materials)
@@ -216,6 +228,9 @@ export function Logos({ revealRequest, atlasData, selectedNoteId, onSelectNote }
   useFrame(({ clock }) => {
     const time = clock.getElapsedTime()
     const state = schedule.current
+    if (selectionFocus.current.id !== selectedNoteId) selectionFocus.current = { id: selectedNoteId, startAt: time }
+    const focusAge = selectedNoteId ? time - selectionFocus.current.startAt : Infinity
+    const selectionPulse = reducedMotion || focusAge > 1.5 ? 0 : Math.max(0, 1 - focusAge / 1.5)
 
     if (state.active && time - state.startAt >= REVEAL_DURATION) {
       state.active = null
@@ -244,7 +259,7 @@ export function Logos({ revealRequest, atlasData, selectedNoteId, onSelectNote }
     layers.current.forEach((materials, themeId) => {
       const isActive = themeId === state.active
       materials.starMaterial.uniforms.uTime.value = time
-      materials.starMaterial.uniforms.uSelectionPulse.value = 0.5 + 0.5 * Math.sin(time * 2.1)
+      materials.starMaterial.uniforms.uSelectionPulse.value = selectionPulse
       materials.threadMaterial.uniforms.uTime.value = time
       materials.starMaterial.uniforms.uAnchorReveal.value = isActive ? anchorReveal : 0
       materials.starMaterial.uniforms.uNeighborReveal.value = isActive ? neighborReveal : 0

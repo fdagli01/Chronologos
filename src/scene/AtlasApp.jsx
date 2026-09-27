@@ -28,9 +28,12 @@ export default function AtlasApp({ revealRequest }) {
   const firstSnapshot = useRef(true)
   const fetching = useRef(false)
   const selectedLineRef = useRef(null)
+  const selectedPointRef = useRef(null)
   const selectedCardRef = useRef(null)
   const portalElementRef = useRef(null)
+  const initialRouteNote = useRef(new URLSearchParams(window.location.search).get('note'))
   const selectedNote = atlasData.nodes.find((node) => node.id === selectedId)
+  const selectedLinks = selectedNote ? atlasData.links.filter((link) => link.source === selectedNote.id || link.target === selectedNote.id) : []
   const memoryNoteSignature = atlasData.nodes.map((note) => `${note.id}:${note.createdAt}`).join('|')
 
   const refresh = useCallback(async () => {
@@ -80,10 +83,18 @@ export default function AtlasApp({ revealRequest }) {
     setMemoryClosing(false)
     setSelectedId(id)
     setPresentationMode('manual')
+    fetch(`/api/notes/${encodeURIComponent(id)}/open`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{}' }).catch(() => {})
     const url = new URL(window.location.href)
     url.searchParams.set('note', id)
     window.history.replaceState({}, '', url)
   }, [])
+
+  useEffect(() => {
+    const noteId = initialRouteNote.current
+    if (!noteId || firstSnapshot.current || !atlasData.nodes.some((note) => note.id === noteId)) return
+    initialRouteNote.current = null
+    fetch(`/api/notes/${encodeURIComponent(noteId)}/open`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{}' }).catch(() => {})
+  }, [atlasData.nodes])
 
   const closeNote = useCallback(() => {
     setMemoryClosing(false)
@@ -181,7 +192,7 @@ export default function AtlasApp({ revealRequest }) {
         }}
       >
         <Suspense fallback={null}>
-          <Planetarium revealRequest={sceneReveal} atlasData={atlasData} selectedNoteId={selectedId} selectedLineRef={selectedLineRef} selectedCardRef={selectedCardRef} portalElementRef={portalElementRef} onSelectNote={selectNote} />
+          <Planetarium revealRequest={sceneReveal} atlasData={atlasData} selectedNoteId={selectedId} selectedLineRef={selectedLineRef} selectedPointRef={selectedPointRef} selectedCardRef={selectedCardRef} portalElementRef={portalElementRef} onSelectNote={selectNote} />
         </Suspense>
       </Canvas>
       <ArchivePortal elementRef={portalElementRef} />
@@ -197,7 +208,7 @@ export default function AtlasApp({ revealRequest }) {
         <span className="inscription__diamond">✦</span>
         <span>CHRONOS · LOGOS</span>
       </div>
-      {selectedNote && <svg className="atlas-selection-trace" aria-hidden="true"><line ref={selectedLineRef} x1="0" y1="0" x2="0" y2="0" opacity="0" /></svg>}
+      {selectedNote && <svg className="atlas-selection-trace" aria-hidden="true"><line ref={selectedLineRef} x1="0" y1="0" x2="0" y2="0" opacity="0" /><circle ref={selectedPointRef} cx="0" cy="0" r="3" opacity="0" /></svg>}
       {selectedNote && <aside ref={selectedCardRef} className={`atlas-note-card${presentationMode === 'memory' ? ' atlas-note-card--memory' : ''}${memoryClosing ? ' atlas-note-card--closing' : ''}`} aria-label={presentationMode === 'memory' ? 'Arşivden bir düşünce' : 'Seçili düşünce'} aria-live="off"
         onPointerEnter={() => presentationMode === 'memory' && setPresentationMode('manual')}
         onFocusCapture={() => presentationMode === 'memory' && setPresentationMode('manual')}>
@@ -207,6 +218,8 @@ export default function AtlasApp({ revealRequest }) {
         <p className={selectedNote.kind === 'quote' ? 'atlas-note-card__quote' : ''}>{selectedNote.content}</p>
         {selectedNote.commentary && <p className="atlas-note-card__commentary">{selectedNote.commentary}</p>}
         {(selectedNote.bookTitle || selectedNote.sourceLocator) && <div className="atlas-note-card__source">{selectedNote.bookTitle && <a href="/library">{selectedNote.bookTitle}{selectedNote.author ? ` · ${selectedNote.author}` : ''}</a>}{selectedNote.sourceLocator && <span>{selectedNote.sourceLocator}</span>}</div>}
+        {selectedNote.kind === 'quote' && !selectedNote.bookTitle && <div className="atlas-note-card__source"><span>Kaynak kitap belirtilmemiş</span>{selectedNote.sourceLocator ? <span>{selectedNote.sourceLocator}</span> : <span>Sayfa / bölüm belirtilmemiş</span>}</div>}
+        {selectedLinks.length > 0 && <div className="atlas-note-card__relations"><span>BAĞLANTILI DÜŞÜNCELER</span>{selectedLinks.slice(0, 3).map((link) => { const outgoing = link.source === selectedNote.id; const other = atlasData.nodes.find((node) => node.id === (outgoing ? link.target : link.source)); const type = { supports: 'destekler', challenges: 'sorgular', extends: 'genişletir', echoes: 'yankılar', contrasts: 'karşıtlık gösterir' }[link.relationship]; return <p key={link.id}><b className={`relation--${link.relationship}`}>{outgoing ? 'Bu yıldız' : 'Diğer yıldız'} {outgoing ? type : `tarafından ${type}`}</b> · {other?.title || other?.content?.slice(0, 56) || 'Düşünce'}{link.rationale && <small>{link.rationale}</small>}</p> })}</div>}
         <a className="atlas-note-card__archive" href={`/notes?note=${encodeURIComponent(selectedNote.id)}`} onClick={(event) => { event.preventDefault(); navigateThroughPortal(`/notes?note=${encodeURIComponent(selectedNote.id)}`, event.currentTarget) }}>Arşivde aç ↗</a>
         <button className="atlas-note-card__pause" onClick={() => setMemoryPreference(!memoriesEnabled)}>{memoriesEnabled ? 'Anı kartlarını duraklat' : 'Anı kartlarını aç'}</button>
       </aside>}

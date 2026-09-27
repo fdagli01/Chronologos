@@ -64,7 +64,9 @@ html, body, #root { width: 100%; height: 100%; margin: 0; overflow: hidden; }
   .inscription__rule { width: 1.8rem; }
 }
 .atlas-selection-trace { position: absolute; inset: 0; z-index: 4; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
-.atlas-selection-trace line { stroke: rgba(237, 194, 112, .82); stroke-width: 1.15; stroke-dasharray: 2 5; filter: drop-shadow(0 0 3px rgba(242, 198, 119, .78)); }
+.atlas-selection-trace line { stroke: rgba(237, 194, 112, .92); stroke-width: 1.3; stroke-dasharray: 2 5; filter: drop-shadow(0 0 4px rgba(242, 198, 119, .86)); animation: selected-star-trace .45s ease-out both; }
+.atlas-selection-trace circle { fill: #fff2cf; stroke: rgba(239, 194, 115, .94); stroke-width: 1.5; filter: drop-shadow(0 0 7px rgba(255, 215, 142, .9)); }
+@keyframes selected-star-trace { from { stroke-dashoffset: 34; opacity: 0; } to { stroke-dashoffset: 0; opacity: .78; } }
 .atlas-note-card {
   position: absolute;
   z-index: 5;
@@ -91,6 +93,16 @@ html, body, #root { width: 100%; height: 100%; margin: 0; overflow: hidden; }
 .atlas-note-card > .atlas-note-card__commentary { padding-top: 12px; border-top: 1px solid rgba(229, 210, 174, .14); color: #aeb6ba; font: italic 11px/1.6 Inter, sans-serif; }
 .atlas-note-card__source { display: flex; flex-wrap: wrap; gap: 6px 11px; margin-top: 16px; color: #c2a77b; font-size: 10px; }
 .atlas-note-card__source a:hover { color: #f3d59c; }
+.atlas-note-card__relations { display: grid; gap: 5px; margin-top: 15px; padding-top: 11px; border-top: 1px solid rgba(229, 210, 174, .14); }
+.atlas-note-card__relations > span { color: #bfa475; font: 8px 'Courier New', monospace; letter-spacing: .1em; }
+.atlas-note-card__relations p { margin: 0; color: #c3c3bc; font: 10px/1.45 Inter, sans-serif; }
+.atlas-note-card__relations p b { color: #e2c58e; font-weight: 500; }
+.atlas-note-card__relations p b.relation--supports { color: #adc79c; }
+.atlas-note-card__relations p b.relation--challenges { color: #df957d; }
+.atlas-note-card__relations p b.relation--extends { color: #9cc5d8; }
+.atlas-note-card__relations p b.relation--echoes { color: #c0a9d8; }
+.atlas-note-card__relations p b.relation--contrasts { color: #c3c9cc; }
+.atlas-note-card__relations small { display: block; margin-top: 2px; color: #8f999c; font: italic 9px/1.4 Inter, sans-serif; }
 .atlas-note-card__archive { display: inline-flex; margin-top: 17px; color: #d9ba82; font-size: 10px; letter-spacing: .04em; }
 .atlas-note-card__pause { display: inline-flex; margin-top: 14px; padding: 0; border: 0; color: #a9b1b5; background: transparent; font-size: 9px; cursor: pointer; }
 .atlas-note-card__pause:hover { color: #e4cc9d; }
@@ -99,7 +111,7 @@ html, body, #root { width: 100%; height: 100%; margin: 0; overflow: hidden; }
 @keyframes memory-card-breathe { from { border-color: rgba(222, 190, 130, .3); box-shadow: 0 12px 44px rgba(0, 0, 0, .32), inset 0 0 20px rgba(136, 169, 206, .035); } to { border-color: rgba(238, 201, 131, .57); box-shadow: 0 12px 48px rgba(0, 0, 0, .38), 0 0 22px rgba(204, 162, 91, .1), inset 0 0 30px rgba(136, 169, 206, .075); } }
 @keyframes note-card-arrive { from { opacity: 0; transform: translate(12px, -48%); } to { opacity: 1; transform: translate(0, -50%); } }
 @media (max-width: 650px) { .atlas-note-card { top: auto; right: 14px; bottom: 32px; left: 14px; width: auto; max-height: 45vh; padding: 19px; transform: none; } .atlas-note-card--closing { transform: translateY(8px); } @keyframes note-card-arrive { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } } }
-@media (prefers-reduced-motion: reduce) { .atlas-note-card, .atlas-note-card--memory { animation: none; } .atlas-note-card--closing { transition: none; } .atlas-selection-trace line { stroke-dasharray: none; } }
+@media (prefers-reduced-motion: reduce) { .atlas-note-card, .atlas-note-card--memory { animation: none; } .atlas-note-card--closing { transition: none; } .atlas-selection-trace line { stroke-dasharray: none; animation: none; } }
 
 .archive-portal { position: absolute; top: 31%; left: clamp(128px, 25vw, 500px); z-index: 3; display: grid; justify-items: center; width: 150px; transform: translate(-50%, -50%); color: #e4d2af; font-family: Georgia, 'Times New Roman', serif; text-align: center; user-select: none; }
 .archive-portal__trigger { display: grid; justify-items: center; gap: 3px; padding: 0; border: 0; color: inherit; background: transparent; font-family: inherit; cursor: pointer; }

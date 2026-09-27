@@ -10,7 +10,8 @@
 - [x] Seçilen yıldızın nabız vurgusu ve karta uzanan izdüşüm çizgisi.
 - [x] Sessiz, aralıklı eski not hatırlatmaları; sekme odağı, kullanıcı etkileşimi ve kapatma tercihi gözetilir.
 - [ ] Hesap/kimlik doğrulama ve çok kullanıcılı yayınlama.
-- [x] Kişisel arşiv için JSON dışa aktarma.
+- [x] Kişisel arşiv için JSON dışa aktarma (şema sürümü 3; Nebula ve hatırlatma verileri dahil).
+- [x] Nebula taslakları, Kâşifin Masası not düzeni, beş türü koruyan düzenlenebilir bağlantı tezgâhı ve Günün Unutulmuş Yıldızı.
 - [ ] Yedek içe aktarma, hesap/kimlik doğrulama ve çok kullanıcılı yayınlama.
 
 İlk teslimler Atlas ile Kütüphane ayrımını, veritabanına bağlı kitaplığı, kaynaklı notları ve temel düşünce ağı akışını kapsar. Uygulama hâlâ tek kullanıcılı yerel modda çalışır; başka kullanıcılara açılmadan önce kimlik doğrulama, yedekten geri yükleme ve dağıtım güvenliği tamamlanmalıdır.
@@ -36,7 +37,7 @@ Kütüphane kayıt ekleme, arama ve düzenleme alanıdır. Atlas, bu kayıtları
 - Kitap kataloğu bilgileri ile kişisel kütüphane kayıtları ayrılır. Aynı kitap farklı kullanıcıların kütüphanelerinde yer alabilir; okuma geçmişi, notlar, puanlar ve Atlas yerleşimleri kişisel kalır.
 - Kalıcı içerik veritabanında tutulur. Dönüş, parıltı ve geçici seçili yıldız gibi saniyelik görsel durumlar tarayıcıda hesaplanır.
 - Yıldız konumları ve kimlikleri kararlı olmalıdır; sayfa yenileme veya yeni not ekleme var olan Atlas'ı rastgele değiştirmemelidir.
-- AI embedding'leri, otomatik öneriler ve harici grafik altyapısı ilk sürümün ön koşulu değildir. Önce kaynaklı, kullanıcı tarafından kurulmuş veriler çalışır hâle gelir.
+- İsteğe bağlı yerel AI yalnızca kullanıcı isteğiyle çalışır; bulut AI ve otomatik bağlantı kaydı yoktur.
 
 ## Veri alanları
 
@@ -99,7 +100,7 @@ Kütüphane kayıt ekleme, arama ve düzenleme alanıdır. Atlas, bu kayıtları
 - Kullanıcı notlar arasında ilişki kurabilir, tür ve gerekçe ekleyebilir.
 - Temalara göre kütüphane ve not filtreleri ekle.
 - Kullanıcı etkileşimi yokken eski notlardan birini seyrek aralıkla hatırlat; elle seçimde hatırlatmayı kes.
-- Önerilen bağlantıları daha sonra ekle; önerilerin kabul/ret durumu ve gerekçesi açıkça gösterilir.
+- [x] Ollama yerel embedding + dil modeli ile en fazla üç bağlantı adayı, ilişki türü ve gerekçe öner; kullanıcı gözden geçirip kaydetmeden kalıcı bağlantı oluşturma. Ollama yoksa tema/kavram eşleştirmesi kullanılabilir.
 
 ### 5 — Başka kullanıcılara açılmaya hazırlık (bekliyor)
 
@@ -117,4 +118,4 @@ Bu akış; sanat yönetimi, erişilebilir ürün arayüzü, ilişkisel veri tasa
 
 ## Kapsam dışında tutulacaklar (ilk sürüm)
 
-Takipçi akışı, beğeni/yorum sosyal ağı, okuma yarışları, rozetler, genel amaçlı kitap tavsiye sistemi, otomatik AI sınıflandırması ve kapsamlı dünya düşünce tarihi kataloğu. Önce kişisel içerik akışı tamamlanır.
+Takipçi akışı, beğeni/yorum sosyal ağı, okuma yarışları, rozetler, genel amaçlı kitap tavsiye sistemi, bulut AI bağlantı analizi ve kapsamlı dünya düşünce tarihi kataloğu. Önce kişisel içerik akışı tamamlanır.

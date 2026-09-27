@@ -20,7 +20,7 @@ const portalRay = new Ray()
 
 // The photograph, decorative starfield, and note constellations share one
 // coordinate frame so they move like layers of the same sky.
-export function CelestialSphere({ children, selectedPosition, selectedLineRef, selectedCardRef, portalElementRef, lensCenterRef }) {
+export function CelestialSphere({ children, selectedPosition, selectedLineRef, selectedPointRef, selectedCardRef, portalElementRef, lensCenterRef }) {
   const sky = useRef()
   const portalAnchorInitialized = useRef(false)
 
@@ -74,9 +74,11 @@ export function CelestialSphere({ children, selectedPosition, selectedLineRef, s
     }
 
     const line = selectedLineRef?.current
+    const point = selectedPointRef?.current
     const card = selectedCardRef?.current
     if (!line || !selectedPosition || !card) {
       line?.setAttribute('opacity', '0')
+      point?.setAttribute('opacity', '0')
       return
     }
 
@@ -91,8 +93,9 @@ export function CelestialSphere({ children, selectedPosition, selectedLineRef, s
     selectionRay.set(camera.position, rayDirection)
     const earthHit = selectionRay.intersectSphere(earthSphere, occlusionPoint)
     const isBehindEarth = earthHit && camera.position.distanceTo(earthHit) < distanceToStar - 0.02
-    if (projectedPoint.z < -1 || projectedPoint.z > 1 || isBehindEarth) {
+    if (projectedPoint.x < -1 || projectedPoint.x > 1 || projectedPoint.y < -1 || projectedPoint.y > 1 || projectedPoint.z < -1 || projectedPoint.z > 1 || isBehindEarth) {
       line.setAttribute('opacity', '0')
+      point?.setAttribute('opacity', '0')
       return
     }
 
@@ -108,6 +111,9 @@ export function CelestialSphere({ children, selectedPosition, selectedLineRef, s
     line.setAttribute('x2', `${endX}`)
     line.setAttribute('y2', `${endY}`)
     line.setAttribute('opacity', '0.78')
+    point?.setAttribute('cx', `${starX}`)
+    point?.setAttribute('cy', `${starY}`)
+    point?.setAttribute('opacity', '1')
   })
 
   return <group ref={sky}>{children}</group>
