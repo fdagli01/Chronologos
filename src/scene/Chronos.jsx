@@ -1,11 +1,30 @@
 import { useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { AdditiveBlending, BufferAttribute, BufferGeometry, DoubleSide, ShaderMaterial } from 'three'
+import { Html } from '@react-three/drei'
+import { AdditiveBlending, BufferAttribute, BufferGeometry, DoubleSide, Euler, Matrix4, Quaternion, ShaderMaterial, Vector3 } from 'three'
 import { createCoastTexture, createEarthTexture } from './earthTexture.js'
 import { LivingEarth } from './LivingEarth.jsx'
+import { globePoint } from './globePoint.js'
 
 const BRASS = '#bb874e'
 const PALE_BRASS = '#e1b575'
+
+function northUpGlobeQuaternion(point, facing, cameraUp) {
+  const northPole = new Vector3(0, 1, 0)
+  const east = new Vector3().crossVectors(northPole, point)
+  if (east.lengthSq() < 1e-8) east.set(0, 0, -1)
+  east.normalize()
+  const north = new Vector3().crossVectors(point, east).normalize()
+
+  const screenUp = cameraUp.clone().addScaledVector(facing, -cameraUp.dot(facing)).normalize()
+  if (screenUp.lengthSq() < 1e-8) screenUp.set(0, 1, 0).addScaledVector(facing, -facing.y).normalize()
+  const screenRight = new Vector3().crossVectors(screenUp, facing).normalize()
+  screenUp.crossVectors(facing, screenRight).normalize()
+
+  const source = new Quaternion().setFromRotationMatrix(new Matrix4().makeBasis(east, north, point))
+  const targetFrame = new Quaternion().setFromRotationMatrix(new Matrix4().makeBasis(screenRight, screenUp, facing))
+  return targetFrame.multiply(source.invert())
+}
 
 function TickRing({ radius = 2.41, count = 96 }) {
   const geometry = useMemo(() => {
@@ -65,17 +84,45 @@ function AtmosphericRim() {
   </mesh>
 }
 
-export function Chronos() {
+export function Chronos({ compassDestination, bookPlaces = [], showBookMarkers = true, onSelectBookPlace }) {
   const earth = useRef()
+  const travel = useRef(null)
+  const lastRequest = useRef(null)
+  const markerPulse = useRef()
   const armillary = useRef()
   const accent = useRef()
   const innerRing = useRef()
   const texture = useMemo(() => createEarthTexture(), [])
   const coastTexture = useMemo(() => createCoastTexture(), [])
+  const parentTilt = useMemo(() => new Quaternion().setFromEuler(new Euler(.13, 0, -.12)), [])
+  const markerPosition = useMemo(() => compassDestination ? globePoint(compassDestination.longitude, compassDestination.latitude).multiplyScalar(2.015).toArray() : null, [compassDestination])
+  const markerOrientation = useMemo(() => compassDestination ? new Quaternion().setFromUnitVectors(new Vector3(0, 0, 1), globePoint(compassDestination.longitude, compassDestination.latitude)) : null, [compassDestination])
+  const destinationHasBookPin = showBookMarkers && Boolean(compassDestination?.bookId && bookPlaces.some((place) => place.books.some((book) => book.id === compassDestination.bookId)))
+  const reducedMotion = useMemo(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches, [])
 
-  useFrame(({ clock }) => {
+  useFrame(({ clock, camera }, delta) => {
     const time = clock.getElapsedTime()
-    earth.current.rotation.y = -1.78 + time * .009
+    if (markerPulse.current && compassDestination) markerPulse.current.scale.setScalar(1 + .24 * (.5 + .5 * Math.sin(time * 2.6)))
+    if (compassDestination?.requestId !== lastRequest.current) {
+      lastRequest.current = compassDestination?.requestId || null
+      if (compassDestination) {
+        const localPoint = globePoint(compassDestination.longitude, compassDestination.latitude)
+        const parentInverse = parentTilt.clone().invert()
+        const facing = camera.position.clone().normalize().applyQuaternion(parentInverse)
+        const cameraUp = new Vector3(0, 1, 0).applyQuaternion(camera.quaternion).applyQuaternion(parentInverse)
+        const target = northUpGlobeQuaternion(localPoint, facing, cameraUp)
+        travel.current = { start: earth.current.quaternion.clone(), target, elapsed: 0 }
+        if (reducedMotion) earth.current.quaternion.copy(target)
+      } else travel.current = null
+    }
+    if (travel.current) {
+      if (!reducedMotion && travel.current.elapsed < 3) {
+        travel.current.elapsed = Math.min(3, travel.current.elapsed + delta)
+        const progress = travel.current.elapsed / 3
+        const eased = progress * progress * (3 - 2 * progress)
+        earth.current.quaternion.slerpQuaternions(travel.current.start, travel.current.target, eased)
+      }
+    } else earth.current.rotation.y += delta * .009
     armillary.current.rotation.y = time * -.0035
     armillary.current.rotation.z = Math.sin(time * .004) * .018
     innerRing.current.rotation.x = 1.07 + Math.sin(time * .055) * .12
@@ -85,13 +132,31 @@ export function Chronos() {
 
   return <group rotation={[.13, 0, -.12]}>
     <pointLight ref={accent} position={[-3, 3.5, 4]} intensity={8} distance={11} color="#ffd193" />
-    <group ref={earth}>
+    <group ref={earth} rotation={[0, -1.78, 0]}>
       <mesh>
         <sphereGeometry args={[1.95, 96, 64]} />
         <meshStandardMaterial map={texture} bumpMap={coastTexture} bumpScale={.012} metalness={.04} roughness={.9} />
       </mesh>
       <AtmosphericRim />
       <LivingEarth />
+      {showBookMarkers && bookPlaces.map((place) => {
+        const point = globePoint(place.longitude, place.latitude)
+        const orientation = new Quaternion().setFromUnitVectors(new Vector3(0, 0, 1), point)
+        const focused = Boolean(compassDestination?.bookId && place.books.some((book) => book.id === compassDestination.bookId))
+        return <group key={place.id} position={point.multiplyScalar(2.035).toArray()} quaternion={orientation}
+          onClick={(event) => { event.stopPropagation(); onSelectBookPlace?.(place) }}
+          onPointerOver={() => { document.body.style.cursor = 'pointer' }}
+          onPointerOut={() => { document.body.style.cursor = '' }}>
+          <mesh><sphereGeometry args={[place.isCluster ? .082 : place.books.length > 1 ? .065 : .047, 16, 12]} /><meshBasicMaterial color="#ffe5ad" toneMapped={false} /></mesh>
+          <mesh ref={focused ? markerPulse : undefined}><ringGeometry args={focused ? [.092, .12, 28] : [.075, .091, 28]} /><meshBasicMaterial color={focused ? '#ffe3a3' : '#f2c579'} side={DoubleSide} transparent opacity={.95} depthWrite={false} toneMapped={false} /></mesh>
+          {place.books.length > 1 && <Html position={[0, 0, .115]} center distanceFactor={7} occlude style={{ pointerEvents: 'none' }}><span className="atlas-book-marker-count" aria-hidden="true">{place.books.length}</span></Html>}
+        </group>
+      })}
+      {showBookMarkers && markerPosition && !destinationHasBookPin && <group position={markerPosition} quaternion={markerOrientation}>
+        <mesh><sphereGeometry args={[.15, 20, 16]} /><meshBasicMaterial color="#ffcf73" transparent opacity={.18} blending={AdditiveBlending} depthWrite={false} toneMapped={false} /></mesh>
+        <mesh><sphereGeometry args={[.058, 20, 16]} /><meshBasicMaterial color="#fff0c6" toneMapped={false} /></mesh>
+        <mesh ref={markerPulse}><ringGeometry args={[.092, .122, 40]} /><meshBasicMaterial color="#ffcc70" side={DoubleSide} transparent opacity={.96} depthWrite={false} toneMapped={false} /></mesh>
+      </group>}
       <mesh rotation={[Math.PI / 2, 0, 0]}>
         <torusGeometry args={[1.978, .007, 5, 180]} />
         <meshBasicMaterial color={PALE_BRASS} transparent opacity={.55} />

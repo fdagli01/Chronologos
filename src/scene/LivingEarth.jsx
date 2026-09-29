@@ -1,7 +1,8 @@
 import { useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { AdditiveBlending, BufferAttribute, BufferGeometry, ShaderMaterial, Vector3 } from 'three'
+import { AdditiveBlending, BufferAttribute, BufferGeometry, ShaderMaterial } from 'three'
 import { createCoastTexture } from './earthTexture.js'
+import { globePoint } from './globePoint.js'
 
 function CoastGlow() {
   const coast = useMemo(() => createCoastTexture(), [])
@@ -39,17 +40,11 @@ const journeys = [
   [[80, 28], [116, 35]], [[-75, 40], [-1, 51]],
 ]
 
-function globePoint([longitude, latitude]) {
-  const phi = (longitude + 180) * Math.PI / 180
-  const theta = (90 - latitude) * Math.PI / 180
-  return new Vector3(-Math.cos(phi) * Math.sin(theta), Math.cos(theta), Math.sin(phi) * Math.sin(theta))
-}
-
 export function LivingEarth() {
   const { geometry, particles, samples, material } = useMemo(() => {
     const positions = [], progress = [], phases = []
     const samples = journeys.map(([from, to], index) => {
-      const start = globePoint(from), end = globePoint(to)
+      const start = globePoint(...from), end = globePoint(...to)
       const curve = Array.from({ length: 97 }, (_, step) => {
         const t = step / 96
         return start.clone().lerp(end, t).normalize().multiplyScalar(1.968 + Math.sin(t * Math.PI) * .16)

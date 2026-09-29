@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { navigateThroughPortal } from '../navigation/portalTransition.js'
+import { carryNoteToAtlas, navigateThroughPortal } from '../navigation/portalTransition.js'
 import './library.css'
 
 async function api(path, options = {}) {
@@ -31,7 +31,7 @@ export function NotesApp() {
   const [soundEnabled, setSoundEnabled] = useState(() => {
     try { return localStorage.getItem('chronologos:placement-sound') !== 'off' } catch { return true }
   })
-  const [placementFlight, setPlacementFlight] = useState(false)
+  const saveInFlight = useRef(false)
   const [form, setForm] = useState(blank)
   const [showCommentary, setShowCommentary] = useState(false)
   const [showRecordDetails, setShowRecordDetails] = useState(false)
@@ -177,15 +177,22 @@ export function NotesApp() {
 
   function startNewNote() {
     setError(''); setEditing(null); setForm(blank); setShowCommentary(false); setShowRecordDetails(false); setNotesView('work'); setShowEditor(true); selectNote(null)
+    window.setTimeout(() => document.getElementById('workbench-content')?.focus(), 50)
   }
 
   function addQuoteToForm() {
-    setForm((current) => ({ ...current, kind: 'quote', content: '', commentary: current.content || current.commentary }))
+    setForm((current) => ({ ...current, kind: 'quote', content: '', commentary: [current.content, current.commentary].filter(Boolean).join('\n\n') }))
     setShowCommentary(true)
+    setShowRecordDetails(true)
+    window.setTimeout(() => document.getElementById('workbench-content')?.focus(), 50)
   }
 
   async function saveNote(event) {
     event.preventDefault()
+    if (saveInFlight.current) return
+    saveInFlight.current = true
+    const trigger = event.nativeEvent?.submitter || event.currentTarget.querySelector('[type="submit"]')
+    let leaving = false
     setSaving(true)
     setError('')
     const selectedBook = books.find((book) => book.id === form.libraryEntryId)
@@ -195,16 +202,22 @@ export function NotesApp() {
     const payload = { ...form, libraryEntryId: form.libraryEntryId || null, editionId }
     try {
       const savedNote = await api(editing ? `/api/notes/${encodeURIComponent(editing)}` : '/api/notes', { method: editing ? 'PATCH' : 'POST', body: JSON.stringify(payload) })
+      if (!editing) {
+        signalAtlas()
+        carryNoteToAtlas(savedNote, trigger)
+        leaving = true
+        return
+      }
       setNotice(editing ? 'Not güncellendi.' : 'Not kaydedildi; Atlas için bir yıldız oluşturuldu.')
       setEditing(null)
       setForm(blank)
       setShowEditor(false)
-      selectNote(savedNote.id)
+      selectNote(savedNote)
       setNotesView('archive')
       await refresh()
       signalAtlas()
     } catch (saveError) { setError(saveError.message) }
-    finally { setSaving(false) }
+    finally { if (!leaving) { saveInFlight.current = false; setSaving(false) } }
   }
 
   async function captureDraft(event) {
@@ -289,25 +302,24 @@ export function NotesApp() {
     } catch { context.close().catch(() => {}) }
   }
 
-  async function placeDraft(draft) {
+  async function placeDraft(draft, trigger) {
+    if (saveInFlight.current) return
+    saveInFlight.current = true
+    setSaving(true)
+    let leaving = false
     const context = preparePlacementSound()
     try {
       const note = await api(`/api/notes/drafts/${encodeURIComponent(draft.id)}/place`, { method: 'POST', body: JSON.stringify({}) })
-      setDrafts((current) => current.filter((item) => item.id !== draft.id))
-      setNotes((current) => [note, ...current])
-      setSelectedNoteId(note.id)
-      setNotesView('archive')
-      setNotice('Taslak Atlas’a yerleşti; yıldızı oluşturuldu.')
-      setPlacementFlight(true)
-      window.setTimeout(() => setPlacementFlight(false), 1100)
       playPlacementSound(context)
       if (context) placementAudioContext.current = null
       signalAtlas()
-      await refresh()
+      carryNoteToAtlas(note, trigger)
+      leaving = true
     } catch (placeError) {
       context?.close?.().catch?.(() => {})
       setError(placeError.message)
     }
+    finally { if (!leaving) { saveInFlight.current = false; setSaving(false) } }
   }
 
   async function toggleForgottenStar() {
@@ -473,7 +485,7 @@ export function NotesApp() {
 
   return <main className="library-app library-app--notes">
     <aside className="library-rail">
-      <a className="library-brand" href="/library"><span className="library-brand__mark">C<span>·</span>L</span><span className="library-brand__word">CHRONOLOGOS<small>PERSONAL ARCHIVE</small></span></a>
+      <a className="library-brand" href="/library"><img className="library-brand__mark" src="/chronologos-mark.svg" alt="" /><span className="library-brand__word">CHRONOLOGOS<small>PERSONAL ARCHIVE</small></span></a>
       <div className="rail-divider" /><span className="rail-label">ÇALIŞMA ALANI</span>
       <a className="rail-link" href="/library"><span className="rail-icon">▤</span> Kitaplığım</a>
       <a className="rail-link rail-link--active" href="/notes"><span className="rail-icon">✎</span> Notlar <span className="rail-count">{notes.length}</span></a>
@@ -496,7 +508,7 @@ export function NotesApp() {
         {notesView === 'work' && <section id="notes-panel-work" role="tabpanel" aria-labelledby="notes-tab-work" className="notes-view-panel notes-view-panel--work">
         {reminder.enabled && forgottenStar?.candidate && <section className="forgotten-star-card" aria-labelledby="forgotten-star-title"><div className="forgotten-star-card__seal">✧</div><div className="forgotten-star-card__copy"><span className="eyebrow">GÜNÜN UNUTULMUŞ YILDIZI</span><h2 id="forgotten-star-title">{forgottenStar.candidate.title || 'Başlıksız düşünce'}</h2><p>{forgottenStar.candidate.content.slice(0, 190)}{forgottenStar.candidate.content.length > 190 ? '…' : ''}</p><small>{forgottenStar.candidate.bookTitle || 'Kitapsız düşünce'} · arşivden</small></div><button className="quiet-button" onClick={() => { selectNote(forgottenStar.candidate); window.setTimeout(() => document.getElementById('note-' + forgottenStar.candidate.id)?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 60) }}>Notu aç</button></section>}
 
-        <section className={`nebula-section${drafts.length === 0 ? ' nebula-section--empty' : ''}`} aria-labelledby="nebula-title"><div className="collection-heading"><div><span className="eyebrow">HARİTALANMAMIŞ YILDIZLAR</span><h2 id="nebula-title">Nebula <small>{drafts.length} taslak</small></h2></div>{drafts.length > 0 && <span className="nebula-note">Taslaklar Atlas’ta görünmez; yerleştirene kadar yalnızca Bulutsu’da kalır.</span>}</div><form className="quick-capture" onSubmit={captureDraft}><label htmlFor="quick-capture-input">HIZLI YAKALAMA</label><div><input id="quick-capture-input" value={quickCapture} onChange={(event) => setQuickCapture(event.target.value)} placeholder="Aklından geçeni buraya bırak…" maxLength="12000" />{drafts.length > 0 && <><button className="primary-button" type="submit" disabled={!quickCapture.trim()}>Yakalamayı kaydet</button><button className="quiet-button quick-capture__details" type="button" disabled={!quickCapture.trim()} onClick={captureDraftForDetail}>Ayrıntı ekle</button></>}</div>{drafts.length === 0 && <p className="quick-capture__hint">Enter ile kaydet. Taslakların burada birikir; hazır olduğunda kaynak ve tema ekleyip Atlas’a yerleştirebilirsin.</p>}</form>{drafts.length > 0 && <div className="nebula-list">{drafts.map((draft) => <article key={draft.id} className="nebula-card"><span className="thought-kind">NEBULA TASLAĞI · YILDIZ DEĞİL</span>{draft.title && <h3>{draft.title}</h3>}<p>{draft.content}</p>{draft.commentary && <p className="thought-card__commentary">{draft.commentary}</p>}{(draft.bookTitle || draft.sourceLocator) && <small>{draft.bookTitle || 'Kaynak seçilmemiş'}{draft.sourceLocator ? ` · ${draft.sourceLocator}` : ''}</small>}{draft.themeNames && <small>Temalar · {draft.themeNames}</small>}{draftEditorId === draft.id ? <form className="draft-editor draft-editor--desk book-form" onSubmit={saveDraft}><label className="field"><span>Tür</span><select value={draftForm.kind} onChange={(event) => setDraftForm({ ...draftForm, kind: event.target.value })}><option value="thought">Düşünce</option><option value="quote">Alıntı</option></select></label><label className="field"><span>Başlık</span><input value={draftForm.title} onChange={(event) => setDraftForm({ ...draftForm, title: event.target.value })} /></label><label className={`field field--wide draft-sheet ${draftForm.kind === 'quote' ? 'draft-sheet--quote' : 'draft-sheet--own'}`}><span>{draftForm.kind === 'quote' ? 'Yazarın sesi · Alıntı' : 'Benim sesim · Düşünce'}</span><textarea required value={draftForm.content} onChange={(event) => setDraftForm({ ...draftForm, content: event.target.value })} rows="3" /></label><label className="field field--wide draft-sheet draft-sheet--own"><span>Kişisel yorum · Sentez</span><textarea value={draftForm.commentary} onChange={(event) => setDraftForm({ ...draftForm, commentary: event.target.value })} rows="2" /></label><label className="field"><span>Kaynak kitap</span><select value={draftForm.libraryEntryId} onChange={(event) => setDraftForm({ ...draftForm, libraryEntryId: event.target.value, editionId: books.find((book) => book.id === event.target.value)?.editionId || '' })}><option value="">Kitapsız</option>{books.map((book) => <option key={book.id} value={book.id}>{book.title} · {book.author}</option>)}</select></label><label className="field"><span>Sayfa / bölüm</span><input value={draftForm.sourceLocator} onChange={(event) => setDraftForm({ ...draftForm, sourceLocator: event.target.value })} /></label><fieldset className="field field--wide theme-picker"><legend>Atlas temaları</legend><div>{themes.map((theme) => <label key={theme.id} className="theme-choice"><input type="checkbox" checked={draftForm.themeIds.includes(theme.id)} onChange={(event) => setDraftForm({ ...draftForm, themeIds: event.target.checked ? [...draftForm.themeIds, theme.id] : draftForm.themeIds.filter((id) => id !== theme.id) })} /><i style={{ '--theme-color': theme.color }} />{theme.name}</label>)}</div></fieldset><footer className="book-form__actions"><button className="primary-button" type="submit">Taslağı güncelle</button><button type="button" className="quiet-button" onClick={() => setDraftEditorId(null)}>Vazgeç</button></footer></form> : <div className="nebula-card__actions"><button className="quiet-button" onClick={() => editDraft(draft)}>İşle ve kaynak ekle</button><button className="primary-button" onClick={() => placeDraft(draft)}>Atlas’a yerleştir ✦</button><button className="quiet-button" onClick={() => removeDraft(draft)}>Sil</button></div>}</article>)}</div>}</section>
+        <section className={`nebula-section${drafts.length === 0 ? ' nebula-section--empty' : ''}`} aria-labelledby="nebula-title"><div className="collection-heading"><div><span className="eyebrow">HARİTALANMAMIŞ YILDIZLAR</span><h2 id="nebula-title">Nebula <small>{drafts.length} taslak</small></h2></div>{drafts.length > 0 && <span className="nebula-note">Taslaklar Atlas’ta görünmez; yerleştirene kadar yalnızca Bulutsu’da kalır.</span>}</div><form className="quick-capture" onSubmit={captureDraft}><label htmlFor="quick-capture-input">HIZLI YAKALAMA</label><div><input id="quick-capture-input" value={quickCapture} onChange={(event) => setQuickCapture(event.target.value)} placeholder="Aklından geçeni buraya bırak…" maxLength="12000" />{drafts.length > 0 && <><button className="primary-button" type="submit" disabled={!quickCapture.trim()}>Yakalamayı kaydet</button><button className="quiet-button quick-capture__details" type="button" disabled={!quickCapture.trim()} onClick={captureDraftForDetail}>Ayrıntı ekle</button></>}</div>{drafts.length === 0 && <p className="quick-capture__hint">Enter ile kaydet. Taslakların burada birikir; hazır olduğunda kaynak ve tema ekleyip Atlas’a yerleştirebilirsin.</p>}</form>{drafts.length > 0 && <div className="nebula-list">{drafts.map((draft) => <article key={draft.id} className="nebula-card"><span className="thought-kind">NEBULA TASLAĞI · YILDIZ DEĞİL</span>{draft.title && <h3>{draft.title}</h3>}<p>{draft.content}</p>{draft.commentary && <p className="thought-card__commentary">{draft.commentary}</p>}{(draft.bookTitle || draft.sourceLocator) && <small>{draft.bookTitle || 'Kaynak seçilmemiş'}{draft.sourceLocator ? ` · ${draft.sourceLocator}` : ''}</small>}{draft.themeNames && <small>Temalar · {draft.themeNames}</small>}{draftEditorId === draft.id ? <form className="draft-editor draft-editor--desk book-form" onSubmit={saveDraft}><label className="field"><span>Tür</span><select value={draftForm.kind} onChange={(event) => setDraftForm({ ...draftForm, kind: event.target.value })}><option value="thought">Düşünce</option><option value="quote">Alıntı</option></select></label><label className="field"><span>Başlık</span><input value={draftForm.title} onChange={(event) => setDraftForm({ ...draftForm, title: event.target.value })} /></label><label className={`field field--wide draft-sheet ${draftForm.kind === 'quote' ? 'draft-sheet--quote' : 'draft-sheet--own'}`}><span>{draftForm.kind === 'quote' ? 'Yazarın sesi · Alıntı' : 'Benim sesim · Düşünce'}</span><textarea required value={draftForm.content} onChange={(event) => setDraftForm({ ...draftForm, content: event.target.value })} rows="3" /></label><label className="field field--wide draft-sheet draft-sheet--own"><span>Kişisel yorum · Sentez</span><textarea value={draftForm.commentary} onChange={(event) => setDraftForm({ ...draftForm, commentary: event.target.value })} rows="2" /></label><label className="field"><span>Kaynak kitap</span><select value={draftForm.libraryEntryId} onChange={(event) => setDraftForm({ ...draftForm, libraryEntryId: event.target.value, editionId: books.find((book) => book.id === event.target.value)?.editionId || '' })}><option value="">Kitapsız</option>{books.map((book) => <option key={book.id} value={book.id}>{book.title} · {book.author}</option>)}</select></label><label className="field"><span>Sayfa / bölüm</span><input value={draftForm.sourceLocator} onChange={(event) => setDraftForm({ ...draftForm, sourceLocator: event.target.value })} /></label><fieldset className="field field--wide theme-picker"><legend>Atlas temaları</legend><div>{themes.map((theme) => <label key={theme.id} className="theme-choice"><input type="checkbox" checked={draftForm.themeIds.includes(theme.id)} onChange={(event) => setDraftForm({ ...draftForm, themeIds: event.target.checked ? [...draftForm.themeIds, theme.id] : draftForm.themeIds.filter((id) => id !== theme.id) })} /><i style={{ '--theme-color': theme.color }} />{theme.name}</label>)}</div></fieldset><footer className="book-form__actions"><button className="primary-button" type="submit">Taslağı güncelle</button><button type="button" className="quiet-button" onClick={() => setDraftEditorId(null)}>Vazgeç</button></footer></form> : <div className="nebula-card__actions"><button className="quiet-button" onClick={() => editDraft(draft)}>İşle ve kaynak ekle</button><button className="primary-button" disabled={saving} onClick={(event) => placeDraft(draft, event.currentTarget)}>Atlas’a yerleştir ✦</button><button className="quiet-button" onClick={() => removeDraft(draft)}>Sil</button></div>}</article>)}</div>}</section>
 
         {error && !showEditor && <p className="form-error" role="alert">{error}</p>}
         </section>}
@@ -515,23 +527,23 @@ export function NotesApp() {
         </section>}
 
         {notesView === 'work' && showEditor && <section id="notes-panel-work-editor" role="tabpanel" aria-labelledby="notes-tab-work workbench-title" className="notes-editor notes-editor--desk">
-          <div className="notes-editor__heading"><div><span className="eyebrow">{editing ? 'KAYDI GÖZDEN GEÇİR' : 'KÂŞİFİN MASASI · YENİ KAYIT'}</span><h2 id="workbench-title">{editing ? 'Düşünceni yeniden işle' : 'Masanın üzerine bırak'}</h2></div><button className="quiet-button" onClick={() => editing ? resetForm() : setShowEditor(false)} type="button">{editing ? 'Düzenlemeyi bırak' : 'Formu kapat'}</button></div>
+          <div className="notes-editor__heading"><div><span className="eyebrow">{editing ? 'KAYDI GÖZDEN GEÇİR' : 'KÂŞİFİN MASASI · YENİ KAYIT'}</span><h2 id="workbench-title">{editing ? 'Düşünceni yeniden işle' : 'Masanın üzerine bırak'}</h2><p className="workbench-intro">Bir düşünce yaz; dilersen bir kitaba ve Atlas temalarına bağla.</p></div><button className="quiet-button" onClick={() => editing ? resetForm() : setShowEditor(false)} type="button">{editing ? 'Düzenlemeyi bırak' : 'Formu kapat'}</button></div>
           <form className="book-form workbench-form" onSubmit={saveNote}>
-            <div className="workbench-form__meta"><label className="field field--meta"><span>Başlık <small>İsteğe bağlı</small></span><input maxLength="180" value={form.title} onChange={(event) => setForm({ ...form, title: event.target.value })} placeholder="Bu düşünceye bir ad ver" /></label></div>
+            {!editing && <div className="workbench-kind-picker" role="group" aria-label="Not türü"><button type="button" className={form.kind === 'thought' ? 'is-active' : ''} aria-pressed={form.kind === 'thought'} onClick={() => setForm((current) => ({ ...current, kind: 'thought', content: current.content || current.commentary, commentary: current.content ? current.commentary : '' }))}><span>✧</span> Kendi düşüncem</button><button type="button" className={form.kind === 'quote' ? 'is-active' : ''} aria-pressed={form.kind === 'quote'} onClick={() => form.kind !== 'quote' && addQuoteToForm()}><span>❝</span> Kitaptan alıntı</button></div>}
+            <div className="workbench-form__meta"><label className="field field--meta"><span>Başlık <small>İsteğe bağlı</small></span><input maxLength="180" value={form.title} onChange={(event) => setForm({ ...form, title: event.target.value })} placeholder="Düşüncene kısa bir ad ver" /></label></div>
             <div className={`workbench-papers${form.kind === 'quote' ? ' workbench-papers--dialogue' : ' workbench-papers--reflection'}`}>
-              <label className={`field workbench-sheet ${form.kind === 'quote' ? 'workbench-sheet--quote' : 'workbench-sheet--own'}`}><span>{form.kind === 'quote' ? 'YAZARIN SESİ · Alıntı' : 'BENİM SESİM · Düşünce'} <b>*</b></span><textarea required rows="5" maxLength="12000" value={form.content} onChange={(event) => setForm({ ...form, content: event.target.value })} placeholder={form.kind === 'quote' ? 'Kitaptaki cümleyi, kendi bağlamını koruyarak buraya geçir…' : 'Aklında kalan düşünceyi, henüz parlatmadan yaz…'} /></label>
-              {(form.kind === 'quote' || showCommentary) && <label className="field workbench-sheet workbench-sheet--own"><span>{form.kind === 'quote' ? 'SENİN SESİN · Sentez / düşünce' : 'KENAR NOTU · Ek düşünce'} <small>İsteğe bağlı</small></span><textarea rows="5" maxLength="6000" value={form.commentary} onChange={(event) => setForm({ ...form, commentary: event.target.value })} placeholder={form.kind === 'quote' ? 'Bu satır sende neyi değiştirdi, neyi sorgulattı?' : 'Bu düşünceye sonradan eklemek istediğin…'} /></label>}
+              <label className={`field workbench-sheet ${form.kind === 'quote' ? 'workbench-sheet--quote' : 'workbench-sheet--own'}`}><span>{form.kind === 'quote' ? 'KİTAPTAN ALINTI' : 'DÜŞÜNCEN'} <b>*</b></span><textarea id="workbench-content" required rows="5" maxLength="12000" value={form.content} onChange={(event) => setForm({ ...form, content: event.target.value })} placeholder={form.kind === 'quote' ? 'Altını çizdiğin cümleyi buraya yaz…' : 'Bugün aklında ne kaldı?'} /></label>
+              {(form.kind === 'quote' || showCommentary) && <label className="field workbench-sheet workbench-sheet--own"><span>{form.kind === 'quote' ? 'SENİN YORUMUN' : 'KENAR NOTU'} <small>İsteğe bağlı</small></span><textarea rows="5" maxLength="6000" value={form.commentary} onChange={(event) => setForm({ ...form, commentary: event.target.value })} placeholder={form.kind === 'quote' ? 'Bu alıntı sende ne uyandırdı?' : 'Düşüncene eklemek istediğin başka bir şey var mı?'} /></label>}
             </div>
-            {!editing && form.kind === 'thought' && <button className="workbench-disclosure-link" type="button" onClick={addQuoteToForm}>＋ Kitaptan alıntı ekle</button>}
-            {form.kind === 'thought' && !showCommentary && <button className="workbench-disclosure-link" type="button" onClick={() => setShowCommentary(true)}>＋ Kişisel ek not ekle</button>}
-            <footer className="book-form__actions workbench-form__actions"><span>{editing ? 'Kayıt, var olan yıldızın yerini korur.' : 'İstediğinde kaynak ve tema ekleyebilirsin.'}</span><button className="primary-button notes-seal-button" type="submit" disabled={saving}>{saving ? 'Mühürleniyor…' : editing ? 'Değişiklikleri kaydet' : '✦ Atlas’a Mühürle'}</button></footer>
+            {form.kind === 'thought' && !showCommentary && <button className="workbench-disclosure-link" type="button" onClick={() => setShowCommentary(true)}>＋ Kenar notu ekle <small>Düşünceni biraz daha aç</small></button>}
             {error && <p className="form-error" role="alert">{error}</p>}
             <details className="workbench-record-details" open={showRecordDetails}>
-              <summary onClick={(event) => { event.preventDefault(); setShowRecordDetails((open) => !open) }}>Ayrıntılar · kaynak ve Atlas temaları</summary>
+              <summary onClick={(event) => { event.preventDefault(); setShowRecordDetails((open) => !open) }}>Kitap, sayfa ve tema ekle <small>· isteğe bağlı</small>{(form.libraryEntryId || form.themeIds.length > 0) && <span> · {form.libraryEntryId ? books.find((book) => book.id === form.libraryEntryId)?.title : ''}{form.themeIds.length ? ` ${form.themeIds.length} tema` : ''}</span>}</summary>
               <div className="workbench-source"><span className="workbench-source__label">KAYNAK FİŞİ</span><label className="field"><span>Kitap</span><select value={form.libraryEntryId} onChange={(event) => setForm({ ...form, libraryEntryId: event.target.value, editionId: books.find((book) => book.id === event.target.value)?.editionId || '' })}><option value="">Kitapsız düşünce</option>{books.map((book) => <option key={book.id} value={book.id}>{book.title} · {book.author}</option>)}</select></label>
                 <label className="field"><span>Sayfa / bölüm</span><input maxLength="240" value={form.sourceLocator} onChange={(event) => setForm({ ...form, sourceLocator: event.target.value })} placeholder="s. 42, Bölüm III" /></label></div>
               <fieldset className="field field--wide theme-picker"><legend>Atlas temaları <small>Birden fazla seçebilirsin</small></legend><div>{themes.map((theme) => <label key={theme.id} className="theme-choice"><input type="checkbox" checked={form.themeIds.includes(theme.id)} onChange={(event) => setForm({ ...form, themeIds: event.target.checked ? [...form.themeIds, theme.id] : form.themeIds.filter((id) => id !== theme.id) })} /><i style={{ '--theme-color': theme.color }} />{theme.name}</label>)}</div></fieldset>
             </details>
+            <footer className="book-form__actions workbench-form__actions"><span>{editing ? 'Kayıt, var olan yıldızın yerini korur.' : 'Kaydedince Atlas’ında bir yıldız olarak görünür.'}</span><button className="primary-button notes-seal-button" type="submit" disabled={saving}>{saving ? 'Kaydediliyor…' : editing ? 'Değişiklikleri kaydet' : '✦ Atlas’a kaydet'}</button></footer>
           </form>
         </section>}
 
@@ -554,6 +566,5 @@ export function NotesApp() {
       </div>
     </section>
     {notice && <div className="library-toast" role="status">{notice}</div>}
-    {placementFlight && <div className="placement-flight" aria-hidden="true"><span>✦</span><i>Atlas’a yükseliyor…</i></div>}
   </main>
 }

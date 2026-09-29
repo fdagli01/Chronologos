@@ -25,9 +25,11 @@ const starVertex = `
   varying float vReveal;
   varying float vDepth;
   varying float vSelected;
+  varying float vFresh;
   void main() {
     vColor = aColor;
     vSelected = aSelected;
+    vFresh = aFresh * uFreshReveal;
     vPulse = 0.88 + 0.12 * sin(uTime * 0.46 + aPhase) + aSelected * (0.07 + 0.13 * uSelectionPulse);
     float themeReveal = mix(uNeighborReveal, uAnchorReveal, aAnchor);
     vReveal = mix(themeReveal, uFreshReveal, aFresh);
@@ -35,7 +37,7 @@ const starVertex = `
     vDepth = -viewPosition.z;
     gl_Position = projectionMatrix * viewPosition;
     float focusSize = 0.76 + 0.5 * vReveal;
-    gl_PointSize = min(30.0, (104.0 * aMagnitude * focusSize + aSelected * (8.0 + 3.0 * uSelectionPulse)) / max(1.0, vDepth));
+    gl_PointSize = min(30.0 + 18.0 * vFresh, (104.0 * aMagnitude * focusSize + aSelected * (8.0 + 3.0 * uSelectionPulse)) / max(1.0, vDepth) + 18.0 * vFresh);
   }
 `
 
@@ -46,6 +48,7 @@ const starFragment = `
   varying float vReveal;
   varying float vDepth;
   varying float vSelected;
+  varying float vFresh;
   void main() {
     float radius = length(gl_PointCoord - vec2(0.5));
     float halo = exp(-radius * radius * 11.0) * 0.42;
@@ -55,7 +58,9 @@ const starFragment = `
     float selectedHalo = vSelected * exp(-radius * radius * 5.0) * 0.48;
     float ringRadius = 0.18 + (1.0 - uSelectionPulse) * 0.25;
     float selectionRing = exp(-pow((radius - ringRadius) * 19.0, 2.0)) * vSelected * uSelectionPulse * 0.8;
-    float alpha = (halo + core + selectedHalo + selectionRing) * vPulse * depthFade * visibility;
+    vec2 offset = abs(gl_PointCoord - vec2(0.5));
+    float rays = (exp(-offset.x * 100.0) + exp(-offset.y * 100.0)) * exp(-radius * 8.0) * vFresh * 0.65;
+    float alpha = (halo + core + selectedHalo + selectionRing + rays) * vPulse * depthFade * visibility;
     if (alpha < 0.018) discard;
     float warmth = 1.25 + core * (3.0 + 1.2 * vReveal);
     gl_FragColor = vec4(vColor * warmth, alpha);
@@ -220,10 +225,12 @@ export function Logos({ revealRequest, atlasData, selectedNoteId, onSelectNote }
 
   useEffect(() => {
     if (!revealRequest?.id || lastRequest.current === revealRequest.id || !themeIds.includes(revealRequest.themeId || 'unplaced')) return
+    if (revealRequest.noteId && !atlasData?.nodes?.some((note) => note.id === revealRequest.noteId)) return
     if (pending.current.some((request) => request.themeId === revealRequest.themeId)) return
+    if (revealRequest.kind === 'note-created') schedule.current.active = null
     pending.current.push({ ...revealRequest, themeId: revealRequest.themeId || 'unplaced' })
     lastRequest.current = revealRequest.id
-  }, [revealRequest, themeIds])
+  }, [revealRequest, themeIds, atlasData?.nodes])
 
   useFrame(({ clock }) => {
     const time = clock.getElapsedTime()
@@ -254,7 +261,7 @@ export function Logos({ revealRequest, atlasData, selectedNoteId, onSelectNote }
     const anchorReveal = elapsed < 0 ? 0 : smoothEdge(0, 3, elapsed) * fadeOut
     const neighborReveal = elapsed < 0 ? 0 : smoothEdge(2, 5, elapsed) * fadeOut
     const threadReveal = elapsed < 0 ? 0 : smoothEdge(3.5, 7, elapsed) * (1 - smoothEdge(13, REVEAL_DURATION, elapsed))
-    const freshReveal = elapsed < 0 ? 0 : smoothEdge(0, 2.1, elapsed) * (1 - smoothEdge(7.5, 10.5, elapsed))
+    const freshReveal = reducedMotion || elapsed < 0 ? 0 : smoothEdge(0, 2.1, elapsed) * (1 - smoothEdge(7.5, 10.5, elapsed))
 
     layers.current.forEach((materials, themeId) => {
       const isActive = themeId === state.active

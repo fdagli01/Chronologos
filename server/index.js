@@ -36,6 +36,20 @@ const librarySelect = `
     entry.review,
     entry.started_at AS startedAt,
     entry.completed_at AS completedAt,
+    entry.current_page AS currentPage,
+    entry.progress_percent AS progressPercent,
+    entry.latitude,
+    entry.longitude,
+    entry.location_label AS locationLabel,
+    entry.location_kind AS locationKind,
+    entry.setting_latitude AS settingLatitude,
+    entry.setting_longitude AS settingLongitude,
+    entry.setting_label AS settingLabel,
+    entry.setting_source AS settingSource,
+    entry.setting_confidence AS settingConfidence,
+    entry.setting_status AS settingStatus,
+    entry.setting_basis AS settingBasis,
+    entry.setting_note AS settingNote,
     entry.is_demo AS isDemo,
     entry.created_at AS addedAt,
     entry.updated_at AS updatedAt
@@ -76,6 +90,22 @@ function ensureAuthor(name) {
   return id
 }
 
+function compassFields(payload, existing = {}) {
+  const rawLatitude = payload.latitude === undefined ? existing.latitude ?? null : payload.latitude
+  const rawLongitude = payload.longitude === undefined ? existing.longitude ?? null : payload.longitude
+  const empty = (value) => value === null || value === ''
+  if (empty(rawLatitude) !== empty(rawLongitude)) throw Object.assign(new Error('Enlem ve boylam birlikte girilmeli.'), { statusCode: 400 })
+  const latitude = empty(rawLatitude) ? null : Number(rawLatitude)
+  const longitude = empty(rawLongitude) ? null : Number(rawLongitude)
+  if (latitude !== null && (!Number.isFinite(latitude) || !Number.isFinite(longitude) || Math.abs(latitude) > 90 || Math.abs(longitude) > 180)) {
+    throw Object.assign(new Error('Koordinatlar geçerli aralıkta olmalı.'), { statusCode: 400 })
+  }
+  const locationLabel = payload.locationLabel === undefined ? existing.locationLabel ?? null : cleanText(payload.locationLabel, 'Yer adı', { max: 120 })
+  const locationKind = payload.locationKind === undefined ? existing.locationKind ?? 'associated' : payload.locationKind
+  if (!['birthplace', 'associated'].includes(locationKind)) throw Object.assign(new Error('Konum türü geçersiz.'), { statusCode: 400 })
+  return { latitude, longitude, locationLabel: latitude === null ? null : locationLabel, locationKind: latitude === null ? null : locationKind }
+}
+
 function normalizeResonances(value) {
   if (value === undefined) return undefined
   if (!Array.isArray(value) || value.some((item) => !resonanceTags.has(item))) {
@@ -102,16 +132,23 @@ function sendJson(response, statusCode, payload) {
 
 function exportArchive() {
   const archive = {
-    schemaVersion: 3,
+    schemaVersion: 6,
     exportedAt: new Date().toISOString(),
     user: database.prepare('SELECT id, display_name AS displayName, created_at AS createdAt FROM users WHERE id = ?').get(LOCAL_USER_ID),
     library: database.prepare(`SELECT e.id AS entryId, e.status, e.rating, e.review, e.started_at AS startedAt, e.completed_at AS completedAt,
+      e.current_page AS currentPage, e.progress_percent AS progressPercent,
+      e.latitude, e.longitude, e.location_label AS locationLabel, e.location_kind AS locationKind,
+      e.setting_latitude AS settingLatitude, e.setting_longitude AS settingLongitude, e.setting_label AS settingLabel,
+      e.setting_source AS settingSource, e.setting_confidence AS settingConfidence, e.setting_status AS settingStatus,
+      e.setting_basis AS settingBasis, e.setting_note AS settingNote,
       e.created_at AS addedAt, e.updated_at AS updatedAt, w.id AS workId, w.title, w.original_year AS originalYear, w.description,
       (SELECT json_group_array(a.name) FROM work_authors wa JOIN authors a ON a.id = wa.author_id WHERE wa.work_id = w.id) AS authors,
       edition.id AS editionId, edition.isbn, edition.language, edition.publisher, edition.translator, edition.page_count AS pageCount,
       w.openlibrary_work_key AS openLibraryWorkKey, w.cover_id AS workCoverId, edition.openlibrary_edition_key AS openLibraryEditionKey, edition.cover_id AS coverId,
       e.is_demo AS isDemo FROM library_entries e JOIN works w ON w.id = e.work_id LEFT JOIN editions edition ON edition.id = e.edition_id
       WHERE e.user_id = ? ORDER BY e.created_at`).all(LOCAL_USER_ID),
+    goodreadsImports: database.prepare(`SELECT source, external_id AS externalId, library_entry_id AS libraryEntryId, row_data AS rowData, imported_at AS importedAt
+      FROM goodreads_import_records WHERE user_id = ? ORDER BY external_id`).all(LOCAL_USER_ID),
     editions: database.prepare(`SELECT DISTINCT edition.id, edition.work_id AS workId, edition.isbn, edition.language, edition.publisher,
       edition.translator, edition.page_count AS pageCount, edition.openlibrary_edition_key AS openLibraryEditionKey, edition.cover_id AS coverId
       FROM editions edition JOIN works work ON work.id = edition.work_id
@@ -125,6 +162,8 @@ function exportArchive() {
       session.started_at AS startedAt, session.completed_at AS completedAt, session.created_at AS createdAt
       FROM reading_sessions session JOIN library_entries entry ON entry.id = session.library_entry_id
       WHERE entry.user_id = ? ORDER BY session.created_at`).all(LOCAL_USER_ID),
+    readingGoals: database.prepare(`SELECT year, target, updated_at AS updatedAt FROM reading_goals
+      WHERE user_id = ? ORDER BY year`).all(LOCAL_USER_ID),
     notes: database.prepare(`SELECT id, kind, title, content, commentary, source_locator AS sourceLocator,
       library_entry_id AS libraryEntryId, edition_id AS editionId, created_at AS createdAt, updated_at AS updatedAt, is_demo AS isDemo
       FROM notes WHERE user_id = ? ORDER BY created_at`).all(LOCAL_USER_ID),
@@ -149,6 +188,9 @@ function exportArchive() {
 
 const catalogCache = new Map()
 const catalogCacheTtl = 10 * 60 * 1000
+const placeCache = new Map()
+const placeCacheTtl = 24 * 60 * 60 * 1000
+let lastPlaceLookupAt = 0
 
 async function catalogFetch(url) {
   const cacheKey = url.toString()
@@ -176,6 +218,38 @@ async function searchCatalog(url) {
     originalYear: book.first_publish_year || null, coverId: book.cover_i || null, editionCount: book.edition_count || 0,
     coverUrl: book.cover_i ? `https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg?default=false` : null,
   })).filter((book) => /^OL\d+W$/.test(book.workKey)) }
+}
+
+async function searchPlaces(url) {
+  const query = (url.searchParams.get('q') || '').trim().slice(0, 120)
+  if (query.length < 2) throw Object.assign(new Error('Yer aramak için en az iki harf yaz.'), { statusCode: 400 })
+  const cacheKey = query.toLocaleLowerCase('tr')
+  const cached = placeCache.get(cacheKey)
+  if (cached && cached.expiresAt > Date.now()) return cached.payload
+  const delay = 1000 - (Date.now() - lastPlaceLookupAt)
+  if (delay > 0) await new Promise((resolve) => setTimeout(resolve, delay))
+  lastPlaceLookupAt = Date.now()
+  const providerUrl = new URL(process.env.CHRONOLOGOS_GEOCODER_URL || 'https://nominatim.openstreetmap.org/search')
+  providerUrl.searchParams.set('q', query)
+  providerUrl.searchParams.set('format', 'jsonv2')
+  providerUrl.searchParams.set('limit', '6')
+  providerUrl.searchParams.set('addressdetails', '1')
+  providerUrl.searchParams.set('accept-language', 'tr,en')
+  const response = await fetch(providerUrl, {
+    headers: { 'user-agent': 'Chronologos/0.1 (personal reading atlas)', accept: 'application/json' },
+    signal: AbortSignal.timeout(10000),
+  })
+  if (!response.ok) throw Object.assign(new Error('Yer araması şu anda kullanılamıyor. Koordinatları elle girebilirsin.'), { statusCode: 502 })
+  const places = await response.json()
+  const payload = { items: places.map((place) => ({
+    id: `${place.osm_type || 'place'}:${place.osm_id || place.place_id}`,
+    label: place.name || place.display_name?.split(',')[0] || query,
+    displayName: place.display_name || place.name || query,
+    latitude: Number(place.lat), longitude: Number(place.lon),
+  })).filter((place) => Number.isFinite(place.latitude) && Number.isFinite(place.longitude)) }
+  placeCache.set(cacheKey, { payload, expiresAt: Date.now() + placeCacheTtl })
+  if (placeCache.size > 200) placeCache.delete(placeCache.keys().next().value)
+  return payload
 }
 
 async function catalogEditions(workKey) {
@@ -223,6 +297,122 @@ async function readJson(request) {
   } catch {
     throw Object.assign(new Error('Request body must be a JSON object.'), { statusCode: 400 })
   }
+}
+
+async function readCsv(request) {
+  if (!String(request.headers['content-type'] || '').toLowerCase().startsWith('text/csv')) {
+    throw Object.assign(new Error('Content-Type must be text/csv.'), { statusCode: 415 })
+  }
+  const chunks = []
+  let size = 0
+  for await (const chunk of request) {
+    size += chunk.length
+    if (size > 5 * 1024 * 1024) throw Object.assign(new Error('CSV dosyası 5 MB sınırını aşıyor.'), { statusCode: 413 })
+    chunks.push(chunk)
+  }
+  return Buffer.concat(chunks).toString('utf8').replace(/^\uFEFF/, '')
+}
+
+function parseCsv(text) {
+  const rows = []
+  let row = []; let field = ''; let quoted = false
+  for (let index = 0; index < text.length; index += 1) {
+    const character = text[index]
+    if (quoted) {
+      if (character === '"' && text[index + 1] === '"') { field += '"'; index += 1 }
+      else if (character === '"') quoted = false
+      else field += character
+    } else if (character === '"' && field === '') quoted = true
+    else if (character === ',') { row.push(field); field = '' }
+    else if (character === '\n' || character === '\r') {
+      if (character === '\r' && text[index + 1] === '\n') index += 1
+      row.push(field); field = ''
+      if (row.some((value) => value.trim())) rows.push(row)
+      row = []
+    } else field += character
+  }
+  if (quoted) throw Object.assign(new Error('CSV dosyasında kapanmamış tırnak var.'), { statusCode: 400 })
+  row.push(field)
+  if (row.some((value) => value.trim())) rows.push(row)
+  if (rows.length < 2) throw Object.assign(new Error('CSV içinde aktarılacak kitap bulunamadı.'), { statusCode: 400 })
+  const headers = rows.shift().map((value) => value.trim())
+  const required = ['Book Id', 'Title', 'Author', 'Exclusive Shelf']
+  if (required.some((header) => !headers.includes(header))) throw Object.assign(new Error('Bu dosya Goodreads kitaplık dışa aktarımı gibi görünmüyor.'), { statusCode: 400 })
+  return rows.map((values) => Object.fromEntries(headers.map((header, index) => [header, values[index] ?? ''])))
+}
+
+function cleanIsbn(value) {
+  return String(value || '').replace(/^\s*=\s*"(.*)"\s*$/, '$1').replace(/[^0-9Xx]/g, '').toUpperCase().slice(0, 32) || null
+}
+
+function importGoodreadsCsv(text) {
+  const rows = parseCsv(text)
+  const counts = { imported: 0, matched: 0, skipped: 0, invalid: 0 }
+  const hasRecord = database.prepare('SELECT library_entry_id AS entryId FROM goodreads_import_records WHERE user_id = ? AND source = ? AND external_id = ?')
+  const exactMatch = database.prepare(`SELECT entry.id FROM library_entries entry JOIN works work ON work.id = entry.work_id
+    WHERE entry.user_id = ? AND work.title = ? COLLATE NOCASE AND EXISTS (
+      SELECT 1 FROM work_authors wa JOIN authors author ON author.id = wa.author_id
+      WHERE wa.work_id = work.id AND author.name = ? COLLATE NOCASE
+    ) LIMIT 1`)
+  const insertRecord = database.prepare('INSERT INTO goodreads_import_records (user_id, source, external_id, library_entry_id, row_data) VALUES (?, ?, ?, ?, ?)')
+  const insertWork = database.prepare('INSERT INTO works (id, title, original_year) VALUES (?, ?, ?)')
+  const insertAuthor = database.prepare('INSERT INTO work_authors (work_id, author_id) VALUES (?, ?)')
+  const insertEdition = database.prepare('INSERT INTO editions (id, work_id, isbn, publisher, page_count) VALUES (?, ?, ?, ?, ?)')
+  const insertEntry = database.prepare('INSERT INTO library_entries (id, user_id, work_id, edition_id, status, rating, review, completed_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)')
+  const updateMissing = database.prepare(`UPDATE editions SET isbn = COALESCE(isbn, ?), publisher = COALESCE(publisher, ?), page_count = COALESCE(page_count, ?) WHERE id = ?`)
+
+  database.exec('BEGIN')
+  try {
+    for (const row of rows) {
+      const externalId = String(row['Book Id'] || '').trim()
+      const title = String(row.Title || '').trim().slice(0, 240)
+      const author = String(row.Author || '').trim().slice(0, 180)
+      if (!externalId || !title || !author) { counts.invalid += 1; continue }
+      if (hasRecord.get(LOCAL_USER_ID, 'goodreads', externalId)) { counts.skipped += 1; continue }
+
+      const yearValue = Number.parseInt(row['Original Publication Year'], 10)
+      const year = Number.isInteger(yearValue) && yearValue >= 1 && yearValue <= 3000 ? yearValue : null
+      const pageValue = Number.parseInt(row['Number of Pages'], 10)
+      const pages = Number.isInteger(pageValue) && pageValue > 0 && pageValue <= 100000 ? pageValue : null
+      const ratingValue = Number.parseInt(row['My Rating'], 10)
+      const rating = ratingValue >= 1 && ratingValue <= 5 ? ratingValue : null
+      const shelf = row['Exclusive Shelf']
+      const status = shelf === 'read' ? 'read' : shelf === 'currently-reading' ? 'reading' : 'to_read'
+      const dateMatch = String(row['Date Read'] || '').match(/^(\d{4})\/(\d{2})\/(\d{2})$/)
+      const completedAt = status === 'read' && dateMatch ? `${dateMatch[1]}-${dateMatch[2]}-${dateMatch[3]} 00:00:00` : null
+      const isbn = cleanIsbn(row.ISBN13) || cleanIsbn(row.ISBN)
+      const publisher = String(row.Publisher || '').trim().slice(0, 160) || null
+
+      let entry = exactMatch.get(LOCAL_USER_ID, title, author)
+      if (entry) {
+        const record = database.prepare('SELECT edition_id AS editionId FROM library_entries WHERE id = ?').get(entry.id)
+        if (record?.editionId) updateMissing.run(isbn, publisher, pages, record.editionId)
+        if (completedAt) database.prepare('UPDATE library_entries SET completed_at = COALESCE(completed_at, ?) WHERE id = ?').run(completedAt, entry.id)
+        counts.matched += 1
+      } else {
+        const workId = randomUUID(); const entryId = randomUUID(); const editionId = isbn || publisher || pages ? randomUUID() : null
+        insertWork.run(workId, title, year)
+        insertAuthor.run(workId, ensureAuthor(author))
+        if (editionId) insertEdition.run(editionId, workId, isbn, publisher, pages)
+        insertEntry.run(entryId, LOCAL_USER_ID, workId, editionId, status, rating, String(row['My Review'] || '').trim() || null, completedAt)
+        entry = { id: entryId }
+        counts.imported += 1
+      }
+      insertRecord.run(LOCAL_USER_ID, 'goodreads', externalId, entry.id, JSON.stringify(row))
+    }
+    database.exec('COMMIT')
+  } catch (error) {
+    database.exec('ROLLBACK')
+    throw error
+  }
+  return { ...counts, total: rows.length }
+}
+
+function previewGoodreadsCsv(text) {
+  const rows = parseCsv(text)
+  const shelves = { read: 0, 'to-read': 0, 'currently-reading': 0, other: 0 }
+  for (const row of rows) shelves[Object.hasOwn(shelves, row['Exclusive Shelf']) ? row['Exclusive Shelf'] : 'other'] += 1
+  return { total: rows.length, shelves, rated: rows.filter((row) => Number(row['My Rating']) > 0).length, dated: rows.filter((row) => row['Date Read']).length }
 }
 
 function cleanText(value, field, { required = false, max = 2000 } = {}) {
@@ -297,6 +487,23 @@ function listLibrary(url) {
   return { items, counts: { ...summary, ...thinkingShelves } }
 }
 
+function readingOrbit(year) {
+  const goal = database.prepare('SELECT target FROM reading_goals WHERE user_id = ? AND year = ?').get(LOCAL_USER_ID, year)
+  const books = database.prepare(`SELECT entry.id, work.title, entry.completed_at AS completedAt
+    FROM library_entries entry JOIN works work ON work.id = entry.work_id
+    WHERE entry.user_id = ? AND entry.is_demo = 0 AND entry.completed_at LIKE ?
+    ORDER BY entry.completed_at, entry.id`).all(LOCAL_USER_ID, `${year}-%`)
+  return { year, target: goal?.target ?? null, books, completed: books.length }
+}
+
+function completionDate(value) {
+  if (value === null || value === '') return null
+  if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value) || Number.isNaN(Date.parse(`${value}T00:00:00Z`)) || new Date(`${value}T00:00:00Z`).toISOString().slice(0, 10) !== value) {
+    throw Object.assign(new Error('Bitiş tarihi geçerli bir gün olmalı.'), { statusCode: 400 })
+  }
+  return `${value} 00:00:00`
+}
+
 function createLibraryEntry(payload) {
   const title = cleanText(payload.title, 'Title', { required: true, max: 240 })
   const authors = normalizeAuthors(payload)
@@ -316,6 +523,7 @@ function createLibraryEntry(payload) {
   const openLibraryEditionKey = cleanText(payload.openLibraryEditionKey, 'Open Library edition ID', { max: 80 })
   const coverId = optionalInteger(payload.coverId, 'Cover ID', { min: 1, max: 2147483647 })
   const workCoverId = optionalInteger(payload.workCoverId, 'Work cover ID', { min: 1, max: 2147483647 })
+  const compass = compassFields(payload)
   const resonances = normalizeResonances(payload.resonanceTags)
   const catalogWork = openLibraryWorkKey ? database.prepare('SELECT id FROM works WHERE openlibrary_work_key = ?').get(openLibraryWorkKey) : null
   let workId = catalogWork?.id || null
@@ -351,9 +559,13 @@ function createLibraryEntry(payload) {
     }
 
     database.prepare(`
-      INSERT INTO library_entries (id, user_id, work_id, edition_id, status, rating, review)
-      VALUES (?, ?, ?, ?, ?, ?, ?)
-    `).run(entryId, LOCAL_USER_ID, workId, editionId, status, rating, review)
+      INSERT INTO library_entries (id, user_id, work_id, edition_id, status, rating, review, started_at, completed_at, current_page, progress_percent, latitude, longitude, location_label, location_kind)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(entryId, LOCAL_USER_ID, workId, editionId, status, rating, review,
+      status === 'reading' ? new Date().toISOString().slice(0, 10) + ' 00:00:00' : null,
+      status === 'read' ? completionDate(payload.completedAt) || new Date().toISOString().slice(0, 10) + ' 00:00:00' : null,
+      status === 'read' ? pageCount : null, status === 'read' ? 100 : null,
+      compass.latitude, compass.longitude, compass.locationLabel, compass.locationKind)
     saveResonances(entryId, resonances)
     database.exec('COMMIT')
   } catch (error) {
@@ -367,6 +579,8 @@ function createLibraryEntry(payload) {
 function updateLibraryEntry(entryId, payload) {
   const existing = database.prepare(`
     SELECT entry.id, entry.work_id AS workId, entry.edition_id AS editionId, entry.status, entry.rating, entry.review,
+      entry.completed_at AS completedAt, entry.current_page AS currentPage, entry.progress_percent AS progressPercent,
+      entry.latitude, entry.longitude, entry.location_label AS locationLabel, entry.location_kind AS locationKind,
       work.title, work.original_year AS originalYear, work.description, work.cover_id AS workCoverId,
       edition.isbn, edition.language, edition.publisher, edition.translator, edition.page_count AS pageCount,
       edition.openlibrary_edition_key AS openLibraryEditionKey, edition.cover_id AS coverId,
@@ -392,10 +606,19 @@ function updateLibraryEntry(entryId, payload) {
   const publisher = payload.publisher === undefined ? existing.publisher : cleanText(payload.publisher, 'Publisher', { max: 160 })
   const translator = payload.translator === undefined ? existing.translator : cleanText(payload.translator, 'Translator', { max: 160 })
   const pageCount = payload.pageCount === undefined ? existing.pageCount : optionalInteger(payload.pageCount, 'Page count', { min: 1, max: 100000 })
+  const currentPage = payload.currentPage === undefined ? existing.currentPage : optionalInteger(payload.currentPage, 'Current page', { min: 0, max: 100000 })
+  if (pageCount && currentPage !== null && currentPage > pageCount) throw Object.assign(new Error('Kaldığın sayfa toplam sayfayı geçemez.'), { statusCode: 400 })
+  const progressPercent = payload.progressPercent === undefined ? existing.progressPercent : optionalInteger(payload.progressPercent, 'Progress percent', { min: 0, max: 100 })
+  const nextCurrentPage = nextStatus === 'read' && pageCount ? pageCount : currentPage
+  const nextProgressPercent = nextStatus === 'read' ? 100 : progressPercent
+  const nextCompletedAt = payload.completedAt === undefined
+    ? (existing.completedAt || (nextStatus === 'read' && existing.status !== 'read' ? new Date().toISOString().slice(0, 10) + ' 00:00:00' : null))
+    : completionDate(payload.completedAt)
   const openLibraryWorkKey = payload.openLibraryWorkKey === undefined ? existing.openLibraryWorkKey : cleanText(payload.openLibraryWorkKey, 'Open Library work ID', { max: 80 })
   const openLibraryEditionKey = payload.openLibraryEditionKey === undefined ? existing.openLibraryEditionKey : cleanText(payload.openLibraryEditionKey, 'Open Library edition ID', { max: 80 })
   const coverId = payload.coverId === undefined ? existing.coverId : optionalInteger(payload.coverId, 'Cover ID', { min: 1, max: 2147483647 })
   const workCoverId = payload.workCoverId === undefined ? existing.workCoverId : optionalInteger(payload.workCoverId, 'Work cover ID', { min: 1, max: 2147483647 })
+  const compass = compassFields(payload, existing)
   const resonances = normalizeResonances(payload.resonanceTags)
   const editionHasData = Boolean(isbn || language || publisher || translator || pageCount || openLibraryEditionKey || coverId)
   const editionFieldsProvided = ['isbn', 'language', 'publisher', 'translator', 'pageCount', 'openLibraryEditionKey', 'coverId'].some((field) => Object.hasOwn(payload, field))
@@ -438,10 +661,12 @@ function updateLibraryEntry(entryId, payload) {
       UPDATE library_entries
       SET edition_id = ?, status = ?, rating = ?, review = ?,
           started_at = CASE WHEN ? = 'reading' AND status <> 'reading' AND started_at IS NULL THEN CURRENT_TIMESTAMP ELSE started_at END,
-          completed_at = CASE WHEN ? = 'read' AND status <> 'read' AND completed_at IS NULL THEN CURRENT_TIMESTAMP ELSE completed_at END,
+          completed_at = ?, current_page = ?, progress_percent = ?,
+          latitude = ?, longitude = ?, location_label = ?, location_kind = ?,
           updated_at = CURRENT_TIMESTAMP
       WHERE id = ? AND user_id = ?
-    `).run(editionFieldsProvided ? editionId : existing.editionId, nextStatus, nextRating, nextReview, nextStatus, nextStatus, entryId, LOCAL_USER_ID)
+    `).run(editionFieldsProvided ? editionId : existing.editionId, nextStatus, nextRating, nextReview, nextStatus, nextCompletedAt, nextCurrentPage, nextProgressPercent,
+      compass.latitude, compass.longitude, compass.locationLabel, compass.locationKind, entryId, LOCAL_USER_ID)
     saveResonances(entryId, resonances)
     database.exec('COMMIT')
   } catch (error) {
@@ -480,6 +705,7 @@ const server = createServer(async (request, response) => {
     if (request.method === 'GET' && path === '/api/export') return sendJson(response, 200, exportArchive())
     if (request.method === 'GET' && path === '/api/library/insights') return sendJson(response, 200, libraryInsights())
     if (request.method === 'GET' && path === '/api/catalog/search') return sendJson(response, 200, await searchCatalog(url))
+    if (request.method === 'GET' && path === '/api/places/search') return sendJson(response, 200, await searchPlaces(url))
     const catalogEditionsMatch = path.match(/^\/api\/catalog\/works\/([^/]+)\/editions$/)
     if (request.method === 'GET' && catalogEditionsMatch) return sendJson(response, 200, await catalogEditions(decodeURIComponent(catalogEditionsMatch[1])))
     if (request.method === 'GET' && path === '/api/themes') return sendJson(response, 200, { items: listThemes(database, LOCAL_USER_ID) })
@@ -513,12 +739,30 @@ const server = createServer(async (request, response) => {
       const link = updateNoteLink(database, LOCAL_USER_ID, decodeURIComponent(noteLinkUpdateMatch[1]), await readJson(request))
       return link ? sendJson(response, 200, link) : sendJson(response, 404, { error: 'Bağlantı bulunamadı.' })
     }
+    if (path === '/api/library/orbit' && (request.method === 'GET' || request.method === 'PUT')) {
+      const year = optionalInteger(url.searchParams.get('year'), 'Year', { min: 1900, max: 3000 }) || new Date().getFullYear()
+      if (request.method === 'PUT') {
+        const body = await readJson(request)
+        const target = optionalInteger(body.target, 'Target', { min: 1, max: 500 })
+        if (target === null) throw Object.assign(new Error('Yıllık hedef için 1–500 arası bir sayı gir.'), { statusCode: 400 })
+        database.prepare(`INSERT INTO reading_goals (user_id, year, target) VALUES (?, ?, ?)
+          ON CONFLICT(user_id, year) DO UPDATE SET target = excluded.target, updated_at = CURRENT_TIMESTAMP`)
+          .run(LOCAL_USER_ID, year, target)
+      }
+      return sendJson(response, 200, readingOrbit(year))
+    }
     if (request.method === 'GET' && path === '/api/library') {
       return sendJson(response, 200, listLibrary(url))
     }
     if (request.method === 'POST' && path === '/api/library') {
       const item = createLibraryEntry(await readJson(request))
       return sendJson(response, 201, item)
+    }
+    if (request.method === 'POST' && path === '/api/library/import/goodreads') {
+      return sendJson(response, 200, importGoodreadsCsv(await readCsv(request)))
+    }
+    if (request.method === 'POST' && path === '/api/library/import/goodreads/preview') {
+      return sendJson(response, 200, previewGoodreadsCsv(await readCsv(request)))
     }
 
     const entryMatch = path.match(/^\/api\/library\/([^/]+)$/)

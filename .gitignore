@@ -6,3 +6,5 @@ dist
 !.env.example
 server/data/*.sqlite
 server/data/*.sqlite-*
+
+release/

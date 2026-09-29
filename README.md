@@ -44,10 +44,19 @@ Yeni bir not kaydedilince yıldızı kısa bir parıltıyla sahneye gelir. Bir y
 - **Arayüz:** React 18, Vite, Tailwind CSS 4.
 - **3D:** Three.js, React Three Fiber, Drei ve `@react-three/postprocessing` Bloom.
 - **Yerel API:** Node.js HTTP sunucusu ve `node:sqlite`; isteğe bağlı AI çağrıları yalnızca `127.0.0.1:11434` üzerindeki Ollama servisine gider.
-- **Veritabanı:** SQLite; SQL migration'ları `server/migrations/` altında tutulur.
+- **Veritabanı:** SQLite; SQL migration'ları `server/migrations/` altında tutulur. Kişisel arşiv uygulamanın kurulum dizininden ayrı saklanır.
 - **Akış:** React görünümleri → `/api` yerel API'si → SQLite. Not yazıldığında kalıcı yıldız konumu veritabanına kaydedilir; Atlas bu veriyi API'den alır.
 
-SQLite dosyası `server/data/chronologos.sqlite` konumunda oluşturulur ve Git'e eklenmez. Geliştirme sunucusu API'yi `127.0.0.1:4178` üzerinde, Vite arayüzünü ise kullanılabilir `127.0.0.1` adresinde açar. Vite 5173 kullanımdaysa bir sonraki portu seçebilir; terminalde yazan adresi açın. API portu doluysa `API_PORT=4179 npm run dev` ile farklı bir port seçilebilir.
+Geliştirme sırasında SQLite dosyası `server/data/chronologos.sqlite` konumunda oluşturulur ve Git'e eklenmez. Geliştirme sunucusu API'yi `127.0.0.1:4178` üzerinde, Vite arayüzünü ise kullanılabilir `127.0.0.1` adresinde açar. Vite 5173 kullanımdaysa bir sonraki portu seçebilir; terminalde yazan adresi açın. API portu doluysa `API_PORT=4179 npm run dev` ile farklı bir port seçilebilir.
+
+### Kişisel verilerin saklanması ve yedeklenmesi
+
+- Kitaplar, okuma durumu ve sayfa ilerlemesi, yıllık hedefler, kitap konumları, notlar, taslaklar, temalar, Atlas yıldız yerleşimleri ve düşünce bağlantıları yerel SQLite veritabanında kalıcı olarak saklanır. Uygulamayı kapatıp yeniden açmak verileri silmez.
+- Kurulu Windows uygulaması veritabanını `%APPDATA%\Chronologos\chronologos.sqlite` konumunda tutar. Bu klasör kurulum klasöründen ayrıdır; uygulamayı güncellemek veya yeniden kurmak normalde arşivi silmez. Geliştirme sürümü `server/data/chronologos.sqlite` kullanır.
+- **JSON yedeği** Notlar ekranındaki ⚙ Masa ayarları bölümünden indirilebilir. Dışa aktarma `schemaVersion: 6` biçiminde kitaplık/künye, okuma ilerlemesi ve hedefleri, konum bilgileri, notlar ve Atlas ilişkilerini içerir. Bu dosya taşınabilir bir arşiv kopyasıdır; şu an uygulamada JSON içe aktarma/geri yükleme ekranı yoktur.
+- Atlas kitap işaretçileri, anı kartı tercihleri, yerleştirme sesi ve anı gösterim geçmişi tarayıcı/Electron `localStorage` alanında tutulur; JSON arşivine veya SQLite dosyasına dahil değildir. Electron güncellemeleri aynı uygulama veri klasörünü korur.
+- Tam SQLite kopyasını elle yedeklemek için önce uygulamayı tamamen kapat, ardından yukarıdaki `chronologos.sqlite` dosyasını başka bir diske veya güvenli klasöre kopyala. Veritabanı WAL modunda çalıştığından uygulama açıkken yalnızca ana dosyayı kopyalama. Geri yükleme için uygulama kapalıyken yedek dosyayı aynı konuma geri koyabilirsin. Dosyayı güvenli yerde sakla; kişisel kitap ve not verilerini içerir.
+- Yedekleri düzenli aralıklarla, özellikle uygulamayı başka bilgisayara taşımadan veya büyük değişikliklerden önce al. Uygulamaya JSON geri yükleme desteği eklendiğinde bu dışa aktarma biçimi taşınabilir yedek olarak kullanılabilecek.
 
 ## Yerel kurulum
 
@@ -75,6 +84,13 @@ npm run build
 npm run preview
 ```
 
+## Windows masaüstü uygulaması
+
+- Yerel geliştirme penceresini açmak için `npm run desktop:dev` komutunu kullan.
+- Windows kurucusunu üretmek için `npm run desktop:installer` komutunu çalıştır. Kurulum dosyası `release/Chronologos-Setup-0.1.0.exe` konumuna çıkar; kurucu Başlat menüsü ve masaüstü kısayolu oluşturur.
+- Masaüstü kabuğu React arayüzünden ve API’den ayrı kalır. Electron API sunucusunu kendi Node utility process’inde başlatır; arayüz `/api` isteklerini aynı yerel origin’den gönderir. Bu sınır, backend’in ileride büyütülmesini veya başka bir servise taşınmasını kolaylaştırır.
+- Kurulu uygulamanın SQLite veritabanı Electron’un kullanıcı veri klasöründe tutulur. Geliştirme sürümü ilk açılışta klondaki veritabanını SQLite backup API’siyle kopyalar; kaynak dosyayı yerinde bırakır.
+
 ## Proje haritası
 
 - `src/scene/Chronos.jsx` — dünya küresi, antik atlas dokusu ve halkalar.
@@ -93,7 +109,7 @@ npm run preview
 
 ## Kapsam ve güvenlik sınırları
 
-Bu sürüm tek kullanıcılı, yerel bir prototiptir. Şemada kullanıcı sahipliği alanları bulunsa da oturum açma ve API düzeyinde çok kullanıcılı yetkilendirme tamamlanmadı. JSON dışa aktarma vardır; içe aktarma/geri yükleme henüz yoktur. Uygulamayı internete açmadan veya başkalarına kullandırmadan önce kimlik doğrulama, sahiplik kontrolleri, geri yükleme, hesap/veri silme ve dağıtım güvenliği ele alınmalıdır.
+Bu sürüm tek kullanıcılı, yerel bir uygulamadır. Şemada kullanıcı sahipliği alanları bulunsa da oturum açma ve API düzeyinde çok kullanıcılı yetkilendirme tamamlanmadı. Tam JSON dışa aktarma vardır; JSON içe aktarma/geri yükleme henüz yoktur. Uygulamayı internete açmadan veya başkalarına kullandırmadan önce kimlik doğrulama, sahiplik kontrolleri, uygulama içi geri yükleme, hesap/veri silme ve dağıtım güvenliği ele alınmalıdır.
 
 Bulut AI, otomatik bağlantı kaydı, Neo4j ve doğrulanmış yazar/coğrafya/tarih verisi uygulamada yoktur. Yerel AI önerileri isteğe bağlıdır ve yalnızca kullanıcı “AI ile öner” dediğinde devreye girer. Yerel deneme için Ollama kurup şu modelleri indirebilirsin:
 
