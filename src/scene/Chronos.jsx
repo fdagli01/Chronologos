@@ -1,7 +1,7 @@
 import { useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { Html } from '@react-three/drei'
-import { AdditiveBlending, BufferAttribute, BufferGeometry, DoubleSide, Euler, Matrix4, Quaternion, ShaderMaterial, Vector3 } from 'three'
+import { AdditiveBlending, BufferAttribute, BufferGeometry, DoubleSide, Euler, FrontSide, Matrix4, Quaternion, ShaderMaterial, Vector3 } from 'three'
 import { createCoastTexture, createEarthTexture } from './earthTexture.js'
 import { LivingEarth } from './LivingEarth.jsx'
 import { globePoint } from './globePoint.js'
@@ -70,17 +70,18 @@ function AtmosphericRim() {
       varying vec3 vNormal;
       varying vec3 vView;
       void main() {
-        float edge = pow(1.0 - max(dot(vNormal, vView), 0.0), 3.0);
+        float facing = max(dot(normalize(vNormal), normalize(vView)), 0.0);
+        float edge = pow(1.0 - facing, 3.0) * smoothstep(0.0, .10, facing);
         float breath = .88 + .12 * sin(uTime * .27);
-        vec3 tint = mix(vec3(.25,.54,.61), vec3(.75,.52,.23), smoothstep(.1,.9,vNormal.y));
-        gl_FragColor = vec4(tint, edge * .26 * breath);
+        vec3 tint = mix(vec3(.35,.43,.45), vec3(.66,.52,.34), smoothstep(.1,.9,vNormal.y));
+        gl_FragColor = vec4(tint, edge * .10 * breath);
       }
     `,
-    transparent: true, depthWrite: false, blending: AdditiveBlending, side: DoubleSide,
+    transparent: true, depthWrite: false, blending: AdditiveBlending, side: FrontSide,
   }), [])
   useFrame(({ clock }) => { material.uniforms.uTime.value = clock.getElapsedTime() })
   return <mesh material={material}>
-    <sphereGeometry args={[2.04, 64, 48]} />
+    <sphereGeometry args={[1.98, 64, 48]} />
   </mesh>
 }
 
@@ -147,8 +148,9 @@ export function Chronos({ compassDestination, bookPlaces = [], showBookMarkers =
           onClick={(event) => { event.stopPropagation(); onSelectBookPlace?.(place) }}
           onPointerOver={() => { document.body.style.cursor = 'pointer' }}
           onPointerOut={() => { document.body.style.cursor = '' }}>
-          <mesh><sphereGeometry args={[place.isCluster ? .082 : place.books.length > 1 ? .065 : .047, 16, 12]} /><meshBasicMaterial color="#ffe5ad" toneMapped={false} /></mesh>
-          <mesh ref={focused ? markerPulse : undefined}><ringGeometry args={focused ? [.092, .12, 28] : [.075, .091, 28]} /><meshBasicMaterial color={focused ? '#ffe3a3' : '#f2c579'} side={DoubleSide} transparent opacity={.95} depthWrite={false} toneMapped={false} /></mesh>
+          <mesh><sphereGeometry args={[.085, 12, 8]} /><meshBasicMaterial transparent opacity={0} colorWrite={false} depthWrite={false} /></mesh>
+          <mesh><sphereGeometry args={[focused ? .052 : place.isCluster ? .052 : place.books.length > 1 ? .041 : .03, 16, 12]} /><meshBasicMaterial color={focused ? '#e7c98f' : '#bba77f'} transparent opacity={focused ? .88 : .56} depthWrite={false} /></mesh>
+          <mesh ref={focused ? markerPulse : undefined}><ringGeometry args={focused ? [.074, .09, 28] : [.046, .057, 28]} /><meshBasicMaterial color={focused ? '#f0d39c' : '#bba77f'} side={DoubleSide} transparent opacity={focused ? .78 : .3} depthWrite={false} /></mesh>
           {place.books.length > 1 && <Html position={[0, 0, .115]} center distanceFactor={7} occlude style={{ pointerEvents: 'none' }}><span className="atlas-book-marker-count" aria-hidden="true">{place.books.length}</span></Html>}
         </group>
       })}

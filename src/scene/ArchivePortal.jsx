@@ -1,3 +1,4 @@
+import { t } from '../i18n/index.js'
 import { useEffect, useRef, useState } from 'react'
 import { navigateThroughPortal } from '../navigation/portalTransition.js'
 
@@ -37,7 +38,7 @@ export function ArchivePortal({ elementRef }) {
         ref={trigger}
         className="archive-portal__trigger"
         type="button"
-        aria-label="Arşiv portalını aç"
+        aria-label={t("Arşiv portalını aç")}
         aria-haspopup="menu"
         aria-expanded={open}
         onFocus={(event) => setKeyboardFocused(event.currentTarget.matches(':focus-visible'))}
@@ -50,11 +51,11 @@ export function ArchivePortal({ elementRef }) {
           <i className="archive-portal__singularity" />
           <i className="archive-portal__mote" />
         </span>
-        <span className={`archive-portal__caption${labelVisible ? ' archive-portal__caption--visible' : ''}`} aria-hidden="true"><span className="archive-portal__sigil">✦</span> Arşiv</span>
+        <span className={`archive-portal__caption${labelVisible ? ' archive-portal__caption--visible' : ''}`} aria-hidden="true"><span className="archive-portal__sigil">✦</span> {t("Arşiv")}</span>
       </button>
-      {open && <div className="archive-portal__menu" role="menu" aria-label="Arşiv boyutunu seç">
-        <button type="button" role="menuitem" onClick={(event) => travel(event, '/library')}>Kitaplık</button>
-        <button type="button" role="menuitem" onClick={(event) => travel(event, '/notes')}>Notlar</button>
+      {open && <div className="archive-portal__menu" role="menu" aria-label={t("Arşiv boyutunu seç")}>
+        <button type="button" role="menuitem" onClick={(event) => travel(event, '/library')}>{t("Kitaplık")}</button>
+        <button type="button" role="menuitem" onClick={(event) => travel(event, '/notes')}>{t("Notlar")}</button>
       </div>}
     </div>
   )

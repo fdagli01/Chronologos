@@ -9,7 +9,7 @@ import { NebulaBackdrop } from './NebulaBackdrop.jsx'
 import { CelestialHaze } from './CelestialHaze.jsx'
 import { CelestialSphere } from './CelestialSphere.jsx'
 
-export function Planetarium({ revealRequest, compassDestination, bookPlaces, showBookMarkers, onSelectBookPlace, atlasData, selectedNoteId, selectedLineRef, selectedPointRef, selectedCardRef, portalElementRef, onSelectNote }) {
+export function Planetarium({ revealRequest, linkCreationRequest, compassDestination, bookPlaces, showBookMarkers, onSelectBookPlace, atlasData, selectedNoteId, selectedLineRef, selectedPointRef, selectedCardRef, portalElementRef, onSelectNote }) {
   const selectedPosition = atlasData?.nodes?.find((note) => note.id === selectedNoteId)?.position || null
   const lensCenterRef = useRef(new Vector2(0.3, 0.73))
   return (
@@ -22,7 +22,7 @@ export function Planetarium({ revealRequest, compassDestination, bookPlaces, sho
         <NebulaBackdrop lensCenterRef={lensCenterRef} />
         <CelestialHaze />
         <DeepField />
-        <Logos revealRequest={revealRequest} atlasData={atlasData} selectedNoteId={selectedNoteId} onSelectNote={onSelectNote} />
+        <Logos revealRequest={revealRequest} linkCreationRequest={linkCreationRequest} atlasData={atlasData} selectedNoteId={selectedNoteId} onSelectNote={onSelectNote} />
       </CelestialSphere>
       <Chronos compassDestination={compassDestination} bookPlaces={bookPlaces} showBookMarkers={showBookMarkers} onSelectBookPlace={onSelectBookPlace} />
       <EffectComposer multisampling={0}>

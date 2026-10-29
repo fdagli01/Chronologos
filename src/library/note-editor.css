@@ -1,0 +1,145 @@
+/* The note composer belongs to the dark archive desk; paper stays reserved for writing. */
+.library-app--notes .notes-editor.notes-editor--desk {
+  overflow: visible;
+  margin-top: 29px;
+  padding: clamp(20px, 3vw, 32px);
+  border: 1px solid var(--archive-line, rgba(205, 183, 146, .18));
+  border-radius: 5px;
+  color: #e8e4da;
+  background: #15252f;
+  box-shadow: 0 16px 36px rgba(2, 9, 14, .24);
+}
+.library-app--notes .notes-editor.notes-editor--desk::after { display: none; }
+.library-app--notes .notes-editor--desk .notes-editor__heading { align-items: flex-start; margin-bottom: 22px; }
+.library-app--notes .notes-editor--desk .notes-editor__heading h2 { margin: 5px 0 0; color: #eee7d9; font: 400 clamp(25px, 3vw, 32px)/1.2 Georgia, serif; }
+.library-app--notes .notes-editor--desk .notes-editor__heading .eyebrow { color: #d1b17b; }
+.library-app--notes .workbench-intro { margin-top: 9px; color: #aeb9ba; font: 13px/1.6 Inter, sans-serif; }
+.library-app--notes .workbench-form { gap: 17px; }
+
+.library-app--notes .workbench-kind-picker { gap: 8px; }
+.library-app--notes .workbench-kind-picker button {
+  min-height: 42px;
+  padding-inline: 14px;
+  border: 1px solid rgba(205, 183, 146, .24);
+  border-radius: 4px;
+  color: #c4ccca;
+  background: #101b24;
+  font: 12px Inter, sans-serif;
+}
+.library-app--notes .workbench-kind-picker button span { color: #d1b17b; }
+.library-app--notes .workbench-kind-picker button:hover { border-color: #a78d61; background: #1b2b34; }
+.library-app--notes .workbench-kind-picker button.is-active { border-color: #b89a67; color: #f0e4cf; background: #26343a; }
+.library-app--notes .workbench-kind-picker button:focus-visible,
+.library-app--notes .workbench-disclosure-link:focus-visible,
+.library-app--notes .workbench-record-details > summary:focus-visible { outline: 2px solid #d1b17b; outline-offset: 3px; }
+
+.library-app--notes .workbench-form__meta .field,
+.library-app--notes .workbench-source .field { color: #b8c2c0; font: 11px Inter, sans-serif; letter-spacing: 0; text-transform: none; }
+.library-app--notes .workbench-form__meta .field input,
+.library-app--notes .workbench-source .field input,
+.library-app--notes .workbench-source .field select {
+  width: 100%;
+  min-height: 42px;
+  padding: 8px 11px;
+  border: 1px solid rgba(205, 183, 146, .23);
+  border-radius: 4px;
+  color: #e8e4da;
+  background: #101b24;
+  box-shadow: none;
+  font: 13px Inter, sans-serif;
+}
+.library-app--notes .workbench-form__meta input::placeholder,
+.library-app--notes .workbench-source input::placeholder { color: #859494; }
+.library-app--notes .workbench-form__meta .field:focus-within input,
+.library-app--notes .workbench-source .field:focus-within input,
+.library-app--notes .workbench-source .field:focus-within select { border-color: #b89a67; box-shadow: 0 0 0 2px rgba(209, 177, 123, .14); }
+.library-app--notes .workbench-form select { color-scheme: dark; accent-color: #d1b17b; }
+.library-app--notes .workbench-form select option { color: #e8e4da; background: #15252f; }
+
+.library-app--notes .workbench-sheet {
+  min-width: 0;
+  padding: 18px 20px 16px;
+  border: 1px solid #d3c5a9;
+  border-radius: 4px;
+  color: #343b3a;
+  background: #f1eadb;
+  box-shadow: 0 5px 14px rgba(0, 0, 0, .16);
+  transform: none;
+}
+.library-app--notes .workbench-sheet::before { display: none; }
+.library-app--notes .workbench-sheet:focus-within { box-shadow: 0 5px 14px rgba(0, 0, 0, .16), 0 0 0 2px rgba(209, 177, 123, .65); }
+.library-app--notes .workbench-sheet > span { color: #766548; font: 600 10px Inter, sans-serif; letter-spacing: .08em; }
+.library-app--notes .workbench-sheet > span b { color: #8d5545; }
+.library-app--notes .workbench-sheet > span small { color: #7c807b; font: 10px Inter, sans-serif; letter-spacing: 0; }
+.library-app--notes .workbench-sheet textarea,
+.library-app--notes .workbench-sheet--quote textarea,
+.library-app--notes .workbench-sheet--own textarea {
+  min-height: 125px;
+  color: #343b3a;
+  background: transparent !important;
+  font: 16px/1.75 Georgia, serif;
+  letter-spacing: 0;
+}
+.library-app--notes .workbench-sheet--quote,
+.library-app--notes .workbench-sheet--own { background: #f1eadb; }
+.library-app--notes .workbench-sheet--quote textarea { font-family: Georgia, serif; }
+.library-app--notes .workbench-sheet textarea::placeholder { color: #85857d; }
+.library-app--notes .workbench-sheet textarea:focus-visible { border-bottom-color: #a4824c !important; box-shadow: 0 1px 0 rgba(164, 130, 76, .45) !important; }
+
+.library-app--notes .workbench-disclosure-link {
+  min-height: 40px;
+  padding: 0 12px;
+  border: 1px solid rgba(205, 183, 146, .2);
+  border-radius: 4px;
+  color: #d1b17b;
+  background: rgba(16, 27, 36, .55);
+}
+.library-app--notes .workbench-disclosure-link:hover { color: #ead4aa; background: #101b24; }
+.library-app--notes .workbench-disclosure-link small { color: #9aa7a6; font: 11px Inter, sans-serif; }
+.library-app--notes .workbench-record-details { border-top: 1px solid var(--archive-line, rgba(205, 183, 146, .18)); color: #bac4c1; }
+.library-app--notes .workbench-record-details > summary { min-height: 44px; padding: 13px 2px; color: #d1b17b; font: 12px Inter, sans-serif; }
+.library-app--notes .workbench-record-details > summary:hover { color: #ead4aa; }
+.library-app--notes .workbench-record-details > summary small,
+.library-app--notes .workbench-record-details > summary span { color: #a8b0b2; font-size: 11px; }
+.library-app--notes .workbench-source { grid-template-columns: minmax(0, 1fr) minmax(180px, .48fr); gap: 12px 16px; padding: 14px; border: 1px solid rgba(205, 183, 146, .16); border-radius: 4px; background: #101b24; }
+.library-app--notes .workbench-source__label { color: #d1b17b; font: 10px Inter, sans-serif; letter-spacing: .12em; }
+.library-app--notes .workbench-form .theme-picker { min-width: 0; margin: 14px 0 0; padding: 12px; border: 1px solid rgba(205, 183, 146, .18); border-radius: 4px; }
+.library-app--notes .workbench-form .theme-picker legend { padding-inline: 5px; color: #d1b17b; font: 11px Inter, sans-serif; }
+.library-app--notes .workbench-form .theme-picker legend small { color: #9eaaa8; font: 10px Inter, sans-serif; }
+.library-app--notes .workbench-form .theme-choice { min-height: 36px; border: 1px solid rgba(205, 183, 146, .2); border-radius: 4px; color: #c2cac7; background: #15252f; font: 11px Inter, sans-serif; }
+.library-app--notes .workbench-form .theme-choice:has(input:checked) { border-color: #a88a5b; color: #f0e4cf; background: #26343a; }
+.library-app--notes .workbench-form .theme-choice input { width: 16px; height: 16px; flex: 0 0 16px; margin: 0; accent-color: #d1b17b; }
+
+.library-app--notes .workbench-form__actions {
+  position: static;
+  min-height: 0;
+  margin-top: 2px;
+  padding: 13px 0 0;
+  border: 0;
+  border-top: 1px solid var(--archive-line, rgba(205, 183, 146, .18));
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+.library-app--notes .workbench-form__actions > span { max-width: 360px; color: #a8b0b2; font: 12px/1.55 Inter, sans-serif; }
+.library-app--notes .notes-seal-button,
+.library-app--notes .notes-seal-button:hover { min-width: 160px; min-height: 44px; height: auto; padding: 0 18px; border: 1px solid #b89a67; border-radius: 4px; color: #17242a; background: #d1b17b; box-shadow: none; font: 600 12px Inter, sans-serif; }
+.library-app--notes .notes-seal-button:hover { background: #dfc18e; transform: none; filter: none; }
+.library-app--notes .notes-seal-button:disabled { opacity: .62; cursor: wait; }
+.library-app--notes .notes-seal-button:focus-visible { outline: 2px solid #e5ca99; outline-offset: 3px; }
+
+@media (max-width: 760px) {
+  .library-app--notes .notes-editor.notes-editor--desk { padding: 20px 16px; }
+  .library-app--notes .workbench-papers { grid-template-columns: minmax(0, 1fr); }
+  .library-app--notes .workbench-sheet { min-height: 0; }
+  .library-app--notes .workbench-sheet textarea { min-height: 145px; }
+}
+@media (max-width: 560px) {
+  .library-app--notes .workbench-form__meta,
+  .library-app--notes .workbench-source { grid-template-columns: minmax(0, 1fr); }
+  .library-app--notes .workbench-source__label { grid-column: 1; }
+  .library-app--notes .workbench-form__actions { align-items: stretch; flex-direction: column; }
+  .library-app--notes .workbench-form__actions > span { max-width: none; }
+  .library-app--notes .notes-seal-button { width: 100%; }
+}

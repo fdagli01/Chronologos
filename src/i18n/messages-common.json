@@ -1,0 +1,6 @@
+{
+  "Chronologos yükleniyor": {"en": "Loading Chronologos", "de": "Chronologos wird geladen"},
+  "Düşüncen Atlas’ta": {"en": "Your thought is in the Atlas", "de": "Dein Gedanke ist im Atlas"},
+  "Chronologos — Düşünce Atlası": {"en": "Chronologos — Thought Atlas", "de": "Chronologos — Gedankenatlas"},
+  "Yerel AI modeli bulunamadı. Ollama’da “{embedding}” ve “{chat}” modellerini indir.": {"en": "Local AI model not found. Download the “{embedding}” and “{chat}” models in Ollama.", "de": "Lokales KI-Modell nicht gefunden. Lade die Modelle „{embedding}“ und „{chat}“ in Ollama herunter."}
+}

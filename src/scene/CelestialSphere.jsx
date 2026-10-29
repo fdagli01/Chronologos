@@ -19,17 +19,13 @@ const selectionRay = new Ray()
 const portalRay = new Ray()
 
 // The photograph, decorative starfield, and note constellations share one
-// coordinate frame so they move like layers of the same sky.
+// fixed coordinate frame so the atlas composition stays in place during long
+// sessions. Ambient motion lives in the individual layers, not the sky transform.
 export function CelestialSphere({ children, selectedPosition, selectedLineRef, selectedPointRef, selectedCardRef, portalElementRef, lensCenterRef }) {
   const sky = useRef()
   const portalAnchorInitialized = useRef(false)
 
-  useFrame(({ clock, camera, size }) => {
-    const time = clock.getElapsedTime()
-    sky.current.rotation.y = time * 0.00042
-    sky.current.rotation.x = Math.sin(time * 0.0008) * 0.0015
-    sky.current.rotation.z = Math.sin(time * 0.0005) * 0.0012
-
+  useFrame(({ camera, size }) => {
     const portal = portalElementRef?.current
     if (portal) {
       sky.current.updateMatrixWorld(true)

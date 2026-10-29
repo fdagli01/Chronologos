@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { AdditiveBlending, BufferAttribute, BufferGeometry, Color, ShaderMaterial, Sphere, Vector3 } from 'three'
-import { stars, threads, starById } from '../data/universe.js'
+import { AdditiveBlending, BufferAttribute, BufferGeometry, LineBasicMaterial, ShaderMaterial, Sphere, Vector3 } from 'three'
+import { createStarGeometry, createThreadGeometry, updateStarHighlights } from './logosGeometry.js'
+import { createLinkPulsePositions } from './linkPulseGeometry.js'
+import { stars } from '../data/universe.js'
 
 const REVEAL_DURATION = 16
 const ambientThemeIds = [...new Set(stars.map((star) => star.theme))]
@@ -92,81 +94,44 @@ const threadFragment = `
   }
 `
 
-function createStarGeometry(themeId, atlasData, freshNoteId, selectedNoteId) {
-  const noteStars = (atlasData?.nodes || []).filter((note) => (note.themeId || 'unplaced') === themeId)
-  const themeStars = stars.filter((star) => star.theme === themeId)
-  const color = atlasData?.themes?.find((theme) => theme.id === themeId)?.color || '#d6c39f'
-  const entries = [
-    ...themeStars.map((star) => ({ ...star, noteId: null })),
-    ...noteStars.map((note) => ({ id: note.id, noteId: note.id, position: note.position, magnitude: note.magnitude, phase: note.phase, color: note.color || color })),
-  ]
-  const geometry = new BufferGeometry()
-  geometry.setAttribute('position', new BufferAttribute(new Float32Array(entries.flatMap((star) => star.position)), 3))
-  geometry.setAttribute('aMagnitude', new BufferAttribute(new Float32Array(entries.map((star) => star.magnitude)), 1))
-  geometry.setAttribute('aAnchor', new BufferAttribute(new Float32Array(entries.map((star) => !star.noteId && star.magnitude > 1.8 ? 1 : 0)), 1))
-  geometry.setAttribute('aFresh', new BufferAttribute(new Float32Array(entries.map((star) => star.noteId === freshNoteId ? 1 : 0)), 1))
-  geometry.setAttribute('aSelected', new BufferAttribute(new Float32Array(entries.map((star) => star.noteId === selectedNoteId ? 1 : 0)), 1))
-  geometry.setAttribute('aPhase', new BufferAttribute(new Float32Array(entries.map((star) => star.phase)), 1))
-  geometry.setAttribute('aColor', new BufferAttribute(new Float32Array(entries.flatMap((star) => new Color(star.color).toArray())), 3))
-  geometry.userData.noteIds = entries.map((star) => star.noteId)
-  return geometry
-}
-
-function createThreadGeometry(themeId, atlasData) {
-  const positions = []
-  const phases = []
-  const strengths = []
-
-  const noteById = new Map((atlasData?.nodes || []).map((note) => [note.id, note]))
-  const ambientEdges = threads.filter((item) => item.id.startsWith(`${themeId}-`)).map((item) => ({ ...item, sourcePosition: starById.get(item.source)?.position, targetPosition: starById.get(item.target)?.position }))
-  const noteEdges = (atlasData?.links || []).flatMap((link) => {
-    const source = noteById.get(link.source)
-    const target = noteById.get(link.target)
-    if (!source || !target || (source.themeId || 'unplaced') !== themeId) return []
-    return [{ sourcePosition: source.position, targetPosition: target.position, phase: source.phase, strength: 0.72 }]
-  })
-  for (const thread of [...ambientEdges, ...noteEdges]) {
-    if (!thread.sourcePosition || !thread.targetPosition) continue
-    const from = new Vector3(...thread.sourcePosition)
-    const to = new Vector3(...thread.targetPosition)
-    const fromDirection = from.clone().normalize()
-    const toDirection = to.clone().normalize()
-    const angle = fromDirection.angleTo(toDirection)
-    const sinAngle = Math.sin(angle)
-    const segments = 12
-    let previous = from
-
-    for (let segment = 1; segment <= segments; segment++) {
-      const t = segment / segments
-      const direction = sinAngle < 0.0001
-        ? fromDirection.clone().lerp(toDirection, t).normalize()
-        : fromDirection.clone().multiplyScalar(Math.sin((1 - t) * angle) / sinAngle)
-          .addScaledVector(toDirection, Math.sin(t * angle) / sinAngle)
-      const radius = from.length() * (1 - t) + to.length() * t + Math.sin(Math.PI * t) * 0.08
-      const next = direction.multiplyScalar(radius)
-      positions.push(...previous.toArray(), ...next.toArray())
-      phases.push(thread.phase, thread.phase)
-      strengths.push(thread.strength, thread.strength)
-      previous = next
-    }
-  }
-
-  const geometry = new BufferGeometry()
-  geometry.setAttribute('position', new BufferAttribute(new Float32Array(positions), 3))
-  geometry.setAttribute('aPhase', new BufferAttribute(new Float32Array(phases), 1))
-  geometry.setAttribute('aStrength', new BufferAttribute(new Float32Array(strengths), 1))
-  return geometry
-}
-
 function smoothEdge(start, end, value) {
   const t = Math.max(0, Math.min(1, (value - start) / (end - start)))
   return t * t * (3 - 2 * t)
 }
 
+function LinkCreationPulse({ request, atlasData }) {
+  const geometry = useMemo(() => {
+    const source = atlasData?.nodes?.find((node) => node.id === request?.source)
+    const target = atlasData?.nodes?.find((node) => node.id === request?.target)
+    const positions = createLinkPulsePositions(source?.position, target?.position)
+    if (!positions) return null
+    const result = new BufferGeometry()
+    result.setAttribute('position', new BufferAttribute(positions, 3))
+    result.setDrawRange(0, 0)
+    return result
+  }, [request?.id, request?.source, request?.target, atlasData])
+  const material = useMemo(() => new LineBasicMaterial({ color: '#ffd68a', transparent: true, opacity: 0, depthWrite: false }), [])
+  const started = useRef(null)
+  useEffect(() => () => geometry?.dispose(), [geometry])
+  useEffect(() => () => material.dispose(), [material])
+  useFrame(({ clock }) => {
+    if (!geometry || !request) return
+    if (started.current == null) started.current = clock.elapsedTime
+    const progress = Math.min(1, (clock.elapsedTime - started.current) / 0.6)
+    geometry.setDrawRange(0, Math.ceil(20 * progress) * 2)
+    material.opacity = Math.sin(Math.PI * progress) * 0.9
+  })
+  if (!geometry) return null
+  return <lineSegments geometry={geometry} material={material} />
+}
+
+
 function ConstellationLayer({ themeId, atlasData, freshNoteId, selectedNoteId, registerMaterials, onSelectNote }) {
-  const starGeometry = useMemo(() => createStarGeometry(themeId, atlasData, freshNoteId, selectedNoteId), [themeId, atlasData, freshNoteId, selectedNoteId])
+  const starGeometry = useMemo(() => createStarGeometry(themeId, atlasData), [themeId, atlasData])
   const threadGeometry = useMemo(() => createThreadGeometry(themeId, atlasData), [themeId, atlasData])
-  useEffect(() => () => { starGeometry.dispose(); threadGeometry.dispose() }, [starGeometry, threadGeometry])
+  useEffect(() => () => starGeometry.dispose(), [starGeometry])
+  useEffect(() => () => threadGeometry.dispose(), [threadGeometry])
+  useEffect(() => { updateStarHighlights(starGeometry, freshNoteId, selectedNoteId) }, [starGeometry, freshNoteId, selectedNoteId])
   const starMaterial = useMemo(() => new ShaderMaterial({
     uniforms: { uTime: { value: 0 }, uAnchorReveal: { value: 0 }, uNeighborReveal: { value: 0 }, uFreshReveal: { value: 0 }, uSelectionPulse: { value: 0 } },
     vertexShader: starVertex,
@@ -202,7 +167,7 @@ function ConstellationLayer({ themeId, atlasData, freshNoteId, selectedNoteId, r
   </group>
 }
 
-export function Logos({ revealRequest, atlasData, selectedNoteId, onSelectNote }) {
+export function Logos({ revealRequest, linkCreationRequest, atlasData, selectedNoteId, onSelectNote }) {
   const layers = useRef(new Map())
   const pending = useRef([])
   const schedule = useRef({ active: null, activeNoteId: null, startAt: 0, nextAt: 8, recentlyShown: new Map() })
@@ -210,6 +175,7 @@ export function Logos({ revealRequest, atlasData, selectedNoteId, onSelectNote }
   const selectionFocus = useRef({ id: null, startAt: 0 })
   const [reducedMotion, setReducedMotion] = useState(() => typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)
   const themeIds = useMemo(() => [...new Set([...ambientThemeIds, ...(atlasData?.themes || []).map((theme) => theme.id), ...(atlasData?.nodes || []).filter((note) => !note.themeId).map(() => 'unplaced')])], [atlasData])
+  const linkExists = Boolean(linkCreationRequest && atlasData?.links?.some((link) => link.id === linkCreationRequest.id))
 
   useEffect(() => {
     const media = window.matchMedia('(prefers-reduced-motion: reduce)')
@@ -277,5 +243,6 @@ export function Logos({ revealRequest, atlasData, selectedNoteId, onSelectNote }
 
   return <group>
     {themeIds.map((themeId) => <ConstellationLayer key={themeId} themeId={themeId} atlasData={atlasData} freshNoteId={revealRequest?.noteId} selectedNoteId={selectedNoteId} onSelectNote={onSelectNote} registerMaterials={registerMaterials} />)}
+    {!reducedMotion && linkExists && <LinkCreationPulse key={linkCreationRequest.id} request={linkCreationRequest} atlasData={atlasData} />}
   </group>
 }

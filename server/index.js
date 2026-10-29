@@ -1,3 +1,5 @@
+import { recordReadingChange, recordImportedReading, readingHistory, updateHistoryDate, readingTimeline } from './reading-history.js'
+import { collectionArchive, handleCollections } from './collections.js'
 import { createServer } from 'node:http'
 import { randomUUID } from 'node:crypto'
 import { openDatabase, LOCAL_USER_ID } from './database.js'
@@ -132,7 +134,8 @@ function sendJson(response, statusCode, payload) {
 
 function exportArchive() {
   const archive = {
-    schemaVersion: 6,
+    schemaVersion: 8,
+    ...collectionArchive(database, LOCAL_USER_ID),
     exportedAt: new Date().toISOString(),
     user: database.prepare('SELECT id, display_name AS displayName, created_at AS createdAt FROM users WHERE id = ?').get(LOCAL_USER_ID),
     library: database.prepare(`SELECT e.id AS entryId, e.status, e.rating, e.review, e.started_at AS startedAt, e.completed_at AS completedAt,
@@ -141,7 +144,7 @@ function exportArchive() {
       e.setting_latitude AS settingLatitude, e.setting_longitude AS settingLongitude, e.setting_label AS settingLabel,
       e.setting_source AS settingSource, e.setting_confidence AS settingConfidence, e.setting_status AS settingStatus,
       e.setting_basis AS settingBasis, e.setting_note AS settingNote,
-      e.created_at AS addedAt, e.updated_at AS updatedAt, w.id AS workId, w.title, w.original_year AS originalYear, w.description,
+      e.current_reading_session_id AS currentReadingSessionId, e.created_at AS addedAt, e.updated_at AS updatedAt, w.id AS workId, w.title, w.original_year AS originalYear, w.description,
       (SELECT json_group_array(a.name) FROM work_authors wa JOIN authors a ON a.id = wa.author_id WHERE wa.work_id = w.id) AS authors,
       edition.id AS editionId, edition.isbn, edition.language, edition.publisher, edition.translator, edition.page_count AS pageCount,
       w.openlibrary_work_key AS openLibraryWorkKey, w.cover_id AS workCoverId, edition.openlibrary_edition_key AS openLibraryEditionKey, edition.cover_id AS coverId,
@@ -159,7 +162,7 @@ function exportArchive() {
       FROM library_entry_resonances resonance JOIN library_entries entry ON entry.id = resonance.library_entry_id
       WHERE entry.user_id = ? ORDER BY resonance.created_at`).all(LOCAL_USER_ID),
     readingSessions: database.prepare(`SELECT session.id, session.library_entry_id AS libraryEntryId,
-      session.started_at AS startedAt, session.completed_at AS completedAt, session.created_at AS createdAt
+      session.started_at AS startedAt, session.completed_at AS completedAt, session.is_completed AS isCompleted, session.created_at AS createdAt
       FROM reading_sessions session JOIN library_entries entry ON entry.id = session.library_entry_id
       WHERE entry.user_id = ? ORDER BY session.created_at`).all(LOCAL_USER_ID),
     readingGoals: database.prepare(`SELECT year, target, updated_at AS updatedAt FROM reading_goals
@@ -398,6 +401,7 @@ function importGoodreadsCsv(text) {
         entry = { id: entryId }
         counts.imported += 1
       }
+      recordImportedReading(database, entry.id)
       insertRecord.run(LOCAL_USER_ID, 'goodreads', externalId, entry.id, JSON.stringify(row))
     }
     database.exec('COMMIT')
@@ -440,9 +444,15 @@ function listLibrary(url) {
   const query = (url.searchParams.get('q') || '').trim().slice(0, 120)
   const status = url.searchParams.get('status')
   const shelf = url.searchParams.get('shelf')
+  const collection = url.searchParams.get('collection')
   const clauses = ['entry.user_id = ?']
   const params = [LOCAL_USER_ID]
 
+  if (collection) {
+    if (!database.prepare('SELECT 1 FROM collections WHERE id = ? AND user_id = ?').get(collection, LOCAL_USER_ID)) throw Object.assign(new Error('Koleksiyon bulunamadı.'), { statusCode: 404 })
+    clauses.push('EXISTS (SELECT 1 FROM collection_books cb WHERE cb.library_entry_id = entry.id AND cb.collection_id = ?)')
+    params.push(collection)
+  }
   if (status && status !== 'all') {
     if (!statuses.has(status)) throw Object.assign(new Error('Unknown reading status.'), { statusCode: 400 })
     clauses.push('entry.status = ?')
@@ -489,15 +499,15 @@ function listLibrary(url) {
 
 function readingOrbit(year) {
   const goal = database.prepare('SELECT target FROM reading_goals WHERE user_id = ? AND year = ?').get(LOCAL_USER_ID, year)
-  const books = database.prepare(`SELECT entry.id, work.title, entry.completed_at AS completedAt
-    FROM library_entries entry JOIN works work ON work.id = entry.work_id
-    WHERE entry.user_id = ? AND entry.is_demo = 0 AND entry.completed_at LIKE ?
-    ORDER BY entry.completed_at, entry.id`).all(LOCAL_USER_ID, `${year}-%`)
+  const books = database.prepare(`SELECT entry.id, work.title, MIN(session.completed_at) AS completedAt
+    FROM reading_sessions session JOIN library_entries entry ON entry.id = session.library_entry_id JOIN works work ON work.id = entry.work_id
+    WHERE entry.user_id = ? AND entry.is_demo = 0 AND session.is_completed = 1 AND session.completed_at LIKE ?
+    GROUP BY entry.id ORDER BY completedAt, entry.id`).all(LOCAL_USER_ID, `${year}-%`)
   return { year, target: goal?.target ?? null, books, completed: books.length }
 }
 
 function completionDate(value) {
-  if (value === null || value === '') return null
+  if (value == null || value === '') return null
   if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value) || Number.isNaN(Date.parse(`${value}T00:00:00Z`)) || new Date(`${value}T00:00:00Z`).toISOString().slice(0, 10) !== value) {
     throw Object.assign(new Error('Bitiş tarihi geçerli bir gün olmalı.'), { statusCode: 400 })
   }
@@ -563,10 +573,11 @@ function createLibraryEntry(payload) {
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).run(entryId, LOCAL_USER_ID, workId, editionId, status, rating, review,
       status === 'reading' ? new Date().toISOString().slice(0, 10) + ' 00:00:00' : null,
-      status === 'read' ? completionDate(payload.completedAt) || new Date().toISOString().slice(0, 10) + ' 00:00:00' : null,
+      status === 'read' ? (payload.completedAt === undefined ? new Date().toISOString().slice(0, 10) + ' 00:00:00' : completionDate(payload.completedAt)) : null,
       status === 'read' ? pageCount : null, status === 'read' ? 100 : null,
       compass.latitude, compass.longitude, compass.locationLabel, compass.locationKind)
     saveResonances(entryId, resonances)
+    recordReadingChange(database, null, entryId)
     database.exec('COMMIT')
   } catch (error) {
     database.exec('ROLLBACK')
@@ -580,6 +591,7 @@ function updateLibraryEntry(entryId, payload) {
   const existing = database.prepare(`
     SELECT entry.id, entry.work_id AS workId, entry.edition_id AS editionId, entry.status, entry.rating, entry.review,
       entry.completed_at AS completedAt, entry.current_page AS currentPage, entry.progress_percent AS progressPercent,
+      entry.started_at AS startedAt, entry.current_reading_session_id AS sessionId,
       entry.latitude, entry.longitude, entry.location_label AS locationLabel, entry.location_kind AS locationKind,
       work.title, work.original_year AS originalYear, work.description, work.cover_id AS workCoverId,
       edition.isbn, edition.language, edition.publisher, edition.translator, edition.page_count AS pageCount,
@@ -609,10 +621,12 @@ function updateLibraryEntry(entryId, payload) {
   const currentPage = payload.currentPage === undefined ? existing.currentPage : optionalInteger(payload.currentPage, 'Current page', { min: 0, max: 100000 })
   if (pageCount && currentPage !== null && currentPage > pageCount) throw Object.assign(new Error('Kaldığın sayfa toplam sayfayı geçemez.'), { statusCode: 400 })
   const progressPercent = payload.progressPercent === undefined ? existing.progressPercent : optionalInteger(payload.progressPercent, 'Progress percent', { min: 0, max: 100 })
-  const nextCurrentPage = nextStatus === 'read' && pageCount ? pageCount : currentPage
-  const nextProgressPercent = nextStatus === 'read' ? 100 : progressPercent
+  const restarting = existing.status === 'read' && ['reading', 'paused'].includes(nextStatus)
+  const nextCurrentPage = nextStatus === 'read' && pageCount ? pageCount : restarting && payload.currentPage === undefined ? 0 : currentPage
+  const nextProgressPercent = nextStatus === 'read' ? 100 : restarting && payload.progressPercent === undefined ? 0 : progressPercent
+  const nextStartedAt = nextStatus === 'reading' && !['reading', 'paused'].includes(existing.status) ? new Date().toISOString().slice(0, 10) + ' 00:00:00' : restarting && nextStatus === 'paused' || nextStatus === 'read' && existing.status === 'to_read' ? null : existing.startedAt
   const nextCompletedAt = payload.completedAt === undefined
-    ? (existing.completedAt || (nextStatus === 'read' && existing.status !== 'read' ? new Date().toISOString().slice(0, 10) + ' 00:00:00' : null))
+    ? (nextStatus === 'read' ? (existing.status === 'read' ? existing.completedAt : new Date().toISOString().slice(0, 10) + ' 00:00:00') : nextStatus !== existing.status && existing.status === 'read' ? null : existing.completedAt)
     : completionDate(payload.completedAt)
   const openLibraryWorkKey = payload.openLibraryWorkKey === undefined ? existing.openLibraryWorkKey : cleanText(payload.openLibraryWorkKey, 'Open Library work ID', { max: 80 })
   const openLibraryEditionKey = payload.openLibraryEditionKey === undefined ? existing.openLibraryEditionKey : cleanText(payload.openLibraryEditionKey, 'Open Library edition ID', { max: 80 })
@@ -660,14 +674,15 @@ function updateLibraryEntry(entryId, payload) {
     database.prepare(`
       UPDATE library_entries
       SET edition_id = ?, status = ?, rating = ?, review = ?,
-          started_at = CASE WHEN ? = 'reading' AND status <> 'reading' AND started_at IS NULL THEN CURRENT_TIMESTAMP ELSE started_at END,
+          started_at = ?,
           completed_at = ?, current_page = ?, progress_percent = ?,
           latitude = ?, longitude = ?, location_label = ?, location_kind = ?,
           updated_at = CURRENT_TIMESTAMP
       WHERE id = ? AND user_id = ?
-    `).run(editionFieldsProvided ? editionId : existing.editionId, nextStatus, nextRating, nextReview, nextStatus, nextCompletedAt, nextCurrentPage, nextProgressPercent,
+    `).run(editionFieldsProvided ? editionId : existing.editionId, nextStatus, nextRating, nextReview, nextStartedAt, nextCompletedAt, nextCurrentPage, nextProgressPercent,
       compass.latitude, compass.longitude, compass.locationLabel, compass.locationKind, entryId, LOCAL_USER_ID)
     saveResonances(entryId, resonances)
+    recordReadingChange(database, existing, entryId)
     database.exec('COMMIT')
   } catch (error) {
     database.exec('ROLLBACK')
@@ -702,7 +717,20 @@ const server = createServer(async (request, response) => {
       const links = database.prepare('SELECT source_note_id AS source, target_note_id AS target FROM note_links WHERE user_id = ?').all(LOCAL_USER_ID)
       return sendJson(response, 200, await suggestLocalConnections(source, notes, links))
     }
+    if (path === '/api/collections' || path.startsWith('/api/collections/')) {
+      const payload = ['POST', 'PATCH'].includes(request.method) ? await readJson(request) : null
+      return sendJson(response, request.method === 'POST' ? 201 : 200, handleCollections(database, LOCAL_USER_ID, request.method, path, payload))
+    }
     if (request.method === 'GET' && path === '/api/export') return sendJson(response, 200, exportArchive())
+    if (request.method === 'GET' && path === '/api/library/timeline') return sendJson(response, 200, readingTimeline(database, LOCAL_USER_ID, url))
+    const historyMatch = path.match(/^\/api\/library\/([^/]+)\/history$/)
+    if (request.method === 'GET' && historyMatch) return sendJson(response, 200, { items: readingHistory(database, LOCAL_USER_ID, decodeURIComponent(historyMatch[1])) })
+    const historyDateMatch = path.match(/^\/api\/library\/history\/([^/]+)$/)
+    if (request.method === 'PATCH' && historyDateMatch) {
+      const payload = await readJson(request)
+      if (!Object.hasOwn(payload, 'completedAt')) throw Object.assign(new Error('Bitiş tarihi alanı gerekli.'), { statusCode: 400 })
+      return sendJson(response, 200, updateHistoryDate(database, LOCAL_USER_ID, decodeURIComponent(historyDateMatch[1]), completionDate(payload.completedAt)))
+    }
     if (request.method === 'GET' && path === '/api/library/insights') return sendJson(response, 200, libraryInsights())
     if (request.method === 'GET' && path === '/api/catalog/search') return sendJson(response, 200, await searchCatalog(url))
     if (request.method === 'GET' && path === '/api/places/search') return sendJson(response, 200, await searchPlaces(url))

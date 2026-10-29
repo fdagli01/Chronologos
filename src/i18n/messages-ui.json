@@ -1,0 +1,2518 @@
+{
+  "AI adayı": {
+    "en": "AI candidate",
+    "de": "KI-Kandidat"
+  },
+  "AN ATLAS OF THOUGHT": {
+    "en": "AN ATLAS OF THOUGHT",
+    "de": "EIN ATLAS DER GEDANKEN"
+  },
+  "API sunucusunun çalıştığını kontrol et.": {
+    "en": "Check that the API server is running.",
+    "de": "Prüfe, ob der API-Server läuft."
+  },
+  "ARŞİVİNİ KEŞFET": {
+    "en": "EXPLORE YOUR ARCHIVE",
+    "de": "ERKUNDE DEIN ARCHIV"
+  },
+  "ATLAS BAĞI": {
+    "en": "ATLAS LINK",
+    "de": "ATLAS-VERBINDUNG"
+  },
+  "ATLAS HATIRLATMASI": {
+    "en": "ATLAS REMINDER",
+    "de": "ATLAS-ERINNERUNG"
+  },
+  "Adını kaydet": {
+    "en": "Save name",
+    "de": "Namen speichern"
+  },
+  "Ahşap kitap rafları": {
+    "en": "Wooden bookshelves",
+    "de": "Bücherregale aus Holz"
+  },
+  "Aklından geçeni buraya bırak…": {
+    "en": "Leave what crosses your mind here…",
+    "de": "Halte hier fest, was dir durch den Kopf geht…"
+  },
+  "Altı ayı geçen ve özellik açıldıktan sonra açılmamış bir notu çalışma masanda göster.": {
+    "en": "Display a note older than six months and unopened since enabling the feature on your desk.",
+    "de": "Zeige eine Notiz, die älter als sechs Monate ist und seit Aktivierung der Funktion nicht geöffnet wurde, auf deinem Schreibtisch an."
+  },
+  "Alıntı": {
+    "en": "Quote",
+    "de": "Zitat"
+  },
+  "Alıntılar": {
+    "en": "Quotes",
+    "de": "Zitate"
+  },
+  "Alıntılarını, kişisel yorumlarını ve kitaplardan bağımsız düşüncelerini aynı arşivde tut.": {
+    "en": "Keep your quotes, personal reflections, and thoughts independent of books in the same archive.",
+    "de": "Bewahre deine Zitate, persönlichen Anmerkungen und buchfernen Gedanken im selben Archiv auf."
+  },
+  "Anı kartları": {
+    "en": "Memory cards",
+    "de": "Erinnerungskarten"
+  },
+  "Arama terimi OpenStreetMap’e gönderilir. Sonuç verisi ©": {
+    "en": "The search query is sent to OpenStreetMap. Result data ©",
+    "de": "Der Suchbegriff wird an OpenStreetMap gesendet. Ergebnisdaten ©"
+  },
+  "Arşiv": {
+    "en": "Archive",
+    "de": "Archiv"
+  },
+  "Arşiv açılıyor…": {
+    "en": "Opening archive…",
+    "de": "Archiv wird geöffnet…"
+  },
+  "Arşiv boyutunu seç": {
+    "en": "Select archive size",
+    "de": "Archivgröße wählen"
+  },
+  "Arşiv portalını aç": {
+    "en": "Open archive portal",
+    "de": "Archivportal öffnen"
+  },
+  "Arşiv Çekmecesi": {
+    "en": "Archive Drawer",
+    "de": "Archivschublade"
+  },
+  "Arşivde aç ↗": {
+    "en": "Open in archive ↗",
+    "de": "Im Archiv öffnen ↗"
+  },
+  "Arşive ulaşılamadı": {
+    "en": "Could not access archive",
+    "de": "Archiv nicht erreichbar"
+  },
+  "Arşivinde henüz not yok.": {
+    "en": "No notes in your archive yet.",
+    "de": "Noch keine Notizen in deinem Archiv."
+  },
+  "Arşivinin bir kopyası": {
+    "en": "A copy of your archive",
+    "de": "Eine Kopie deines Archivs"
+  },
+  "Atlas araçları": {
+    "en": "Atlas tools",
+    "de": "Atlas-Werkzeuge"
+  },
+  "Atlas ayarları": {
+    "en": "Atlas settings",
+    "de": "Atlas-Einstellungen"
+  },
+  "Atlas bağına göre filtrele": {
+    "en": "Filter by Atlas link",
+    "de": "Nach Atlas-Verbindung filtern"
+  },
+  "Atlas boşta kaldığında eski düşünceleri hatırlat.": {
+    "en": "Recall past thoughts when Atlas is idle.",
+    "de": "Erinnere an vergangene Gedanken, wenn der Atlas im Leerlauf ist."
+  },
+  "Atlas notu": {
+    "en": "Atlas note",
+    "de": "Atlas-Notiz"
+  },
+  "Atlas temaları": {
+    "en": "Atlas themes",
+    "de": "Atlas-Themen"
+  },
+  "Atlas’a dön": {
+    "en": "Return to Atlas",
+    "de": "Zurück zum Atlas"
+  },
+  "Atlas’a yerleştir ✦": {
+    "en": "Place in Atlas ✦",
+    "de": "Im Atlas platzieren ✦"
+  },
+  "Atlas’ta göster ↗": {
+    "en": "Show in Atlas ↗",
+    "de": "Im Atlas anzeigen ↗"
+  },
+  "Atlas’ta göster ✧": {
+    "en": "Show in Atlas ✧",
+    "de": "Im Atlas anzeigen ✧"
+  },
+  "Ayarlar": {
+    "en": "Settings",
+    "de": "Einstellungen"
+  },
+  "Ayarları kapat": {
+    "en": "Close settings",
+    "de": "Einstellungen schließen"
+  },
+  "Aylık okuma ve not izleri": {
+    "en": "Monthly reading and note traces",
+    "de": "Monatliche Lese- und Notizspuren"
+  },
+  "Ayrıntı ekle": {
+    "en": "Add detail",
+    "de": "Detail hinzufügen"
+  },
+  "BAĞLANTI TEZGÂHI": {
+    "en": "CONNECTION LOOM",
+    "de": "VERBINDUNGSWERKBANK"
+  },
+  "BAĞLANTILI DÜŞÜNCELER": {
+    "en": "CONNECTED THOUGHTS",
+    "de": "VERBUNDENE GEDANKEN"
+  },
+  "BU AYIN YILDIZLARI": {
+    "en": "STARS OF THIS MONTH",
+    "de": "STERNE DIESES MONATS"
+  },
+  "BU ESERDEN ATLAS’A": {
+    "en": "FROM THIS WORK TO ATLAS",
+    "de": "VON DIESEM WERK ZUM ATLAS"
+  },
+  "Baskı dili": {
+    "en": "Edition language",
+    "de": "Ausgabensprache"
+  },
+  "Baskı numarası": {
+    "en": "Edition number",
+    "de": "Ausgabennummer"
+  },
+  "Baskı seç": {
+    "en": "Select edition",
+    "de": "Ausgabe wählen"
+  },
+  "Bağ adayı seç": {
+    "en": "Select link candidate",
+    "de": "Verbindungskandidaten wählen"
+  },
+  "Bağ kurabileceğin düşünceler": {
+    "en": "Thoughts you can connect with",
+    "de": "Gedanken, die du verbinden kannst"
+  },
+  "Bağla": {
+    "en": "Connect",
+    "de": "Verbinden"
+  },
+  "Bağlantı hedefi seç": {
+    "en": "Select connection target",
+    "de": "Verbindungsziel wählen"
+  },
+  "Bağlantı tezgâhını kapat": {
+    "en": "Close connection loom",
+    "de": "Verbindungswerkbank schließen"
+  },
+  "Bağlantının kısa açıklaması": {
+    "en": "Short description of the connection",
+    "de": "Kurze Beschreibung der Verbindung"
+  },
+  "Başlangıç": {
+    "en": "Start",
+    "de": "Beginn"
+  },
+  "Başlangıç tarihi bitişten sonra olamaz.": {
+    "en": "Start date cannot be after end date.",
+    "de": "Das Startdatum darf nicht nach dem Enddatum liegen."
+  },
+  "Başlangıç ·": {
+    "en": "Start ·",
+    "de": "Beginn ·"
+  },
+  "Başlık": {
+    "en": "Title",
+    "de": "Titel"
+  },
+  "Başlık, metin, kitap veya tema": {
+    "en": "Title, text, book, or theme",
+    "de": "Titel, Text, Buch oder Thema"
+  },
+  "Benzer tema ve kavramlara göre yerel eşleşmeler; bunlar AI önerisi değildir.": {
+    "en": "Local matches based on similar themes and concepts; these are not AI suggestions.",
+    "de": "Lokale Treffer basierend auf ähnlichen Themen und Begriffen; dies sind keine KI-Vorschläge."
+  },
+  "Bir düşünce bağlantısı kurmak için en az iki not ekle.": {
+    "en": "Add at least two notes to forge a thought connection.",
+    "de": "Füge mindestens zwei Notizen hinzu, um eine Gedankenverbindung herzustellen."
+  },
+  "Bir düşünce ya da alıntı eklediğinde Atlas’ta kalıcı bir yıldıza dönüşür.": {
+    "en": "When you add a thought or quote, it turns into an enduring star in Atlas.",
+    "de": "Wenn du einen Gedanken oder ein Zitat hinzufügst, wird daraus ein beständiger Stern im Atlas."
+  },
+  "Bir düşünce yaz; dilersen bir kitaba ve Atlas temalarına bağla.": {
+    "en": "Write a thought; optionally connect it to a book and Atlas themes.",
+    "de": "Verfasse einen Gedanken; verbinde ihn nach Belieben mit einem Buch und Atlas-Themen."
+  },
+  "Bir izin hikâyesi": {
+    "en": "Story of a trace",
+    "de": "Die Geschichte einer Spur"
+  },
+  "Bir kitap birden fazla koleksiyonda bulunabilir.": {
+    "en": "A book can belong to multiple collections.",
+    "de": "Ein Buch kann in mehreren Sammlungen enthalten sein."
+  },
+  "Bir kitap, bir düşünce evreni.": {
+    "en": "A book, a universe of thought.",
+    "de": "Ein Buch, ein Gedankenuniversum."
+  },
+  "Bir şehir ara, sonuçlardan doğru yeri seç. Koordinatları senin için ekleyelim.": {
+    "en": "Search for a city and choose the right place from the results. We will add the coordinates for you.",
+    "de": "Suche nach einer Stadt und wähle den richtigen Ort aus den Ergebnissen. Wir ergänzen die Koordinaten für dich."
+  },
+  "Birden fazla seçebilirsin": {
+    "en": "You can select multiple",
+    "de": "Du kannst mehrere auswählen"
+  },
+  "Birden çok yazarı noktalı virgülle ayır": {
+    "en": "Separate multiple authors with semicolons",
+    "de": "Mehrere Autoren durch Semikolons trennen"
+  },
+  "Bitiş": {
+    "en": "End",
+    "de": "Ende"
+  },
+  "Bitiş tarihi": {
+    "en": "End date",
+    "de": "Enddatum"
+  },
+  "Boylam": {
+    "en": "Longitude",
+    "de": "Längengrad"
+  },
+  "Boş tarih, bu kaydı Tarihsiz izler alanına taşır.": {
+    "en": "Leaving the date empty moves this record to Undated traces.",
+    "de": "Ein leeres Datum verschiebt diesen Eintrag in den Bereich „Undatierte Spuren“."
+  },
+  "Bu aramayla eşleşen başka düşünce yok.": {
+    "en": "No other thoughts match this search.",
+    "de": "Keine weiteren Gedanken stimmen mit dieser Suche überein."
+  },
+  "Bu dönemin göğü henüz sessiz.": {
+    "en": "The sky of this era is still silent.",
+    "de": "Der Himmel dieser Epoche schweigt noch."
+  },
+  "Bu düşünceyle bağ kur": {
+    "en": "Connect with this thought",
+    "de": "Mit diesem Gedanken verbinden"
+  },
+  "Bu eser sende ne bıraktı?": {
+    "en": "What did this work leave in you?",
+    "de": "Was hat dieses Werk in dir hinterlassen?"
+  },
+  "Bu kayıtlar yıl ve tarih filtrelerinin dışında tutulur. Bir okumanın bitiş tarihini eklediğinde yıldızı kendi yılına yerleşir.": {
+    "en": "These records are excluded from year and date filters. When you add a finish date to a reading, its star settles into its year.",
+    "de": "Diese Einträge sind von Jahres- und Datumsfiltern ausgenommen. Sobald du das Enddatum einer Lektüre hinzufügst, findet ihr Stern seinen Platz im jeweiligen Jahr."
+  },
+  "Bu kitabın okuma izleri": {
+    "en": "Reading traces of this book",
+    "de": "Lesespuren dieses Buches"
+  },
+  "Bu kitaptan henüz Atlas’a bir düşünce bırakılmamış.": {
+    "en": "No thoughts from this book have been left in Atlas yet.",
+    "de": "Aus diesem Buch wurde dem Atlas noch kein Gedanke anvertraut."
+  },
+  "Bu okumanın bitiş tarihi": {
+    "en": "End date of this reading",
+    "de": "Enddatum dieser Lektüre"
+  },
+  "Bu tarih, kitabın hangi yılın yıldızı olacağını belirler.": {
+    "en": "This date determines which year's star the book will become.",
+    "de": "Dieses Datum bestimmt, für welches Jahr das Buch als Stern leuchten wird."
+  },
+  "Bu türde tarihsiz kayıt yok.": {
+    "en": "No undated records of this type.",
+    "de": "Keine undatierten Einträge dieser Art."
+  },
+  "Bu yer yazarın…": {
+    "en": "This place is the author's…",
+    "de": "Dieser Ort ist der des Autors…"
+  },
+  "Bulunan yerler": {
+    "en": "Places found",
+    "de": "Gefundene Orte"
+  },
+  "C · L": {
+    "en": "C · L",
+    "de": "C · L"
+  },
+  "CHRONOLOGOS": {
+    "en": "CHRONOLOGOS",
+    "de": "CHRONOLOGOS"
+  },
+  "CHRONOLOGOS · KÜTÜPHANE": {
+    "en": "CHRONOLOGOS · LIBRARY",
+    "de": "CHRONOLOGOS · BIBLIOTHEK"
+  },
+  "CHRONOLOGOS · KÜTÜPHANE KATALOĞU": {
+    "en": "CHRONOLOGOS · LIBRARY CATALOG",
+    "de": "CHRONOLOGOS · BIBLIOTHEKSKATALOG"
+  },
+  "CHRONOLOGOS · TERCİHLER": {
+    "en": "CHRONOLOGOS · PREFERENCES",
+    "de": "CHRONOLOGOS · EINSTELLUNGEN"
+  },
+  "CHRONOS · LOGOS": {
+    "en": "CHRONOS · LOGOS",
+    "de": "CHRONOS · LOGOS"
+  },
+  "Chronologos kitaplığı": {
+    "en": "Chronologos library",
+    "de": "Chronologos-Bibliothek"
+  },
+  "Chronologos: a living atlas of thought": {
+    "en": "Chronologos: a living atlas of thought",
+    "de": "Chronologos: ein lebendiger Atlas der Gedanken"
+  },
+  "DIŞA AKTARIMI İÇE AL": {
+    "en": "IMPORT EXPORT",
+    "de": "EXPORT IMPORTIEREN"
+  },
+  "Devam etmek için listeden bir hedef düşünce seç.": {
+    "en": "Select a target thought from the list to continue.",
+    "de": "Wähle einen Zielgedanken aus der Liste, um fortzufahren."
+  },
+  "Dil": {
+    "en": "Language",
+    "de": "Sprache"
+  },
+  "Diğer tarihsiz izleri göster": {
+    "en": "Show other undated traces",
+    "de": "Weitere undatierte Spuren anzeigen"
+  },
+  "DÜŞÜNCE KEŞFİ": {
+    "en": "THOUGHT EXPLORATION",
+    "de": "GEDANKENERKUNDUNG"
+  },
+  "DÜŞÜNCELER": {
+    "en": "THOUGHTS",
+    "de": "GEDANKEN"
+  },
+  "Dünya’da kitap işaretleri": {
+    "en": "Book markers across the world",
+    "de": "Buchzeichen auf der Welt"
+  },
+  "Düzenle": {
+    "en": "Edit",
+    "de": "Bearbeiten"
+  },
+  "Düzenlemeden çık": {
+    "en": "Exit editing",
+    "de": "Bearbeiten beenden"
+  },
+  "Düzenlenecek koleksiyon": {
+    "en": "Collection to edit",
+    "de": "Zu bearbeitende Sammlung"
+  },
+  "Düşünce": {
+    "en": "Thought",
+    "de": "Gedanke"
+  },
+  "Düşünce kayıtların": {
+    "en": "Your thought records",
+    "de": "Deine Gedankeneinträge"
+  },
+  "Düşünce ve alıntılar": {
+    "en": "Thoughts and excerpts",
+    "de": "Gedanken und Zitate"
+  },
+  "Düşünceler": {
+    "en": "Thoughts",
+    "de": "Gedanken"
+  },
+  "Düşünceler arasında bağ": {
+    "en": "Connection between thoughts",
+    "de": "Verbindung zwischen Gedanken"
+  },
+  "Düşüncene kısa bir ad ver": {
+    "en": "Give your thought a brief title",
+    "de": "Gib deinem Gedanken einen kurzen Titel"
+  },
+  "Düşünceni biraz daha aç": {
+    "en": "Elaborate on your thought",
+    "de": "Führe deinen Gedanken etwas weiter aus"
+  },
+  "Düşünceyi düzenle": {
+    "en": "Edit thought",
+    "de": "Gedanken bearbeiten"
+  },
+  "EN ÇOK İZ BIRAKAN TEMA": {
+    "en": "MOST RESONANT THEME",
+    "de": "PRÄGENDSTES THEMA"
+  },
+  "Enlem": {
+    "en": "Latitude",
+    "de": "Breitengrad"
+  },
+  "Enter ile kaydet. Taslakların burada birikir; hazır olduğunda kaynak ve tema ekleyip Atlas’a yerleştirebilirsin.": {
+    "en": "Save with Enter. Your drafts gather here; when ready, add sources and themes to place them in the Atlas.",
+    "de": "Mit Enter speichern. Deine Entwürfe sammeln sich hier; wenn du bereit bist, füge Quellen und Themen hinzu, um sie im Atlas zu platzieren."
+  },
+  "Eser hakkında kısa bilgi": {
+    "en": "Brief information about the work",
+    "de": "Kurze Information über das Werk"
+  },
+  "Eserin adı": {
+    "en": "Title of the work",
+    "de": "Titel des Werkes"
+  },
+  "Etki derinliği": {
+    "en": "Depth of resonance",
+    "de": "Resonanztiefe"
+  },
+  "Filtreleri temizle": {
+    "en": "Clear filters",
+    "de": "Filter zurücksetzen"
+  },
+  "FİŞ ·": {
+    "en": "CARD ·",
+    "de": "KARTEIKARTE ·"
+  },
+  "Goodreads CSV dosyası seç": {
+    "en": "Select Goodreads CSV file",
+    "de": "Goodreads-CSV-Datei auswählen"
+  },
+  "Goodreads kitaplığın": {
+    "en": "Your Goodreads library",
+    "de": "Deine Goodreads-Bibliothek"
+  },
+  "GÜNÜN UNUTULMUŞ YILDIZI": {
+    "en": "FORGOTTEN STAR OF THE DAY",
+    "de": "VERGESSENER STERN DES TAGES"
+  },
+  "Gözden geçir": {
+    "en": "Review",
+    "de": "Überprüfen"
+  },
+  "Günün Unutulmuş Yıldızı": {
+    "en": "Forgotten Star of the Day",
+    "de": "Vergessener Stern des Tages"
+  },
+  "HARİTALANMAMIŞ YILDIZLAR": {
+    "en": "UNMAPPED STARS",
+    "de": "UNKARTIERTE STERNE"
+  },
+  "HATIRLATMALAR": {
+    "en": "REMINDERS",
+    "de": "ERINNERUNGEN"
+  },
+  "HIZLI YAKALAMA": {
+    "en": "QUICK CAPTURE",
+    "de": "SCHNELLERFASSUNG"
+  },
+  "Hedef düşüncelerde ara": {
+    "en": "Search target thoughts",
+    "de": "In Zielgedanken suchen"
+  },
+  "Henüz zaman yoluna yerleşmemiş kayıtlar": {
+    "en": "Records not yet placed on the timeline",
+    "de": "Noch nicht auf der Zeitachse verortete Einträge"
+  },
+  "Hepsi": {
+    "en": "All",
+    "de": "Alle"
+  },
+  "Hikâyenin geçtiği yeri bilinen okunmuş kitapları Dünya üzerinde göster. Varsayılan: açık.": {
+    "en": "Display read books with known story locations on the globe. Default: enabled.",
+    "de": "Gelesene Bücher mit bekanntem Handlungsort auf der Weltkarte anzeigen. Standard: aktiviert."
+  },
+  "ISBN": {
+    "en": "ISBN",
+    "de": "ISBN"
+  },
+  "ISBN ya da eser adı": {
+    "en": "ISBN or work title",
+    "de": "ISBN oder Werktitel"
+  },
+  "KALDIĞIN YERDEN": {
+    "en": "WHERE YOU LEFT OFF",
+    "de": "WO DU AUFGEHÖRT HAST"
+  },
+  "KAYNAK ESER": {
+    "en": "SOURCE WORK",
+    "de": "QUELLENWERK"
+  },
+  "KAYNAK FİŞİ": {
+    "en": "SOURCE CARD",
+    "de": "QUELLENKARTE"
+  },
+  "KENDİ RAFLARIN": {
+    "en": "YOUR OWN SHELVES",
+    "de": "DEINE EIGENEN REGALE"
+  },
+  "KOLEKSİYON": {
+    "en": "COLLECTION",
+    "de": "SAMMLUNG"
+  },
+  "Kaldır": {
+    "en": "Remove",
+    "de": "Entfernen"
+  },
+  "Kaldığın sayfayı veya yüzdeliği güncelle; ayraç rafta yerini bulsun.": {
+    "en": "Update your current page or percentage; let the bookmark find its place on the shelf.",
+    "de": "Aktualisiere deine Seite oder Prozentzahl; lass das Lesezeichen seinen Platz im Regal finden."
+  },
+  "Kapaklar": {
+    "en": "Covers",
+    "de": "Buchcover"
+  },
+  "Katalog fişini kapat": {
+    "en": "Close catalog card",
+    "de": "Katalogkarte schließen"
+  },
+  "Katalogda ISBN veya başlık ara": {
+    "en": "Search catalog by ISBN or title",
+    "de": "Im Katalog nach ISBN oder Titel suchen"
+  },
+  "Kaydı düzenle": {
+    "en": "Edit record",
+    "de": "Eintrag bearbeiten"
+  },
+  "Kaydın hikâyesi açılıyor…": {
+    "en": "Opening the record’s story…",
+    "de": "Die Geschichte des Eintrags wird geöffnet…"
+  },
+  "Kaynak kitap": {
+    "en": "Source book",
+    "de": "Quellenbuch"
+  },
+  "Kaynak kitap belirtilmemiş": {
+    "en": "No source book specified",
+    "de": "Kein Quellenbuch angegeben"
+  },
+  "Kaynak kitap eklenmemiş": {
+    "en": "No source book added",
+    "de": "Kein Quellenbuch hinzugefügt"
+  },
+  "Kaynak ↗": {
+    "en": "Source ↗",
+    "de": "Quelle ↗"
+  },
+  "Kayıt türü": {
+    "en": "Record type",
+    "de": "Eintragsart"
+  },
+  "Kendi düşüncem": {
+    "en": "Personal thought",
+    "de": "Eigener Gedanke"
+  },
+  "Kitap": {
+    "en": "Book",
+    "de": "Buch"
+  },
+  "Kitap adayları": {
+    "en": "Book candidates",
+    "de": "Buchkandidaten"
+  },
+  "Kitap adı": {
+    "en": "Book title",
+    "de": "Buchtitel"
+  },
+  "Kitap adı veya yazar": {
+    "en": "Book title or author",
+    "de": "Buchtitel oder Autor"
+  },
+  "Kitap açıklaması": {
+    "en": "Book description",
+    "de": "Buchbeschreibung"
+  },
+  "Kitap bitişi": {
+    "en": "Book completion",
+    "de": "Buchabschluss"
+  },
+  "Kitap bitişleri": {
+    "en": "Book completions",
+    "de": "Buchabschlüsse"
+  },
+  "Kitap fişini aç ↗": {
+    "en": "Open book card ↗",
+    "de": "Buchkarte öffnen ↗"
+  },
+  "Kitap kapakları": {
+    "en": "Book covers",
+    "de": "Buchcover"
+  },
+  "Kitap notları açılıyor…": {
+    "en": "Opening book notes…",
+    "de": "Buchnotizen werden geöffnet…"
+  },
+  "Kitap panelini kapat": {
+    "en": "Close book panel",
+    "de": "Buchleiste schließen"
+  },
+  "Kitap rafı sayfaları": {
+    "en": "Bookshelf pages",
+    "de": "Bücherregalseiten"
+  },
+  "Kitap sonuçları": {
+    "en": "Book results",
+    "de": "Buchergebnisse"
+  },
+  "Kitap veya yazar ara": {
+    "en": "Search book or author",
+    "de": "Buch oder Autor suchen"
+  },
+  "Kitap, sayfa ve tema ekle": {
+    "en": "Add book, page, and theme",
+    "de": "Buch, Seite und Thema hinzufügen"
+  },
+  "Kitapları keşfet": {
+    "en": "Discover books",
+    "de": "Bücher entdecken"
+  },
+  "Kitapların bittiği, düşüncelerinin başladığı yer.": {
+    "en": "Where books end and your thoughts begin.",
+    "de": "Wo Bücher enden und deine Gedanken beginnen."
+  },
+  "Kitaplık": {
+    "en": "Library",
+    "de": "Bibliothek"
+  },
+  "Kitaplık bölümleri": {
+    "en": "Library sections",
+    "de": "Bibliotheksabteilungen"
+  },
+  "Kitaplık görünümü": {
+    "en": "Library view",
+    "de": "Bibliotheksansicht"
+  },
+  "Kitaplığa git ↗": {
+    "en": "Go to library ↗",
+    "de": "Zur Bibliothek ↗"
+  },
+  "Kitaplığım": {
+    "en": "My Library",
+    "de": "Meine Bibliothek"
+  },
+  "Kitaplığımdan çıkar": {
+    "en": "Remove from my library",
+    "de": "Aus meiner Bibliothek entfernen"
+  },
+  "Kitapsız": {
+    "en": "Without book",
+    "de": "Ohne Buch"
+  },
+  "Kitapsız düşünce": {
+    "en": "Thought without a book",
+    "de": "Gedanke ohne Buch"
+  },
+  "Kitaptan alıntı": {
+    "en": "Excerpt from book",
+    "de": "Buchzitat"
+  },
+  "Kişisel düşüncen": {
+    "en": "Your personal thought",
+    "de": "Dein persönlicher Gedanke"
+  },
+  "Kişisel yorum · Sentez": {
+    "en": "Personal reflection · Synthesis",
+    "de": "Persönlicher Kommentar · Synthese"
+  },
+  "Koleksiyon adı": {
+    "en": "Collection name",
+    "de": "Sammlungsname"
+  },
+  "Koleksiyon seç": {
+    "en": "Select collection",
+    "de": "Sammlung auswählen"
+  },
+  "Koleksiyona göre filtrele": {
+    "en": "Filter by collection",
+    "de": "Nach Sammlung filtern"
+  },
+  "Koleksiyona kitap ekle / çıkar": {
+    "en": "Add / remove books from collection",
+    "de": "Bücher zur Sammlung hinzufügen / entfernen"
+  },
+  "Koleksiyonlar": {
+    "en": "Collections",
+    "de": "Sammlungen"
+  },
+  "Koleksiyonları düzenle": {
+    "en": "Edit collections",
+    "de": "Sammlungen verwalten"
+  },
+  "Koleksiyonu sil": {
+    "en": "Delete collection",
+    "de": "Sammlung löschen"
+  },
+  "Koleksiyonu sil…": {
+    "en": "Delete collection…",
+    "de": "Sammlung löschen…"
+  },
+  "Koordinatları elle girmek": {
+    "en": "Enter coordinates manually",
+    "de": "Koordinaten manuell eingeben"
+  },
+  "KİTABA DAİR BUGÜNKÜ DEĞERLENDİRMEN": {
+    "en": "TODAY’S REFLECTION ON THE BOOK",
+    "de": "DEINE HEUTIGE BETRACHTUNG DES BUCHES"
+  },
+  "KİTAPLAR ARASI BAĞLAR": {
+    "en": "CONNECTIONS BETWEEN BOOKS",
+    "de": "VERBINDUNGEN ZWISCHEN BÜCHERN"
+  },
+  "KİTAPLIĞIM": {
+    "en": "MY LIBRARY",
+    "de": "MEINE BIBLIOTHEK"
+  },
+  "KİŞİSEL ARŞİV": {
+    "en": "PERSONAL ARCHIVE",
+    "de": "PERSÖNLICHES ARCHIV"
+  },
+  "KİŞİSEL DÜŞÜNCE ATLASI": {
+    "en": "PERSONAL THOUGHT ATLAS",
+    "de": "PERSÖNLICHER GEDANKENATLAS"
+  },
+  "KİŞİSEL KÜTÜPHANE": {
+    "en": "PERSONAL LIBRARY",
+    "de": "PERSÖNLICHE BIBLIOTHEK"
+  },
+  "KİŞİSEL YORUM": {
+    "en": "PERSONAL REFLECTION",
+    "de": "PERSÖNLICHER KOMMENTAR"
+  },
+  "Masa ayarları": {
+    "en": "Desk settings",
+    "de": "Schreibtischeinstellungen"
+  },
+  "Masa ayarlarını kapat": {
+    "en": "Close desk settings",
+    "de": "Schreibtischeinstellungen schließen"
+  },
+  "NEBULA TASLAĞI · YILDIZ DEĞİL": {
+    "en": "NEBULA DRAFT · NOT A STAR",
+    "de": "NEBELENTWURF · KEIN STERN"
+  },
+  "Nebula": {
+    "en": "Nebula",
+    "de": "Nebel"
+  },
+  "Neden bağlılar?": {
+    "en": "Why are they connected?",
+    "de": "Warum sind sie verbunden?"
+  },
+  "Not türü": {
+    "en": "Note type",
+    "de": "Notizart"
+  },
+  "Not, kaynak veya tema ara": {
+    "en": "Search notes, sources, or themes",
+    "de": "Notizen, Quellen oder Themen suchen"
+  },
+  "Notlar": {
+    "en": "Notes",
+    "de": "Notizen"
+  },
+  "Notlar yükleniyor…": {
+    "en": "Loading notes…",
+    "de": "Notizen werden geladen…"
+  },
+  "Notlar çalışma alanı": {
+    "en": "Notes workspace",
+    "de": "Notizen-Arbeitsbereich"
+  },
+  "Notlara ulaşılamadı:": {
+    "en": "Could not access notes:",
+    "de": "Notizen konnten nicht aufgerufen werden:"
+  },
+  "Notlarda ara": {
+    "en": "Search notes",
+    "de": "In Notizen suchen"
+  },
+  "Notların": {
+    "en": "Your notes",
+    "de": "Deine Notizen"
+  },
+  "Notlarını ve kitaplığını JSON dosyası olarak indir.": {
+    "en": "Download your notes and library as a JSON file.",
+    "de": "Lade deine Notizen und Bibliothek als JSON-Datei herunter."
+  },
+  "Notu aç": {
+    "en": "Open note",
+    "de": "Notiz öffnen"
+  },
+  "Notu aç ↗": {
+    "en": "Open note ↗",
+    "de": "Notiz öffnen ↗"
+  },
+  "Notu kapat": {
+    "en": "Close note",
+    "de": "Notiz schließen"
+  },
+  "OKUMA KAYITLARIN": {
+    "en": "YOUR READING LOGS",
+    "de": "DEINE LESEPROTOKOLLE"
+  },
+  "OKUMA İZİ · %": {
+    "en": "READING PROGRESS · %",
+    "de": "LESEFORTSCHRITT · %"
+  },
+  "OKUMAKTAN DÜŞÜNCEYE": {
+    "en": "FROM READING TO THOUGHT",
+    "de": "VOM LESEN ZUM GEDANKEN"
+  },
+  "Okudukların burada birikir. Onlardan doğan düşünceler, atlasında yeni yollar açar.": {
+    "en": "What you read gathers here. The thoughts born from them open new paths in your atlas.",
+    "de": "Hier sammelt sich, was du liest. Die daraus erwachsenden Gedanken bahnen neue Wege in deinem Atlas."
+  },
+  "Okuma Yörüngesi": {
+    "en": "Reading Orbit",
+    "de": "Lese-Orbit"
+  },
+  "Okuma durumu": {
+    "en": "Reading status",
+    "de": "Lesestatus"
+  },
+  "Okuma durumuna göre filtrele": {
+    "en": "Filter by reading status",
+    "de": "Nach Lesestatus filtern"
+  },
+  "Okuma izi: yüzde {value0}; {value1} düşünce veya alıntı": {
+    "en": "Reading progress: {value0} percent; {value1} thoughts or quotes",
+    "de": "Lesefortschritt: {value0} Prozent; {value1} Gedanken oder Zitate"
+  },
+  "Okuma kayıtları yükleniyor…": {
+    "en": "Loading reading logs…",
+    "de": "Leseprotokolle werden geladen…"
+  },
+  "Okumaya devam": {
+    "en": "Continue reading",
+    "de": "Weiterlesen"
+  },
+  "Oluştur": {
+    "en": "Create",
+    "de": "Erstellen"
+  },
+  "Open Library katalog araması": {
+    "en": "Open Library catalog search",
+    "de": "Open Library-Katalogsuche"
+  },
+  "OpenStreetMap katkıcıları": {
+    "en": "OpenStreetMap contributors",
+    "de": "OpenStreetMap-Mitwirkende"
+  },
+  "Pencereyi kapat": {
+    "en": "Close window",
+    "de": "Fenster schließen"
+  },
+  "Puanı olmayan kayıtlar boş kalır. Yorum ve özel notlar yalnızca CSV’de varsa alınır; mevcut kitap notların korunur. Tekrar içe aktarılan Goodreads kimlikleri atlanır.": {
+    "en": "Unrated entries remain blank. Reviews and private notes are only imported if present in the CSV; your existing book notes are preserved. Re-imported Goodreads IDs are skipped.",
+    "de": "Einträge ohne Bewertung bleiben leer. Rezensionen und private Notizen werden nur übernommen, wenn sie in der CSV vorhanden sind; deine bestehenden Buchnotizen bleiben erhalten. Erneut importierte Goodreads-IDs werden übersprungen."
+  },
+  "Pusula odağını kapat": {
+    "en": "Close compass focus",
+    "de": "Kompass-Fokus schließen"
+  },
+  "Raf": {
+    "en": "Shelf",
+    "de": "Regal"
+  },
+  "SEÇİLİ ATLAS YILDIZI": {
+    "en": "SELECTED ATLAS STAR",
+    "de": "AUSGEWÄHLTER ATLAS-STERN"
+  },
+  "Sayfa": {
+    "en": "Page",
+    "de": "Seite"
+  },
+  "Sayfa / bölüm": {
+    "en": "Page / chapter",
+    "de": "Seite / Kapitel"
+  },
+  "Sayfa / bölüm belirtilmemiş": {
+    "en": "Page / chapter not specified",
+    "de": "Seite / Kapitel nicht angegeben"
+  },
+  "Sayfa sayısı": {
+    "en": "Number of pages",
+    "de": "Seitenzahl"
+  },
+  "Sentez özeti": {
+    "en": "Synthesis summary",
+    "de": "Synthese-Zusammenfassung"
+  },
+  "Seçilen kaydın ayrıntıları": {
+    "en": "Details of selected record",
+    "de": "Details des ausgewählten Eintrags"
+  },
+  "Seçilen yılın tamamı · örnek kayıtlar sayılmaz": {
+    "en": "Entire selected year · sample records not counted",
+    "de": "Gesamtes ausgewähltes Jahr · Beispieldaten nicht mitgezählt"
+  },
+  "Seçili düşünceyi kapat": {
+    "en": "Close selected thought",
+    "de": "Ausgewählten Gedanken schließen"
+  },
+  "Seçili eserin": {
+    "en": "Of the selected work",
+    "de": "Des ausgewählten Werkes"
+  },
+  "Seçimi kaldır": {
+    "en": "Clear selection",
+    "de": "Auswahl aufheben"
+  },
+  "Sil": {
+    "en": "Delete",
+    "de": "Löschen"
+  },
+  "Sonraki": {
+    "en": "Next",
+    "de": "Weiter"
+  },
+  "Sonraki raf →": {
+    "en": "Next shelf →",
+    "de": "Nächstes Regal →"
+  },
+  "Tarihi kaydet": {
+    "en": "Save date",
+    "de": "Datum speichern"
+  },
+  "Tarihsiz izler": {
+    "en": "Undated traces",
+    "de": "Undatierte Spuren"
+  },
+  "Taslak Atlas’a yıldız olarak yerleştiğinde kısa bir ses çal.": {
+    "en": "Play a subtle sound when a draft settles as a star in the Atlas.",
+    "de": "Spiele einen kurzen Ton ab, wenn sich ein Entwurf als Stern im Atlas niederlässt."
+  },
+  "Taslaklar Atlas’ta görünmez; yerleştirene kadar yalnızca Bulutsu’da kalır.": {
+    "en": "Drafts are not visible in the Atlas; they remain in the Nebula until you place them.",
+    "de": "Entwürfe erscheinen nicht im Atlas; sie verbleiben im Nebel, bis du sie platzierst."
+  },
+  "Taslağı güncelle": {
+    "en": "Update draft",
+    "de": "Entwurf aktualisieren"
+  },
+  "Temalar ·": {
+    "en": "Themes ·",
+    "de": "Themen ·"
+  },
+  "Temaya göre filtrele": {
+    "en": "Filter by theme",
+    "de": "Nach Thema filtern"
+  },
+  "Tüm izler": {
+    "en": "All traces",
+    "de": "Alle Spuren"
+  },
+  "Tüm koleksiyonlar": {
+    "en": "All collections",
+    "de": "Alle Sammlungen"
+  },
+  "Tüm temalar": {
+    "en": "All themes",
+    "de": "Alle Themen"
+  },
+  "Tüm yıllar": {
+    "en": "All years",
+    "de": "Alle Jahre"
+  },
+  "Tür": {
+    "en": "Genre",
+    "de": "Genre"
+  },
+  "Türkçe": {
+    "en": "Turkish",
+    "de": "Türkisch"
+  },
+  "Varsa çevirmen": {
+    "en": "Translator, if any",
+    "de": "Übersetzer, falls vorhanden"
+  },
+  "Vazgeç": {
+    "en": "Cancel",
+    "de": "Abbrechen"
+  },
+  "YEDEK": {
+    "en": "BACKUP",
+    "de": "SICHERUNG"
+  },
+  "YENİ BİR SAYFA": {
+    "en": "A NEW PAGE",
+    "de": "EINE NEUE SEITE"
+  },
+  "YENİ KAYIT": {
+    "en": "NEW ENTRY",
+    "de": "NEUER EINTRAG"
+  },
+  "YEREL ARŞİV": {
+    "en": "LOCAL ARCHIVE",
+    "de": "LOKALES ARCHIV"
+  },
+  "YERLEŞTİRME": {
+    "en": "PLACEMENT",
+    "de": "PLATZIERUNG"
+  },
+  "YILDIZ YOLU": {
+    "en": "STAR PATH",
+    "de": "STERNENPFAD"
+  },
+  "Yakalamayı kaydet": {
+    "en": "Save capture",
+    "de": "Aufzeichnung speichern"
+  },
+  "Yalnız arama terimi Open Library’ye gönderilir. Kişisel notların ve yorumların yerel kalır.": {
+    "en": "Only the search term is sent to Open Library. Your personal notes and reviews remain local.",
+    "de": "Nur der Suchbegriff wird an Open Library übertragen. Deine persönlichen Notizen und Rezensionen bleiben lokal."
+  },
+  "Yayınevi": {
+    "en": "Publisher",
+    "de": "Verlag"
+  },
+  "Yazar": {
+    "en": "Author",
+    "de": "Autor"
+  },
+  "Yazara göre A–Z · Sayfa": {
+    "en": "By author A–Z · Page",
+    "de": "Nach Autor A–Z · Seite"
+  },
+  "Yazarın Pusulası": {
+    "en": "Author's Compass",
+    "de": "Autorenkompass"
+  },
+  "Yeni kitap ekle": {
+    "en": "Add new book",
+    "de": "Neues Buch hinzufügen"
+  },
+  "Yeni koleksiyon": {
+    "en": "New collection",
+    "de": "Neue Sammlung"
+  },
+  "Yeni okuman devam ediyor. Önceki izlerin korunuyor.": {
+    "en": "Your new reading is in progress. Your previous traces are preserved.",
+    "de": "Deine neue Lektüre läuft. Deine bisherigen Spuren bleiben erhalten."
+  },
+  "Yeniden dene": {
+    "en": "Try again",
+    "de": "Erneut versuchen"
+  },
+  "Yeniden okuma": {
+    "en": "Rereading",
+    "de": "Erneutes Lesen"
+  },
+  "Yeniden okumaya başla": {
+    "en": "Start rereading",
+    "de": "Erneut zu lesen beginnen"
+  },
+  "Yer adı": {
+    "en": "Location name",
+    "de": "Ortsname"
+  },
+  "Yerel AI önerisi": {
+    "en": "Local AI suggestion",
+    "de": "Lokaler KI-Vorschlag"
+  },
+  "Yolculuğun yılı": {
+    "en": "Year of the journey",
+    "de": "Jahr der Reise"
+  },
+  "Yoldaki bir yıldızı seç. Kitabı, düşüncesi ve okuma geçmişi burada açılır.": {
+    "en": "Select a star along the path. Its book, thoughts, and reading history will open here.",
+    "de": "Wähle einen Stern auf dem Pfad. Buch, Gedanke und Leseverlauf öffnen sich hier."
+  },
+  "Yumuşak ses": {
+    "en": "Soft sound",
+    "de": "Sanfter Ton"
+  },
+  "YÖRÜNGEYE EKLENEN GÜN": {
+    "en": "DATE ADDED TO ORBIT",
+    "de": "TAG DES HINZUFÜGENS ZUM ORBIT"
+  },
+  "Yüzde": {
+    "en": "Percentage",
+    "de": "Prozent"
+  },
+  "Yıldız Yolu": {
+    "en": "Star Path",
+    "de": "Sternenpfad"
+  },
+  "Yıldız yolu açılıyor…": {
+    "en": "Opening star path…",
+    "de": "Sternenpfad öffnet sich…"
+  },
+  "Yıldızını Atlas’ta bul ↗": {
+    "en": "Find your star in Atlas ↗",
+    "de": "Finde deinen Stern im Atlas ↗"
+  },
+  "Yıllık hedef": {
+    "en": "Annual goal",
+    "de": "Jahresziel"
+  },
+  "Yılın düşünce izleri": {
+    "en": "Thought traces of the year",
+    "de": "Gedankenspuren des Jahres"
+  },
+  "Yılın gökyüzü": {
+    "en": "Sky of the year",
+    "de": "Himmel des Jahres"
+  },
+  "ZAMANIN BIRAKTIĞI İZLER": {
+    "en": "TRACES LEFT BY TIME",
+    "de": "SPUREN DER ZEIT"
+  },
+  "Zamanın izleri açılıyor…": {
+    "en": "Opening traces of time…",
+    "de": "Spuren der Zeit öffnen sich…"
+  },
+  "alıntı": {
+    "en": "quotes",
+    "de": "Zitate",
+    "one": {
+      "en": "quote",
+      "de": "Zitat"
+    }
+  },
+  "book-form-title": {
+    "en": "book-form-title",
+    "de": "Buchformular-Titel"
+  },
+  "catalog-fiche-notes-title": {
+    "en": "catalog-fiche-notes-title",
+    "de": "Katalogkartennotizen-Titel"
+  },
+  "catalog-fiche-title": {
+    "en": "catalog-fiche-title",
+    "de": "Katalogkarten-Titel"
+  },
+  "collections-title": {
+    "en": "collections-title",
+    "de": "Sammlungen-Titel"
+  },
+  "connection-drawer-title": {
+    "en": "connection-drawer-title",
+    "de": "Verbindungsleisten-Titel"
+  },
+  "continue-title": {
+    "en": "continue-title",
+    "de": "Fortsetzen-Titel"
+  },
+  "desk-settings-panel": {
+    "en": "desk-settings-panel",
+    "de": "Schreibtischeinstellungen-Bedienfeld"
+  },
+  "desk-settings-title": {
+    "en": "desk-settings-title",
+    "de": "Schreibtischeinstellungen-Titel"
+  },
+  "dialog": {
+    "en": "dialog",
+    "de": "Dialog"
+  },
+  "dosyasında": {
+    "en": "in file",
+    "de": "in Datei"
+  },
+  "doğum yeri": {
+    "en": "place of birth",
+    "de": "Geburtsort"
+  },
+  "düşünce": {
+    "en": "thoughts",
+    "de": "Gedanken",
+    "one": {
+      "en": "thought",
+      "de": "Gedanke"
+    }
+  },
+  "farklı eser": {
+    "en": "distinct works",
+    "de": "verschiedene Werke",
+    "one": {
+      "en": "distinct work",
+      "de": "verschiedenes Werk"
+    }
+  },
+  "forgotten-star-title": {
+    "en": "forgotten star",
+    "de": "Vergessener Stern"
+  },
+  "goodreads-preview-title": {
+    "en": "Goodreads preview",
+    "de": "Goodreads-Vorschau"
+  },
+  "harita işareti": {
+    "en": "map markers",
+    "de": "Kartenmarkierungen",
+    "one": {
+      "en": "map marker",
+      "de": "Kartenmarkierung"
+    }
+  },
+  "ilişkili olduğu yer": {
+    "en": "associated location",
+    "de": "Zugehöriger Ort"
+  },
+  "iz bıraktığın ay": {
+    "en": "active months",
+    "de": "aktive Monate",
+    "one": {
+      "en": "active month",
+      "de": "aktiver Monat"
+    }
+  },
+  "izi göster": {
+    "en": "show trace",
+    "de": "Spur anzeigen"
+  },
+  "izi · ince bağlar ortak kaynak kitabı gösterir.": {
+    "en": "trace · thin lines indicate a shared source book.",
+    "de": "Spur · feine Linien zeigen ein gemeinsames Quellbuch an."
+  },
+  "kayıt bulundu.": {
+    "en": "records found.",
+    "de": "Einträge gefunden."
+  },
+  "kitap": {
+    "en": "books",
+    "de": "Bücher",
+    "one": {
+      "en": "book",
+      "de": "Buch"
+    }
+  },
+  "kitap bitişi": {
+    "en": "book completions",
+    "de": "Buchabschlüsse",
+    "one": {
+      "en": "book completion",
+      "de": "Buchabschluss"
+    }
+  },
+  "kitap gösteriliyor ·": {
+    "en": "books shown ·",
+    "de": "Bücher angezeigt ·",
+    "one": {
+      "en": "book shown ·",
+      "de": "Buch angezeigt ·"
+    }
+  },
+  "menu": {
+    "en": "menu",
+    "de": "Menü"
+  },
+  "nebula-title": {
+    "en": "nebula",
+    "de": "Nebel"
+  },
+  "not": {
+    "en": "notes",
+    "de": "Notizen",
+    "one": {
+      "en": "note",
+      "de": "Notiz"
+    }
+  },
+  "notes-panel-archive": {
+    "en": "notes archive",
+    "de": "Notizenarchiv"
+  },
+  "notes-tab-archive": {
+    "en": "archive",
+    "de": "Archiv"
+  },
+  "notes-tab-work": {
+    "en": "work",
+    "de": "Werkbank"
+  },
+  "notes-tab-work workbench-title": {
+    "en": "workbench",
+    "de": "Werkbank"
+  },
+  "notların kurduğu köprüler": {
+    "en": "bridges forged by notes",
+    "de": "Brücken, die Notizen schlagen"
+  },
+  "notlarına göre": {
+    "en": "by notes",
+    "de": "nach Notizen"
+  },
+  "off": {
+    "en": "off",
+    "de": "Aus"
+  },
+  "okunacak": {
+    "en": "to read",
+    "de": "Zu lesen"
+  },
+  "okundu": {
+    "en": "read",
+    "de": "Gelesen"
+  },
+  "okunuyor": {
+    "en": "reading",
+    "de": "Am Lesen"
+  },
+  "polite": {
+    "en": "polite",
+    "de": "höflich"
+  },
+  "s. 42, Bölüm III": {
+    "en": "p. 42, Chapter III",
+    "de": "S. 42, Kapitel III"
+  },
+  "selected-thought-title": {
+    "en": "selected thought",
+    "de": "Ausgewählter Gedanke"
+  },
+  "tarihli iz": {
+    "en": "dated traces",
+    "de": "datierte Spuren",
+    "one": {
+      "en": "dated trace",
+      "de": "datierte Spur"
+    }
+  },
+  "taslak": {
+    "en": "drafts",
+    "de": "Entwürfe",
+    "one": {
+      "en": "draft",
+      "de": "Entwurf"
+    }
+  },
+  "timeline-title": {
+    "en": "timeline",
+    "de": "Zeitleiste"
+  },
+  "true": {
+    "en": "true",
+    "de": "wahr"
+  },
+  "yeni düşünce kaydı": {
+    "en": "new thought entries",
+    "de": "neue Gedankeneinträge",
+    "one": {
+      "en": "new thought entry",
+      "de": "neuer Gedankeneintrag"
+    }
+  },
+  "{value0} ayrıntılarını aç": {
+    "en": "Open details for {value0}",
+    "de": "Details für {value0} öffnen"
+  },
+  "{value0} için diğer işlemler": {
+    "en": "More actions for {value0}",
+    "de": "Weitere Aktionen für {value0}"
+  },
+  "{value0} kapak resmi": {
+    "en": "{value0} cover image",
+    "de": "Cover-Bild für {value0}"
+  },
+  "{value0} kitabının kapak görünümü": {
+    "en": "Cover view of {value0}",
+    "de": "Cover-Ansicht von {value0}"
+  },
+  "{value0} okuma ilerlemesi": {
+    "en": "{value0} reading progress",
+    "de": "{value0} Lesefortschritt"
+  },
+  "{value0} okuma yörüngesi": {
+    "en": "{value0} reading trajectory",
+    "de": "{value0} Lesebahn"
+  },
+  "{value0} tamamlanan kitap yıldızı{value1}. İşaretler arasında ok tuşlarıyla gezin, Enter ile kitabı aç.": {
+    "en": "{value0} stars for completed books{value1}. Navigate between markers with arrow keys; press Enter to open the book.",
+    "de": "{value0} Sterne für gelesene Bücher{value1}. Navigiere mit den Pfeiltasten zwischen Markierungen; öffne das Buch mit Enter.",
+    "countParam": "value0",
+    "one": {
+      "en": "{value0} star for a completed book{value1}. Navigate between markers with arrow keys; press Enter to open the book.",
+      "de": "{value0} Stern für ein gelesenes Buch{value1}. Navigiere mit den Pfeiltasten zwischen Markierungen; öffne das Buch mit Enter."
+    }
+  },
+  "{value0} özeti": {
+    "en": "{value0} summary",
+    "de": "{value0} Zusammenfassung"
+  },
+  "{value0}, {value1} — kitap detayları": {
+    "en": "{value0}, {value1} — book details",
+    "de": "{value0}, {value1} — Buchdetails"
+  },
+  "{value0}, {value1}, {value2}{value3}{value4}{value5}. Katalog fişini aç.": {
+    "en": "{value0}, {value1}, {value2}{value3}{value4}{value5}. Open catalog card.",
+    "de": "{value0}, {value1}, {value2}{value3}{value4}{value5}. Katalogkarte öffnen."
+  },
+  "{value0}. raf": {
+    "en": "Shelf {value0}",
+    "de": "{value0}. Regal"
+  },
+  "{value0}: {value1} kitap bitişi, {value2} not. Bu ayı göster.": {
+    "en": "{value0}: book completions: {value1}, notes: {value2}. Show this month.",
+    "de": "{value0}: Buchabschlüsse: {value1}, Notizen: {value2}. Diesen Monat anzeigen."
+  },
+  "· Okudum": {
+    "en": "· Read",
+    "de": "· Gelesen"
+  },
+  "· YILDIZ USTURLABI": {
+    "en": "· STAR ASTROLABE",
+    "de": "· STERNEN-ASTROLABIUM"
+  },
+  "· arşivden": {
+    "en": "· from archive",
+    "de": "· aus dem Archiv"
+  },
+  "· isteğe bağlı": {
+    "en": "· optional",
+    "de": "· optional"
+  },
+  "ÇALIŞMA MASASI": {
+    "en": "WORK DESK",
+    "de": "SCHREIBTISCH"
+  },
+  "Çalışma Yüzeyi": {
+    "en": "Work Surface",
+    "de": "Arbeitsfläche"
+  },
+  "Çalışma alanı": {
+    "en": "Workspace",
+    "de": "Arbeitsbereich"
+  },
+  "Çevirmen": {
+    "en": "Translator",
+    "de": "Übersetzer"
+  },
+  "Önce kitaplığına bir kitap ekle.": {
+    "en": "First, add a book to your library.",
+    "de": "Füge zuerst deiner Bibliothek ein Buch hinzu."
+  },
+  "Önizlemeyi kapat": {
+    "en": "Close preview",
+    "de": "Vorschau schließen"
+  },
+  "Örn. 1947": {
+    "en": "E.g. 1947",
+    "de": "Z. B. 1947"
+  },
+  "Örn. 50": {
+    "en": "E.g. 50",
+    "de": "Z. B. 50"
+  },
+  "Örn. İstanbul, Türkiye": {
+    "en": "E.g. Istanbul, Turkey",
+    "de": "Z. B. Istanbul, Türkei"
+  },
+  "Örneğin: Tekrar okunacaklar": {
+    "en": "For example: To reread",
+    "de": "Zum Beispiel: Erneut zu lesen"
+  },
+  "İKİNCİ DÜŞÜNCE": {
+    "en": "SECOND THOUGHT",
+    "de": "ZWEITER GEDANKE"
+  },
+  "İKİNCİ DÜŞÜNCE · HEDEF SEÇ": {
+    "en": "SECOND THOUGHT · SELECT TARGET",
+    "de": "ZWEITER GEDANKE · ZIEL WÄHLEN"
+  },
+  "İLK DÜŞÜNCE": {
+    "en": "FIRST THOUGHT",
+    "de": "ERSTER GEDANKE"
+  },
+  "İPEK AYRAÇ · OKUMA İLERLEMESİ": {
+    "en": "SILK BOOKMARK · READING PROGRESS",
+    "de": "SEIDENLESEZEICHEN · LESEFORTSCHRITT"
+  },
+  "İlerlemeyi kaydet": {
+    "en": "Save progress",
+    "de": "Fortschritt speichern"
+  },
+  "İlişki": {
+    "en": "Relation",
+    "de": "Beziehung"
+  },
+  "İlişki türünü seç": {
+    "en": "Select relationship type",
+    "de": "Beziehungstyp auswählen"
+  },
+  "İlk düşünce": {
+    "en": "First thought",
+    "de": "Erster Gedanke"
+  },
+  "İlk kitabını ekle": {
+    "en": "Add your first book",
+    "de": "Füge dein erstes Buch hinzu"
+  },
+  "İlk notunu oluştur": {
+    "en": "Create your first note",
+    "de": "Erstelle deine erste Notiz"
+  },
+  "İlk yayın yılı": {
+    "en": "First publication year",
+    "de": "Erstes Erscheinungsjahr"
+  },
+  "İstanbul": {
+    "en": "Istanbul",
+    "de": "Istanbul"
+  },
+  "İsteğe bağlı": {
+    "en": "Optional",
+    "de": "Optional"
+  },
+  "İsteğe bağlı · birden çok seçilebilir": {
+    "en": "Optional · multiple selections allowed",
+    "de": "Optional · Mehrfachauswahl möglich"
+  },
+  "İşaretleri kapatsan da “Kitapları keşfet” panelinden tüm kitaplarda arama yapabilirsin.": {
+    "en": "Even if markers are turned off, you can search all books from the “Discover books” panel.",
+    "de": "Auch wenn Markierungen ausgeblendet sind, kannst du über die Leiste „Bücher entdecken“ alle Bücher durchsuchen."
+  },
+  "İşle ve kaynak ekle": {
+    "en": "Process and add source",
+    "de": "Verarbeiten und Quelle hinzufügen"
+  },
+  "ŞU AN OKUYORUM": {
+    "en": "CURRENTLY READING",
+    "de": "LESE ICH GERADE"
+  },
+  "ŞU AN YOLCULUKTA": {
+    "en": "CURRENTLY ON A JOURNEY",
+    "de": "GERADE AUF REISEN"
+  },
+  "Şehir veya yer": {
+    "en": "City or place",
+    "de": "Stadt oder Ort"
+  },
+  "Şu an okuduğun bir kitap yok. Kitap ayrıntısından “Okuyorum” durumunu seçtiğinde burada görünür.": {
+    "en": "You are not reading any books right now. When you set status to “Reading” in book details, it will appear here.",
+    "de": "Du liest gerade kein Buch. Sobald du in den Buchdetails den Status „Am Lesen“ wählst, erscheint es hier."
+  },
+  "” koleksiyonu silinsin mi? Kitapların kitaplıkta kalacak.": {
+    "en": "” collection? Your books will remain in the library.",
+    "de": "“ löschen? Deine Bücher verbleiben in der Bibliothek."
+  },
+  "← Kitaplıklara dön": {
+    "en": "← Back to bookshelves",
+    "de": "← Zurück zu Bibliotheken"
+  },
+  "← Tüm kitaplara dön": {
+    "en": "← Back to all books",
+    "de": "← Zurück zu allen Büchern"
+  },
+  "← Önceki raf": {
+    "en": "← Previous shelf",
+    "de": "← Vorheriges Regal"
+  },
+  "↓ JSON yedeği indir": {
+    "en": "↓ Download JSON backup",
+    "de": "↓ JSON-Sicherung herunterladen"
+  },
+  "✦ ATLAS YILDIZI": {
+    "en": "✦ ATLAS STAR",
+    "de": "✦ ATLAS-STERN"
+  },
+  "✦ Bu yıldızı Atlas’ta göster": {
+    "en": "✦ Show this star in Atlas",
+    "de": "✦ Diesen Stern im Atlas anzeigen"
+  },
+  "✦ Seçildi:": {
+    "en": "✦ Selected:",
+    "de": "✦ Ausgewählt:"
+  },
+  "＋ Bu kitaptan düşünce ekle": {
+    "en": "＋ Add thought from this book",
+    "de": "＋ Gedanken aus diesem Buch hinzufügen"
+  },
+  "＋ Kenar notu ekle": {
+    "en": "＋ Add marginal note",
+    "de": "＋ Randnotiz hinzufügen"
+  },
+  "＋ Tam not oluştur": {
+    "en": "＋ Create full note",
+    "de": "＋ Ausführliche Notiz erstellen"
+  },
+  "Her kitap, atlasında başka bir yere açılan kapı.": {
+    "en": "Every book is a doorway to another place in your atlas.",
+    "de": "Jedes Buch ist ein Tor zu einem anderen Ort in deinem Atlas."
+  },
+  "Her düşünce, atlasında yeni bir yıldız yakar.": {
+    "en": "Every thought kindles a new star in your atlas.",
+    "de": "Jeder Gedanke entzündet einen neuen Stern in deinem Atlas."
+  },
+  "{completed} kitap yıldızını yaktı. {target} yıldızlık gökyüzün kendi hızında tamamlanıyor.": {
+    "en": "{completed} books have lit their stars. Your sky of {target} stars grows at your own pace.",
+    "de": "{completed} Bücher haben ihre Sterne entzündet. Dein Himmel mit {target} Sternen wächst in deinem eigenen Tempo.",
+    "countParam": "completed",
+    "one": {
+      "en": "{completed} book has lit its star. Your sky of {target} stars grows at your own pace.",
+      "de": "{completed} Buch hat seinen Stern entzündet. Dein Himmel mit {target} Sternen wächst in deinem eigenen Tempo."
+    }
+  },
+  "{completed} bitmiş kitabın gökyüzünde. Bu yıl kaç yıldız yakacağını sen seç.": {
+    "en": "{completed} finished books in your sky. Choose how many stars to light this year.",
+    "de": "{completed} gelesene Bücher an deinem Himmel. Wähle selbst, wie viele Sterne du dieses Jahr entzünden möchtest.",
+    "countParam": "completed",
+    "one": {
+      "en": "{completed} finished book in your sky. Choose how many stars to light this year.",
+      "de": "{completed} gelesenes Buch an deinem Himmel. Wähle selbst, wie viele Sterne du dieses Jahr entzünden möchtest."
+    }
+  },
+  "Kaydediliyor…": {
+    "en": "Saving…",
+    "de": "Wird gespeichert…"
+  },
+  "Yörüngeyi kaydet": {
+    "en": "Save orbit",
+    "de": "Umlaufbahn speichern"
+  },
+  "Hedefi değiştir": {
+    "en": "Change goal",
+    "de": "Ziel ändern"
+  },
+  "Yıldız sayısını belirle": {
+    "en": "Set star count",
+    "de": "Sternenanzahl festlegen"
+  },
+  "Şu an okunuyor": {
+    "en": "Currently reading",
+    "de": "Wird gerade gelesen"
+  },
+  "/ {target}": {
+    "en": "/ {target}",
+    "de": "/ {target}"
+  },
+  "tamamlanan": {
+    "en": "completed",
+    "de": "abgeschlossen"
+  },
+  "Tamamlandı": {
+    "en": "Completed",
+    "de": "Abgeschlossen"
+  },
+  "Okuma yolculuğu": {
+    "en": "Reading journey",
+    "de": "Lesereise"
+  },
+  " · {value0}": {
+    "en": " · {value0}",
+    "de": " · {value0}"
+  },
+  "Yazarın Pusulası için konum ekle": {
+    "en": "Add location for Author’s Compass",
+    "de": "Ort für Autorekompass hinzufügen"
+  },
+  "Konum ekle ↗": {
+    "en": "Add location ↗",
+    "de": "Ort hinzufügen ↗"
+  },
+  "{value0} · {value1} · Atlas’ta gör ↗": {
+    "en": "{value0} · {value1} · View in Atlas ↗",
+    "de": "{value0} · {value1} · Im Atlas ansehen ↗"
+  },
+  "ALINTI": {
+    "en": "QUOTE",
+    "de": "ZITAT"
+  },
+  "DÜŞÜNCE": {
+    "en": "THOUGHT",
+    "de": "GEDANKE"
+  },
+  "Başlıksız düşünce": {
+    "en": "Untitled thought",
+    "de": "Unbetitelter Gedanke"
+  },
+  "Kitap kaydını düzenle": {
+    "en": "Edit book record",
+    "de": "Buchkarteikarte bearbeiten"
+  },
+  "Kitaplığında yeni bir eser": {
+    "en": "A new work in your library",
+    "de": "Ein neues Werk in deiner Bibliothek"
+  },
+  "Aranıyor…": {
+    "en": "Searching…",
+    "de": "Wird gesucht…"
+  },
+  "Adayları ara": {
+    "en": "Search candidates",
+    "de": "Kandidaten suchen"
+  },
+  "Yazar bilgisi yok": {
+    "en": "No author information",
+    "de": "Keine Autorenangabe"
+  },
+  "Baskılar yükleniyor…": {
+    "en": "Loading editions…",
+    "de": "Ausgaben werden geladen…"
+  },
+  "Baskı seç veya bilgileri elle gir": {
+    "en": "Select an edition or enter details manually",
+    "de": "Ausgabe wählen oder Angaben manuell eingeben"
+  },
+  "Yer aranıyor…": {
+    "en": "Searching location…",
+    "de": "Ort wird gesucht…"
+  },
+  "Yer ara": {
+    "en": "Search location",
+    "de": "Ort suchen"
+  },
+  "Kaydet ve Atlas’ta göster ↗": {
+    "en": "Save and show in Atlas ↗",
+    "de": "Speichern und im Atlas zeigen ↗"
+  },
+  "Değişiklikleri kaydet": {
+    "en": "Save changes",
+    "de": "Änderungen speichern"
+  },
+  "Kitaplığa ekle": {
+    "en": "Add to library",
+    "de": "Zur Bibliothek hinzufügen"
+  },
+  "CSV okunuyor…": {
+    "en": "Reading CSV…",
+    "de": "CSV wird gelesen…"
+  },
+  "Goodreads CSV aktar": {
+    "en": "Import Goodreads CSV",
+    "de": "Goodreads-CSV importieren"
+  },
+  "Rafların": {
+    "en": "Your shelves",
+    "de": "Deine Regale"
+  },
+  "Yıldızsız kitaplar": {
+    "en": "Unrated books",
+    "de": "Bücher ohne Sterne"
+  },
+  "Arama sonuçları": {
+    "en": "Search results",
+    "de": "Suchergebnisse"
+  },
+  "Tüm kitaplar": {
+    "en": "All books",
+    "de": "Alle Bücher"
+  },
+  "Yazar belirtilmemiş": {
+    "en": "Author not specified",
+    "de": "Kein Autor angegeben"
+  },
+  "{value0} düşünce notu": {
+    "en": "{value0} thought notes",
+    "de": "{value0} Gedankennotizen",
+    "countParam": "value0",
+    "one": {
+      "en": "{value0} thought note",
+      "de": "{value0} Gedankennotiz"
+    }
+  },
+  "Kitabı keşfet": {
+    "en": "Explore book",
+    "de": "Buch entdecken"
+  },
+  "Bu rafta eser bulunamadı.": {
+    "en": "No works found on this shelf.",
+    "de": "Keine Werke in diesem Regal gefunden."
+  },
+  "Kitaplığın ilk kitabını bekliyor.": {
+    "en": "Your library awaits its first book.",
+    "de": "Deine Bibliothek wartet auf ihr erstes Buch."
+  },
+  "Arama sözcüğünü ya da seçili filtreyi değiştirebilirsin.": {
+    "en": "You can change the search term or selected filter.",
+    "de": "Du kannst den Suchbegriff oder den ausgewählten Filter ändern."
+  },
+  "Bir kitap ekle; okuma yolculuğun ve düşünce atlasın birlikte büyüsün.": {
+    "en": "Add a book; let your reading journey and atlas of thought grow together.",
+    "de": "Füge ein Buch hinzu; lass deine Lesereise und deinen Gedankenatlas gemeinsam wachsen."
+  },
+  "Kitaplar aktarılıyor…": {
+    "en": "Importing books…",
+    "de": "Bücher werden importiert…"
+  },
+  "Kitapları içe aktar": {
+    "en": "Import books",
+    "de": "Bücher importieren"
+  },
+  "Kaldığım sayfa / {value0}": {
+    "en": "Current page / {value0}",
+    "de": "Aktuelle Seite / {value0}"
+  },
+  "Okuma yüzdesi": {
+    "en": "Reading progress",
+    "de": "Lesefortschritt"
+  },
+  "Kaydet": {
+    "en": "Save",
+    "de": "Speichern"
+  },
+  "Açık": {
+    "en": "On",
+    "de": "Ein"
+  },
+  "Kapalı": {
+    "en": "Off",
+    "de": "Aus"
+  },
+  "Kaynak seçilmemiş": {
+    "en": "No source selected",
+    "de": "Keine Quelle ausgewählt"
+  },
+  "Yazarın sesi · Alıntı": {
+    "en": "Author’s voice · Quote",
+    "de": "Stimme des Autors · Zitat"
+  },
+  "Benim sesim · Düşünce": {
+    "en": "My voice · Thought",
+    "de": "Meine Stimme · Gedanke"
+  },
+  "Kaynak belirtilmemiş": {
+    "en": "Source not specified",
+    "de": "Keine Quelle angegeben"
+  },
+  "Bu cihazda {value0} ve embedding modeliyle çalışır.": {
+    "en": "Runs on this device with {value0} and embedding model.",
+    "de": "Läuft auf diesem Gerät mit {value0} und Einbettungsmodell."
+  },
+  "Ollama bu cihazda çalışmıyor.": {
+    "en": "Ollama is not running on this device.",
+    "de": "Ollama läuft nicht auf diesem Gerät."
+  },
+  "Yerelde inceleniyor…": {
+    "en": "Analyzing locally…",
+    "de": "Wird lokal analysiert…"
+  },
+  "AI ile öner": {
+    "en": "Suggest with AI",
+    "de": "Mit KI vorschlagen"
+  },
+  "KAYDI GÖZDEN GEÇİR": {
+    "en": "REVIEW RECORD",
+    "de": "KARTEIKARTE ÜBERPRÜFEN"
+  },
+  "KÂŞİFİN MASASI · YENİ KAYIT": {
+    "en": "EXPLORER’S DESK · NEW RECORD",
+    "de": "SCHREIBTISCH DES FORSCHERS · NEUE KARTEIKARTE"
+  },
+  "Düşünceni yeniden işle": {
+    "en": "Refine your thought",
+    "de": "Überarbeite deinen Gedanken"
+  },
+  "Masanın üzerine bırak": {
+    "en": "Leave on the desk",
+    "de": "Auf dem Schreibtisch lassen"
+  },
+  "Düzenlemeyi bırak": {
+    "en": "Discard changes",
+    "de": "Bearbeitung verwerfen"
+  },
+  "Formu kapat": {
+    "en": "Close form",
+    "de": "Formular schließen"
+  },
+  "KİTAPTAN ALINTI": {
+    "en": "QUOTE FROM BOOK",
+    "de": "ZITAT AUS DEM BUCH"
+  },
+  "DÜŞÜNCEN": {
+    "en": "YOUR THOUGHT",
+    "de": "DEIN GEDANKE"
+  },
+  "Altını çizdiğin cümleyi buraya yaz…": {
+    "en": "Write the underlined sentence here…",
+    "de": "Schreibe den unterstrichenen Satz hierher…"
+  },
+  "Bugün aklında ne kaldı?": {
+    "en": "What lingered with you today?",
+    "de": "Was ist dir heute im Gedächtnis geblieben?"
+  },
+  "SENİN YORUMUN": {
+    "en": "YOUR COMMENT",
+    "de": "DEIN KOMMENTAR"
+  },
+  "KENAR NOTU": {
+    "en": "MARGIN NOTE",
+    "de": "RANDNOTIZ"
+  },
+  "Bu alıntı sende ne uyandırdı?": {
+    "en": "What did this quote evoke in you?",
+    "de": "Was hat dieses Zitat in dir geweckt?"
+  },
+  "Düşüncene eklemek istediğin başka bir şey var mı?": {
+    "en": "Is there anything else you’d like to add to your thought?",
+    "de": "Möchtest du deinem Gedanken noch etwas hinzufügen?"
+  },
+  " {value0} tema": {
+    "en": " {value0} theme",
+    "de": " {value0} Thema"
+  },
+  "Kayıt, var olan yıldızın yerini korur.": {
+    "en": "The record preserves the location of the existing star.",
+    "de": "Die Karteikarte bewahrt den Platz des bestehenden Sterns."
+  },
+  "Kaydedince Atlas’ında bir yıldız olarak görünür.": {
+    "en": "Once saved, it appears as a star in your Atlas.",
+    "de": "Nach dem Speichern erscheint es als Stern in deinem Atlas."
+  },
+  "Temasız": {
+    "en": "Unthemed",
+    "de": "Ohne Thema"
+  },
+  "Aç": {
+    "en": "Open",
+    "de": "Öffnen"
+  },
+  "Seçili hedef": {
+    "en": "Selected destination",
+    "de": "Ausgewähltes Ziel"
+  },
+  "{value0} · Seçmek için dokun": {
+    "en": "{value0} · Tap to select",
+    "de": "{value0} · Zum Auswählen tippen"
+  },
+  "Bağlantıyı güncelle": {
+    "en": "Update connection",
+    "de": "Verbindung aktualisieren"
+  },
+  "Bağlantıyı oluştur": {
+    "en": "Create connection",
+    "de": "Verbindung herstellen"
+  },
+  "Yolu gizle": {
+    "en": "Hide path",
+    "de": "Pfad verbergen"
+  },
+  "Tüm okuma yolunu göster": {
+    "en": "Show full reading path",
+    "de": "Gesamten Lesepfad anzeigen"
+  },
+  "Tarih bilinmiyor": {
+    "en": "Date unknown",
+    "de": "Datum unbekannt"
+  },
+  "ÖRNEK": {
+    "en": "EXAMPLE",
+    "de": "BEISPIEL"
+  },
+  "Bağımsız düşünce": {
+    "en": "Standalone thought",
+    "de": "Freier Gedanke"
+  },
+  " · {value0}. {value1}": {
+    "en": " · {value0}. {value1}",
+    "de": " · {value0}. {value1}"
+  },
+  "okuma": {
+    "en": "reading",
+    "de": "Lesung"
+  },
+  "ÖRNEK KAYIT": {
+    "en": "SAMPLE RECORD",
+    "de": "BEISPIELKARTEIKARTE"
+  },
+  "BENİM DÜŞÜNCEM": {
+    "en": "MY THOUGHT",
+    "de": "MEIN GEDANKE"
+  },
+  "Aynı kitap, başka bir zamandaki sen.": {
+    "en": "The same book, you in another time.",
+    "de": "Dasselbe Buch, ein anderes Du in der Zeit."
+  },
+  "Bir okuma tamamlandı; bıraktığı düşünceler yoluna devam ediyor.": {
+    "en": "A reading is complete; the thoughts it left behind continue on their journey.",
+    "de": "Eine Lektüre ist beendet; die Gedanken, die sie hinterlässt, ziehen weiter."
+  },
+  "Bitiş tarihini düzelt": {
+    "en": "Edit completion date",
+    "de": "Abschlussdatum korrigieren"
+  },
+  "Bu okumaya tarih ekle": {
+    "en": "Add date to this reading",
+    "de": "Datum zu dieser Lektüre hinzufügen"
+  },
+  "ARŞİV": {
+    "en": "ARCHIVE",
+    "de": "ARCHIV"
+  },
+  "ARŞİVİN ÖZETİ": {
+    "en": "ARCHIVE SUMMARY",
+    "de": "ARCHIVÜBERSICHT"
+  },
+  "{year}’NIN İZLERİ": {
+    "en": "TRACES OF {year}",
+    "de": "SPUREN VON {year}"
+  },
+  " · {value0} yeniden okuma": {
+    "en": " · {value0} reread",
+    "de": " · {value0} erneutes Lesen"
+  },
+  " · seçili kayıt örnek": {
+    "en": " · selected record sample",
+    "de": " · ausgewählter Datensatz Beispiel"
+  },
+  "Başka bir tarih aralığı veya kayıt türü seçebilirsin.": {
+    "en": "You can select another date range or record type.",
+    "de": "Du kannst einen anderen Datumsbereich oder Eintragstyp wählen."
+  },
+  "Bu yıl için tarihli bir kitap bitişi ya da not bulunmuyor. Tarihi eksik okumaların aşağıda korunur.": {
+    "en": "There are no dated finished books or notes for this year. Your undated readings are preserved below.",
+    "de": "Für dieses Jahr gibt es keine datierten Buchabschlüsse oder Notizen. Deine undatierten Lektüren bleiben unten erhalten."
+  },
+  " · ÖRNEK": {
+    "en": " · SAMPLE",
+    "de": " · BEISPIEL"
+  },
+  "Tablo modundan çık": {
+    "en": "Exit table view",
+    "de": "Tabellenansicht verlassen"
+  },
+  "Tablo modu": {
+    "en": "Table view",
+    "de": "Tabellenansicht"
+  },
+  "Hikâyenin geçtiği yer": {
+    "en": "Setting of the story",
+    "de": "Schauplatz der Geschichte"
+  },
+  "HİKÂYE PUSULASI": {
+    "en": "STORY COMPASS",
+    "de": "GESCHICHTEN-KOMPASS"
+  },
+  "YAZARIN PUSULASI": {
+    "en": "AUTHOR'S COMPASS",
+    "de": "AUTOREN-KOMPASS"
+  },
+  "Hikâyenin ana mekânı": {
+    "en": "Main setting of the story",
+    "de": "Hauptschauplatz der Geschichte"
+  },
+  "Yazarın doğum yeri": {
+    "en": "Author's birthplace",
+    "de": "Geburtsort des Autors"
+  },
+  "Yazarla ilişkili yer": {
+    "en": "Place associated with the author",
+    "de": "Mit dem Autor verbundener Ort"
+  },
+  "{value0} kitap · {value1}": {
+    "en": "{value0} books · {value1}",
+    "de": "{value0} Bücher · {value1}"
+  },
+  "{value0} yakın konum": {
+    "en": "{value0} nearby locations",
+    "de": "{value0} nahe Orte"
+  },
+  "bu konum": {
+    "en": "this location",
+    "de": "dieser Ort"
+  },
+  "{value0} okunmuş kitap · başlık veya yazar ara": {
+    "en": "{value0} books read · search title or author",
+    "de": "{value0} gelesene Bücher · Titel oder Autor suchen"
+  },
+  "{value0} kitaplarına dön": {
+    "en": "Back to {value0} books",
+    "de": "Zurück zu {value0} Büchern"
+  },
+  "Tüm kitaplara dön": {
+    "en": "Back to all books",
+    "de": "Zurück zu allen Büchern"
+  },
+  "Yazarın eseri kaleme aldığı şehir": {
+    "en": "City where the author wrote the work",
+    "de": "Stadt, in der das Werk verfasst wurde"
+  },
+  "Tek bir ana hikâye mekânı yok": {
+    "en": "No single main story setting",
+    "de": "Kein einzelner Hauptschauplatz"
+  },
+  "Mekân kurgu ya da Dünya dışında": {
+    "en": "Setting is fictional or otherworldly",
+    "de": "Schauplatz fiktiv oder außerirdisch"
+  },
+  "Hikâye mekânı belirsiz": {
+    "en": "Story setting uncertain",
+    "de": "Schauplatz der Geschichte unbestimmt"
+  },
+  "Yayın yılı bilinmiyor": {
+    "en": "Publication year unknown",
+    "de": "Erscheinungsjahr unbekannt"
+  },
+  " · {value0} sayfa": {
+    "en": " · {value0} pages",
+    "de": " · {value0} Seiten"
+  },
+  " · {value0} Atlas notu": {
+    "en": " · {value0} Atlas note",
+    "de": " · {value0} Atlas-Notiz"
+  },
+  "{value0}{value1}": {
+    "en": "{value0}{value1}",
+    "de": "{value0}{value1}"
+  },
+  "Kurgu / Dünya dışı": {
+    "en": "Fiction / Otherworldly",
+    "de": "Fiktiv / Außerirdisch"
+  },
+  "Mekân araştırılıyor": {
+    "en": "Researching location",
+    "de": "Ort wird recherchiert"
+  },
+  "Bu aramayla eşleşen kitap bulunamadı.": {
+    "en": "No books found matching this search.",
+    "de": "Keine Bücher gefunden, die dieser Suche entsprechen."
+  },
+  "Kitaplık yükleniyor…": {
+    "en": "Loading library…",
+    "de": "Bibliothek wird geladen…"
+  },
+  "Arşivden bir düşünce": {
+    "en": "A thought from the archive",
+    "de": "Ein Gedanke aus dem Archiv"
+  },
+  "Seçili düşünce": {
+    "en": "Selected thought",
+    "de": "Ausgewählter Gedanke"
+  },
+  "ARŞİVDEN BİR DÜŞÜNCE": {
+    "en": "A THOUGHT FROM THE ARCHIVE",
+    "de": "EIN GEDANKE AUS DEM ARCHIV"
+  },
+  "SEÇİLİ YILDIZ": {
+    "en": "SELECTED STAR",
+    "de": "AUSGEWÄHLTER STERN"
+  },
+  "genişletir": {
+    "en": "expands",
+    "de": "erweitert"
+  },
+  "yankılar": {
+    "en": "echoes",
+    "de": "hallt wider"
+  },
+  "karşıtlık gösterir": {
+    "en": "contrasts",
+    "de": "kontrastiert"
+  },
+  "Bu yıldız": {
+    "en": "This star",
+    "de": "Dieser Stern"
+  },
+  "Diğer yıldız": {
+    "en": "Other star",
+    "de": "Anderer Stern"
+  },
+  "tarafından {type}": {
+    "en": "{type} by",
+    "de": "{type} von"
+  },
+  "Anı kartlarını duraklat": {
+    "en": "Pause memory cards",
+    "de": "Erinnerungskarten anhalten"
+  },
+  "Anı kartlarını aç": {
+    "en": "Open memory cards",
+    "de": "Erinnerungskarten öffnen"
+  },
+  "Ara verdim": {
+    "en": "On hold",
+    "de": "Pausiert"
+  },
+  "Aralık": {
+    "en": "December",
+    "de": "Dezember"
+  },
+  "Ağustos": {
+    "en": "August",
+    "de": "August"
+  },
+  "Dönüştürücü": {
+    "en": "Transformative",
+    "de": "Transformativ"
+  },
+  "Ekim": {
+    "en": "October",
+    "de": "Oktober"
+  },
+  "Eylül": {
+    "en": "September",
+    "de": "September"
+  },
+  "Haziran": {
+    "en": "June",
+    "de": "Juni"
+  },
+  "Kasım": {
+    "en": "November",
+    "de": "November"
+  },
+  "Katalizör": {
+    "en": "Catalyst",
+    "de": "Katalysator"
+  },
+  "Kitaplıklar": {
+    "en": "Libraries",
+    "de": "Bibliotheken"
+  },
+  "KİTAP BİTİŞİ": {
+    "en": "BOOK FINISH",
+    "de": "BUCHENDE"
+  },
+  "Kış": {
+    "en": "Winter",
+    "de": "Winter"
+  },
+  "Mart": {
+    "en": "March",
+    "de": "März"
+  },
+  "Mayıs": {
+    "en": "May",
+    "de": "Mai"
+  },
+  "Nisan": {
+    "en": "April",
+    "de": "April"
+  },
+  "Ocak": {
+    "en": "January",
+    "de": "Januar"
+  },
+  "Okudum": {
+    "en": "Read",
+    "de": "Gelesen"
+  },
+  "Okuma listem": {
+    "en": "My reading list",
+    "de": "Meine Leseliste"
+  },
+  "Okuma listemde": {
+    "en": "On my reading list",
+    "de": "Auf meiner Leseliste"
+  },
+  "Okuyorum": {
+    "en": "Reading",
+    "de": "Lese ich"
+  },
+  "Sonbahar": {
+    "en": "Autumn",
+    "de": "Herbst"
+  },
+  "Sorgulatıcı": {
+    "en": "Thought-provoking",
+    "de": "Hinterfragend"
+  },
+  "Temel taş": {
+    "en": "Keystone",
+    "de": "Grundstein"
+  },
+  "Temmuz": {
+    "en": "July",
+    "de": "Juli"
+  },
+  "Yaz": {
+    "en": "Summer",
+    "de": "Sommer"
+  },
+  "destekler": {
+    "en": "supports",
+    "de": "unterstützt"
+  },
+  "sorgular": {
+    "en": "questions",
+    "de": "hinterfragt"
+  },
+  "İlkbahar": {
+    "en": "Spring",
+    "de": "Frühling"
+  },
+  "Şubat": {
+    "en": "February",
+    "de": "Februar"
+  },
+  " · %{value0} okundu": {
+    "en": " · %{value0} read",
+    "de": " · %{value0} gelesen"
+  },
+  "%{value0} okundu · şu an okunuyor": {
+    "en": "%{value0} read · currently reading",
+    "de": "%{value0} gelesen · wird gerade gelesen"
+  },
+  "Arşivin": {
+    "en": "Your Archive",
+    "de": "Dein Archiv"
+  },
+  "Bağlantı kaldırıldı.": {
+    "en": "Link removed.",
+    "de": "Verknüpfung entfernt."
+  },
+  "Düşünce Bulutsu’ya bırakıldı; henüz Atlas yıldızı değil.": {
+    "en": "Thought released into the Nebula; not yet an Atlas star.",
+    "de": "Gedanke an die Nebula übergeben; noch kein Atlas-Stern."
+  },
+  "Eksik yerel modeller: {value0}": {
+    "en": "Missing local models: {value0}",
+    "de": "Fehlende lokale Modelle: {value0}"
+  },
+  "Kitap kişisel kitaplığından çıkarıldı.": {
+    "en": "Book removed from your personal library.",
+    "de": "Buch aus deiner persönlichen Bibliothek entfernt."
+  },
+  "Kişisel arşivinin JSON yedeği indirildi.": {
+    "en": "JSON backup of your personal archive downloaded.",
+    "de": "JSON-Backup deines persönlichen Archivs heruntergeladen."
+  },
+  "Mekân belirsiz": {
+    "en": "Location uncertain",
+    "de": "Ort ungewiss"
+  },
+  "Nebula taslağı güncellendi; henüz Atlas yıldızı değil.": {
+    "en": "Nebula draft updated; not yet an Atlas star.",
+    "de": "Nebula-Entwurf aktualisiert; noch kein Atlas-Stern."
+  },
+  "Not silindi.": {
+    "en": "Note deleted.",
+    "de": "Notiz gelöscht."
+  },
+  "Okuma kaydın güncellendi.": {
+    "en": "Reading record updated.",
+    "de": "Leseeintrag aktualisiert."
+  },
+  "Taslak Bulutsu’dan kaldırıldı.": {
+    "en": "Draft removed from the Nebula.",
+    "de": "Entwurf aus der Nebula entfernt."
+  },
+  "Taslak açıldı; kaynak ve temalarını ekleyebilirsin.": {
+    "en": "Draft opened; you can add sources and themes.",
+    "de": "Entwurf geöffnet; du kannst Quellen und Themen hinzufügen."
+  },
+  "Tek ana mekân yok": {
+    "en": "No single primary location",
+    "de": "Kein einzelner Hauptort"
+  },
+  "Yerel model durumu kontrol ediliyor…": {
+    "en": "Checking local model status…",
+    "de": "Status der lokalen Modelle wird überprüft…"
+  },
+  "{value0} konumunu Atlas’ta gör": {
+    "en": "View {value0} on Atlas",
+    "de": "Ort {value0} im Atlas anzeigen"
+  },
+  "{value0} yılının": {
+    "en": "of the year {value0}",
+    "de": "des Jahres {value0}"
+  },
+  "✦ Atlas’a kaydet": {
+    "en": "✦ Save to Atlas",
+    "de": "✦ Im Atlas speichern"
+  },
+  "OKUMA İZİ · {percent}": {
+    "en": "READING PROGRESS · {percent}",
+    "de": "LESEFORTSCHRITT · {percent}"
+  },
+  " · {percent} okundu": {
+    "en": " · {percent} read",
+    "de": " · {percent} gelesen"
+  },
+  "{percent} okundu · şu an okunuyor": {
+    "en": "{percent} read · currently reading",
+    "de": "{percent} gelesen · lese ich gerade"
+  },
+  "{count} kitap eklendi{matched}{skipped}{invalid}.": {
+    "en": "{count} books added{matched}{skipped}{invalid}.",
+    "de": "{count} Bücher hinzugefügt{matched}{skipped}{invalid}.",
+    "one": {
+      "en": "{count} book added{matched}{skipped}{invalid}.",
+      "de": "{count} Buch hinzugefügt{matched}{skipped}{invalid}."
+    }
+  },
+  ", {count} mevcut kayıtla eşleşti": {
+    "en": ", {count} matched existing entries",
+    "de": ", {count} vorhandenen Einträgen zugeordnet",
+    "one": {
+      "en": ", {count} matched an existing entry",
+      "de": ", {count} vorhandenem Eintrag zugeordnet"
+    }
+  },
+  ", {count} zaten aktarılmıştı": {
+    "en": ", {count} already imported",
+    "de": ", {count} bereits importiert"
+  },
+  ", {count} satır atlandı": {
+    "en": ", {count} rows skipped",
+    "de": ", {count} Zeilen übersprungen",
+    "one": {
+      "en": ", {count} row skipped",
+      "de": ", {count} Zeile übersprungen"
+    }
+  },
+  "Ortak tema: {themes}": {
+    "en": "Shared theme: {themes}",
+    "de": "Gemeinsames Thema: {themes}"
+  },
+  "Ortak kavramlar: {terms}": {
+    "en": "Shared concepts: {terms}",
+    "de": "Gemeinsame Begriffe: {terms}"
+  },
+  "Düşüncen gökyüzünde yerini alıyor": {
+    "en": "Your thought is finding its place in the sky",
+    "de": "Dein Gedanke findet seinen Platz am Himmel"
+  },
+  ", {count} sayfa": {
+    "en": ", {count} pages",
+    "de": ", {count} Seiten",
+    "one": {
+      "en": ", {count} page",
+      "de": ", {count} Seite"
+    }
+  },
+  ", {percent} okundu": {
+    "en": ", {percent} read",
+    "de": ", {percent} gelesen"
+  },
+  ", {count} Atlas notu": {
+    "en": ", {count} Atlas notes",
+    "de": ", {count} Atlas-Notizen",
+    "one": {
+      "en": ", {count} Atlas note",
+      "de": ", {count} Atlas-Notiz"
+    }
+  },
+  " ve {count} okunmakta olan kitap işareti": {
+    "en": " and {count} markers for books being read",
+    "de": " und {count} Markierungen für Bücher, die du gerade liest",
+    "one": {
+      "en": " and {count} marker for a book being read",
+      "de": " und {count} Markierung für ein Buch, das du gerade liest"
+    }
+  },
+  "Doğum yeri": {
+    "en": "Place of birth",
+    "de": "Geburtsort"
+  },
+  "İlişkili yer": {
+    "en": "Associated place",
+    "de": "Verbundener Ort"
+  },
+  "Kaynakla doğrulandı": {
+    "en": "Verified by a source",
+    "de": "Durch eine Quelle bestätigt"
+  },
+  "Olası eşleşme": {
+    "en": "Possible match",
+    "de": "Mögliche Übereinstimmung"
+  },
+  "İnceleme bekliyor": {
+    "en": "Awaiting review",
+    "de": "Überprüfung ausstehend"
+  },
+  "✦ Yazım şehri: ": {
+    "en": "✦ City of writing: ",
+    "de": "✦ Entstehungsort: "
+  },
+  "Yakın konumlar": {
+    "en": "Nearby places",
+    "de": "Nahegelegene Orte"
+  },
+  "İrade": {
+    "en": "Will",
+    "de": "Wille"
+  },
+  "Bellek": {
+    "en": "Memory",
+    "de": "Erinnerung"
+  },
+  "Dönüşüm": {
+    "en": "Becoming",
+    "de": "Werden"
+  },
+  "Yakınlık": {
+    "en": "Kinship",
+    "de": "Verbundenheit"
+  }
+}

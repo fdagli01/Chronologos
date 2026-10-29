@@ -1,0 +1,21 @@
+/* Errors keep the same readable treatment across archive pages and dialogs. */
+.library-app .form-error {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: 10px 12px;
+  border: 1px solid rgba(207, 119, 100, .34);
+  border-radius: 4px;
+  color: #efb5a7;
+  background: rgba(133, 47, 36, .16);
+  font: 12px/1.55 Inter, ui-sans-serif, system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.notes-content > .form-error { margin-top: 18px; }
+
+/* The connection workbench keeps its light paper surface. */
+.library-app .connection-drawer .form-error {
+  color: #783b30;
+  border-color: rgba(155, 76, 61, .38);
+  background: rgba(155, 76, 61, .1);
+}
