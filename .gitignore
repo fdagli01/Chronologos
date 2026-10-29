@@ -8,3 +8,15 @@ server/data/*.sqlite
 server/data/*.sqlite-*
 
 release/
+
+# Local planning and agent working files
+agent-tasks/
+HANDOFF.md
+ORCHESTRATION.md
+PROJECT_PLAN.md
+QUALITY_PLAN.md
+AGENTS.md
+CLAUDE.md
+.claude/
+.cursor/
+scripts/archive-recovery-check.mjs
